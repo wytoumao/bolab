@@ -1,0 +1,17 @@
+[zh-cn]
+  languageName = '中文'
+  title = "Bo's Lab"
+  weight = 1
+  [zh-cn.params]
+    description = "区块链 · 测试 · AI — Bo 的技术实验室"
+  [zh-cn.params.sidebar]
+    subtitle = "区块链 · 测试 · AI"
+
+[en]
+  languageName = 'English'
+  title = "Bo's Lab"
+  weight = 2
+  [en.params]
+    description = "Blockchain · QA · AI — Bo's Tech Lab"
+  [en.params.sidebar]
+    subtitle = "Blockchain · QA · AI"

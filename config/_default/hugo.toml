@@ -1,0 +1,36 @@
+baseURL = 'https://bolab.dev/'
+title = "Bo's Lab"
+
+defaultContentLanguage = 'zh-cn'
+hasCJKLanguage = true
+
+theme = 'hugo-theme-stack'
+
+[pagination]
+  pagerSize = 10
+
+[permalinks]
+  post = '/p/:slug/'
+  page = '/:slug/'
+
+[markup]
+  [markup.highlight]
+    lineNos = true
+    noClasses = false
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+[related]
+  includeNewer = true
+  threshold = 60
+  toLower = false
+  [[related.indices]]
+    name = 'tags'
+    weight = 100
+  [[related.indices]]
+    name = 'categories'
+    weight = 200
