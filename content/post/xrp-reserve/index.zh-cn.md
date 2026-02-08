@@ -4,7 +4,7 @@ date: 2025-02-08
 slug: xrp-reserve
 description: "转账 XRP 时发现地址必须保留至少 1 XRP？这篇文章带你搞懂 XRPL 的储备金机制背后的设计逻辑。"
 categories:
-  - 测试
+  - 区块链
 tags:
   - XRP
   - 公链
