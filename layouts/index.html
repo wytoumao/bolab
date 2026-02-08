@@ -1,8 +1,7 @@
 {{ define "main" }}
 <div class="container">
     <div class="home-intro">
-        <h1>{{ .Site.Title }}</h1>
-        <p>{{ .Site.Params.description }}</p>
+        <p class="site-description">{{ .Site.Params.description }}</p>
     </div>
 
     <div class="post-list">
@@ -16,7 +15,7 @@
             {{ end }}
             <div class="post-meta">
                 <time datetime="{{ .Date.Format "2006-01-02" }}">
-                    {{ .Date.Format "2006-01-02" }}
+                    {{ .Date.Format "01.02.2006" }}
                 </time>
                 {{ if .Params.tags }}
                 <span class="post-tags">
