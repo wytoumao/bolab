@@ -3,12 +3,13 @@
         <a href="{{ .Site.BaseURL }}{{ .Lang }}">Bo's Lab</a>
     </div>
     <nav class="sidebar-nav">
-        <a href="{{ .Site.BaseURL }}{{ .Lang }}" {{ if .IsHome }}class="active"{{ end }}>{{ i18n "home" }}</a>
-        <a href="{{ .Site.BaseURL }}{{ .Lang }}/categories/{{ if eq .Lang "zh-cn" }}测试{{ else }}testing{{ end }}/">{{ i18n "testing" }}</a>
-        <a href="{{ .Site.BaseURL }}{{ .Lang }}/categories/{{ if eq .Lang "zh-cn" }}区块链{{ else }}blockchain{{ end }}/">{{ i18n "blockchain" }}</a>
-        <a href="{{ .Site.BaseURL }}{{ .Lang }}/categories/ai/">AI</a>
+        <a href="{{ .Site.Home.RelPermalink }}" {{ if .IsHome }}class="active"{{ end }}>{{ i18n "home" }}</a>
+        {{ $catBase := print .Site.Home.RelPermalink "categories/" }}
+        <a href="{{ $catBase }}{{ if eq .Lang "zh-cn" }}测试{{ else }}testing{{ end }}/">{{ i18n "testing" }}</a>
+        <a href="{{ $catBase }}{{ if eq .Lang "zh-cn" }}区块链{{ else }}blockchain{{ end }}/">{{ i18n "blockchain" }}</a>
+        <a href="{{ $catBase }}ai/">AI</a>
         <a href="/tools/btc.html">{{ i18n "tools" }}</a>
-        <a href="{{ .Site.BaseURL }}{{ .Lang }}/about">{{ i18n "about" }}</a>
+        <a href="{{ .Site.Home.RelPermalink }}about/">{{ i18n "about" }}</a>
     </nav>
     <div class="sidebar-footer">
         <div class="lang-switcher">
