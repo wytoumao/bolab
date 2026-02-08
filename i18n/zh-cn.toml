@@ -1,6 +1,9 @@
 [home]
 other = "首页"
 
+[tools]
+other = "工具"
+
 [about]
 other = "关于"
 

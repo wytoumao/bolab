@@ -1,6 +1,9 @@
 [home]
 other = "Home"
 
+[tools]
+other = "Tools"
+
 [about]
 other = "About"
 
