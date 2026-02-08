@@ -195,6 +195,26 @@ footer {
     font-weight: 500;
 }
 
+/* Pinned Section */
+.pinned-section {
+    margin-bottom: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.section-label {
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.post-item.pinned .post-title a {
+    font-weight: 700;
+}
+
 /* Post List */
 .post-list {
     display: flex;

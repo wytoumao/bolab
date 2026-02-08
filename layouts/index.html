@@ -4,8 +4,42 @@
         <p class="site-description">{{ .Site.Params.description }}</p>
     </div>
 
+    {{/* Pinned posts */}}
+    {{ $pinned := where (where .Site.RegularPages "Type" "post") ".Params.pinned" true }}
+    {{ if $pinned }}
+    <div class="pinned-section">
+        <p class="section-label">📌 {{ i18n "pinned" }}</p>
+        <div class="post-list">
+            {{ range $pinned }}
+            <article class="post-item pinned">
+                <h2 class="post-title">
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </h2>
+                {{ if .Description }}
+                <p class="post-description">{{ .Description }}</p>
+                {{ end }}
+                <div class="post-meta">
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">
+                        {{ .Date.Format "01.02.2006" }}
+                    </time>
+                    {{ if .Params.tags }}
+                    <span class="post-tags">
+                        {{ range .Params.tags }}
+                        <span class="tag">{{ . }}</span>
+                        {{ end }}
+                    </span>
+                    {{ end }}
+                </div>
+            </article>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+
+    {{/* All posts, reverse chronological, exclude pinned from top but still show */}}
     <div class="post-list">
-        {{ range (where .Site.RegularPages "Type" "post") }}
+        {{ range (where .Site.RegularPages "Type" "post").ByDate.Reverse }}
+        {{ if not .Params.pinned }}
         <article class="post-item">
             <h2 class="post-title">
                 <a href="{{ .RelPermalink }}">{{ .Title }}</a>
@@ -26,6 +60,7 @@
                 {{ end }}
             </div>
         </article>
+        {{ end }}
         {{ end }}
     </div>
 </div>
