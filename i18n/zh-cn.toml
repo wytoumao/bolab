@@ -1,8 +1,17 @@
 [home]
 other = "首页"
 
+[testing]
+other = "测试"
+
+[blockchain]
+other = "区块链"
+
 [tools]
 other = "工具"
+
+[articles]
+other = "篇文章"
 
 [about]
 other = "关于"

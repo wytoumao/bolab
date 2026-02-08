@@ -1,8 +1,17 @@
 [home]
 other = "Home"
 
+[testing]
+other = "Testing"
+
+[blockchain]
+other = "Blockchain"
+
 [tools]
 other = "Tools"
+
+[articles]
+other = "articles"
 
 [about]
 other = "About"
