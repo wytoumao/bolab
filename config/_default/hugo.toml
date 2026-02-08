@@ -4,10 +4,8 @@ title = "Bo's Lab"
 defaultContentLanguage = 'zh-cn'
 hasCJKLanguage = true
 
-theme = 'hugo-theme-stack'
-
 [pagination]
-  pagerSize = 10
+  pagerSize = 20
 
 [permalinks]
   post = '/p/:slug/'
@@ -22,15 +20,4 @@ theme = 'hugo-theme-stack'
       unsafe = true
 
 [outputs]
-  home = ['HTML', 'RSS', 'JSON']
-
-[related]
-  includeNewer = true
-  threshold = 60
-  toLower = false
-  [[related.indices]]
-    name = 'tags'
-    weight = 100
-  [[related.indices]]
-    name = 'categories'
-    weight = 200
+  home = ['HTML', 'RSS']

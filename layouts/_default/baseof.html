@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ if not .IsHome }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
+    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    
+    {{ $style := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+    
+    {{ if .OutputFormats.Get "RSS" }}
+    <link rel="alternate" type="application/rss+xml" href="{{ .Site.BaseURL }}index.xml" title="{{ .Site.Title }}">
+    {{ end }}
+</head>
+<body class="{{ if site.Params.darkMode }}dark{{ end }}">
+    {{ partial "header.html" . }}
+    <main>
+        {{ block "main" . }}{{ end }}
+    </main>
+    {{ partial "footer.html" . }}
+    
+    <script>
+        // Dark mode toggle
+        const toggle = document.getElementById('dark-toggle');
+        const html = document.documentElement;
+        const body = document.body;
+        
+        // Load saved preference
+        const darkMode = localStorage.getItem('darkMode');
+        if (darkMode === 'true') {
+            body.classList.add('dark');
+        }
+        
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                body.classList.toggle('dark');
+                localStorage.setItem('darkMode', body.classList.contains('dark'));
+            });
+        }
+    </script>
+</body>
+</html>

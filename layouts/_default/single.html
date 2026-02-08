@@ -1,0 +1,23 @@
+{{ define "main" }}
+<article class="container single">
+    <header class="article-header">
+        <h1>{{ .Title }}</h1>
+        <div class="article-meta">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">
+                {{ .Date.Format "2006-01-02" }}
+            </time>
+            {{ if .Params.tags }}
+            <span class="article-tags">
+                {{ range .Params.tags }}
+                <span class="tag">{{ . }}</span>
+                {{ end }}
+            </span>
+            {{ end }}
+        </div>
+    </header>
+
+    <div class="article-content">
+        {{ .Content }}
+    </div>
+</article>
+{{ end }}

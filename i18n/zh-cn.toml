@@ -1,0 +1,14 @@
+[home]
+other = "首页"
+
+[about]
+other = "关于"
+
+[posts]
+other = "文章"
+
+[tags]
+other = "标签"
+
+[categories]
+other = "分类"

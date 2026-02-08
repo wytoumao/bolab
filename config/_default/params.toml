@@ -1,27 +1,5 @@
-mainSections = ['post']
-rssFullContent = true
-favicon = ''
+[zh-cn]
+  description = "区块链 · 测试 · AI — Bo 的技术实验室"
 
-[footer]
-  since = 2025
-
-[sidebar]
-  emoji = '🧪'
-  subtitle = "区块链 · 测试 · AI"
-
-[article]
-  math = false
-  toc = true
-  readingTime = true
-
-[widgets]
-  homepage = [
-    { type = "search" },
-    { type = "archives", params = { limit = 5 } },
-    { type = "categories", params = { limit = 10 } },
-    { type = "tag-cloud", params = { limit = 10 } },
-  ]
-  page = [{ type = "toc" }]
-
-[comments]
-  enabled = false
+[en]
+  description = "Blockchain · QA · AI — Bo's Tech Lab"
