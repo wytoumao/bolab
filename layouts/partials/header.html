@@ -8,7 +8,7 @@
         <a href="{{ $catBase }}{{ if eq .Lang "zh-cn" }}测试{{ else }}testing{{ end }}/">{{ i18n "testing" }}</a>
         <a href="{{ $catBase }}{{ if eq .Lang "zh-cn" }}区块链{{ else }}blockchain{{ end }}/">{{ i18n "blockchain" }}</a>
         <a href="{{ $catBase }}ai/">AI</a>
-        <a href="/tools/btc.html">{{ i18n "tools" }}</a>
+        <a href="{{ .Site.Home.RelPermalink }}tools/">{{ i18n "tools" }}</a>
         <a href="{{ .Site.Home.RelPermalink }}about/">{{ i18n "about" }}</a>
     </nav>
     <div class="sidebar-footer">
