@@ -12,6 +12,8 @@
     --code-bg: #f6f8fa;
     --sidebar-bg: #fafafa;
     --sidebar-w: 220px;
+    --main-max: 1500px;
+    --content-max: 980px;
 }
 
 body.dark {
@@ -154,10 +156,12 @@ body.dark .moon { display: block; }
 /* Main content */
 main {
     margin-left: var(--sidebar-w);
-    flex: 1;
+    width: calc(100% - var(--sidebar-w));
+    max-width: var(--main-max);
     min-height: 100vh;
-    padding: 3rem 3rem 4rem;
-    max-width: calc(var(--sidebar-w) + 900px);
+    padding: 3rem clamp(1.75rem, 3.5vw, 4rem) 4rem;
+    display: flex;
+    justify-content: center;
 }
 
 /* Mobile header — hidden on desktop */
@@ -177,7 +181,8 @@ footer {
 
 /* Container */
 .container {
-    max-width: 780px;
+    width: min(100%, var(--content-max));
+    margin: 0 auto;
 }
 
 /* Home */
@@ -268,7 +273,7 @@ footer {
 }
 
 /* Article */
-.single { max-width: 780px; }
+.single { width: min(100%, var(--content-max)); }
 
 .article-header {
     margin-bottom: 2.5rem;
