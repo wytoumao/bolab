@@ -5,7 +5,7 @@ description: "How I turned exchange wallet deposit testing from 'depends on who'
 categories: ["testing"]
 tags: ["blockchain", "deposit testing", "test engineering", "tooling"]
 pinned: false
-draft: false
+draft: true
 ---
 
 ## What Wallet Testing Really Is
