@@ -5,7 +5,7 @@ description: "如何将交易所钱包入金测试从「依赖个人经验」变
 categories: ["测试"]
 tags: ["区块链", "入金测试", "测试工程", "工具平台"]
 pinned: false
-draft: true
+draft: false
 ---
 
 ## 钱包测试的本质
