@@ -1,6 +1,7 @@
 ---
 title: "Exchange Deposit Testing: From Manual Construction to a Standardized Platform"
-date: 2026-02-12
+date: 2026-02-11
+slug: "deposit-testing"
 description: "How I turned exchange wallet deposit testing from 'depends on who's testing' into a repeatable, standardized process — and my thoughts on fake deposit detection."
 categories: ["testing"]
 tags: ["blockchain", "deposit testing", "test engineering", "tooling"]
