@@ -157,7 +157,7 @@ main {
     flex: 1;
     min-height: 100vh;
     padding: 3rem 3rem 4rem;
-    max-width: calc(var(--sidebar-w) + 780px);
+    max-width: calc(var(--sidebar-w) + 900px);
 }
 
 /* Mobile header — hidden on desktop */
@@ -177,7 +177,7 @@ footer {
 
 /* Container */
 .container {
-    max-width: 680px;
+    max-width: 780px;
 }
 
 /* Home */
@@ -268,7 +268,7 @@ footer {
 }
 
 /* Article */
-.single { max-width: 640px; }
+.single { max-width: 780px; }
 
 .article-header {
     margin-bottom: 2.5rem;
