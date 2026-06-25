@@ -1,11 +1,8 @@
 ---
 title: "京东 2025 业绩电话会纪要"
 description: "各季度财报电话会要点纪要"
-date: 2025-01-01
 weight: 3
 ---
-
-<p><a class="doc-download" href="/investment/jingdong/2025/dianhua.pdf" target="_blank" rel="noopener">⬇ 下载 PDF 版</a></p>
 
 > 覆盖：CY2025 Q1–Q4（截至 2026-06，全年四季业绩均已披露）。各季电话会日期：Q1 2025-05-13、Q2 2025-08-14、Q3 2025-11-13、Q4+全年 2026-03-05（Q4 会按惯例在次年 3 月召开，报告 CY2025 Q4 与全年）。
 > 数据来源：各季 earnings call transcript（Insider Monkey）＋京东 IR / SEC 6-K；财务数字与本目录《财报_2025.md》口径一致。

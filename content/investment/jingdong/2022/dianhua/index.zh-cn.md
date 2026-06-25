@@ -1,11 +1,8 @@
 ---
 title: "京东 2022 业绩电话会纪要"
 description: "各季度财报电话会要点纪要"
-date: 2022-01-01
 weight: 3
 ---
-
-<p><a class="doc-download" href="/investment/jingdong/2022/dianhua.pdf" target="_blank" rel="noopener">⬇ 下载 PDF 版</a></p>
 
 > 覆盖：CY2022 Q1–Q4。各季电话会日期：Q1 2022-05-17、Q2 2022-08-23、Q3 2022-11-18、Q4+全年 2023-03-09（Q4 会按惯例在次年 3 月召开，报告 CY2022 Q4 与全年）。
 > 数据来源：各季 earnings call transcript（Motley Fool / Insider Monkey-Yahoo）＋京东 IR / SEC 6-K；财务数字与本目录《财报_2022.md》口径一致。

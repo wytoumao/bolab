@@ -1,11 +1,8 @@
 ---
 title: "京东 2023 业绩电话会纪要"
 description: "各季度财报电话会要点纪要"
-date: 2023-01-01
 weight: 3
 ---
-
-<p><a class="doc-download" href="/investment/jingdong/2023/dianhua.pdf" target="_blank" rel="noopener">⬇ 下载 PDF 版</a></p>
 
 > 覆盖：CY2023 Q1–Q4。各季电话会日期：Q1 2023-05-11、Q2 2023-08-16、Q3 2023-11-15、Q4+全年 2024-03-06（Q4 会按惯例在次年 3 月召开，报告 CY2023 Q4 与全年）。
 > 数据来源：各季 earnings call transcript（Motley Fool）＋京东 IR / SEC 6-K；财务数字与本目录《财报_2023.md》口径一致。

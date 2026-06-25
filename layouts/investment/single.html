@@ -1,0 +1,32 @@
+{{ define "main" }}
+<article class="container single">
+    {{ if .Ancestors }}
+    <nav class="breadcrumb">
+        {{ range .Ancestors.Reverse }}
+            {{ if .IsHome }}
+                <a href="{{ .RelPermalink }}">{{ i18n "home" }}</a>
+            {{ else }}
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{ end }}
+            <span class="sep">/</span>
+        {{ end }}
+        <span class="current">{{ .Title }}</span>
+    </nav>
+    {{ end }}
+
+    <header class="article-header">
+        <h1>{{ .Title }}</h1>
+        {{ if .Description }}<p class="page-description">{{ .Description }}</p>{{ end }}
+    </header>
+
+    <div class="article-content">
+        {{ .Content }}
+    </div>
+
+    {{ with .Parent }}
+    <div class="back-link">
+        <a href="{{ .RelPermalink }}">← {{ if eq $.Lang "zh-cn" }}返回{{ else }}Back to {{ end }}{{ .Title }}</a>
+    </div>
+    {{ end }}
+</article>
+{{ end }}

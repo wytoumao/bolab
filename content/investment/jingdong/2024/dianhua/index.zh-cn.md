@@ -1,11 +1,8 @@
 ---
 title: "京东 2024 业绩电话会纪要"
 description: "各季度财报电话会要点纪要"
-date: 2024-01-01
 weight: 3
 ---
-
-<p><a class="doc-download" href="/investment/jingdong/2024/dianhua.pdf" target="_blank" rel="noopener">⬇ 下载 PDF 版</a></p>
 
 > 覆盖：CY2024 Q1–Q4。各季电话会日期：Q1 2024-05-16、Q2 2024-08-15、Q3 2024-11-14、Q4+全年 2025-03-06（Q4 会按惯例在次年 3 月召开，报告 CY2024 Q4 与全年）。
 > 数据来源：各季 earnings call transcript（Motley Fool / Insider Monkey）＋京东 IR / SEC 6-K；财务数字与本目录《财报_2024.md》口径一致。

@@ -1,11 +1,8 @@
 ---
 title: "京东 2021 业绩电话会纪要"
 description: "各季度财报电话会要点纪要"
-date: 2021-01-01
 weight: 3
 ---
-
-<p><a class="doc-download" href="/investment/jingdong/2021/dianhua.pdf" target="_blank" rel="noopener">⬇ 下载 PDF 版</a></p>
 
 > 覆盖：CY2021 Q1–Q4。各季电话会日期：Q1 2021-05-19、Q2 2021-08-23、Q3 2021-11-18、Q4+全年 2022-03-10（Q4 会按惯例在次年 3 月召开，报告 CY2021 Q4 与全年）。
 > 数据来源：各季 earnings call transcript（Motley Fool / Nasdaq）＋京东 IR 业绩发布；财务数字与本目录《财报_2021.md》口径一致。

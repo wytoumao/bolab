@@ -1,11 +1,8 @@
 ---
 title: "京东 2023 财报摘要"
 description: "年度财报核心数据与解读"
-date: 2023-01-01
 weight: 1
 ---
-
-<p><a class="doc-download" href="/investment/jingdong/2023/caibao.pdf" target="_blank" rel="noopener">⬇ 下载 PDF 版</a></p>
 
 ## 一、年度概览
 
