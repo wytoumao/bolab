@@ -596,3 +596,41 @@ html, body { overflow-x: hidden; max-width: 100%; }
 .back-link { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
 .back-link a { color: var(--fg-muted); text-decoration: none; font-size: 0.9rem; }
 .back-link a:hover { color: var(--fg); }
+
+/* ===== 打印 / 导出 PDF：隐藏侧栏，内容铺满整页 ===== */
+@media print {
+    .sidebar,
+    .mobile-header,
+    .sidebar-footer,
+    #dark-toggle,
+    .lang-switcher,
+    .breadcrumb,
+    .back-link { display: none !important; }
+
+    main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        display: block !important;
+        min-height: 0 !important;
+    }
+    .container,
+    .single { width: 100% !important; max-width: 100% !important; margin: 0 !important; }
+
+    body { color: #000; background: #fff; }
+    .article-content a { color: #000; text-decoration: underline; }
+
+    /* 打印时表格铺满纸宽、可整表显示，避免跨页割裂 */
+    .article-content table {
+        display: table;
+        width: 100%;
+        overflow: visible;
+        font-size: 0.72rem;
+    }
+    .article-content tr,
+    .article-content pre,
+    .article-content blockquote { page-break-inside: avoid; }
+    .article-content pre { white-space: pre-wrap; word-break: break-word; font-size: 0.7rem; }
+    h1, h2, h3 { page-break-after: avoid; }
+}
