@@ -1,7 +1,8 @@
 ---
 title: "京东 2023 财报整理（完整报告）"
-description: "精排完整财报分析报告 — 封面、各章节财务拆解与研读问答"
+description: "精排完整财报分析报告 — 封面、各章节财务拆解与研读问答（点击直达）"
 weight: 4
+report_url: "/investment/jingdong/2023/report.html"
 ---
 
 <div class="doc-actions">

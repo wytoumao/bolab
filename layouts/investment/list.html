@@ -23,12 +23,14 @@
 
     <div class="inv-grid">
         {{ range .Pages }}
-        <a href="{{ .RelPermalink }}" class="inv-card">
+        {{ $url := .RelPermalink }}{{ $blank := false }}
+        {{ with .Params.report_url }}{{ $url = . }}{{ $blank = true }}{{ end }}
+        <a href="{{ $url }}" {{ if $blank }}target="_blank" rel="noopener"{{ end }} class="inv-card">
             <div class="inv-card-body">
                 <h3>{{ .Title }}</h3>
                 {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
             </div>
-            <span class="inv-arrow">→</span>
+            <span class="inv-arrow">{{ if $blank }}↗{{ else }}→{{ end }}</span>
         </a>
         {{ end }}
     </div>
