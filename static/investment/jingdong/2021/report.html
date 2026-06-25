@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>京东集团 FY2021 财报整理</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 14mm 16mm 14mm;
+    @bottom-left  { content: "京东集团（JD.com）FY2021 财报整理 · 据公开资料独立整理 · 非官方文件"; font-size: 7pt; color: #9aa3ad; }
+    @bottom-right { content: "第 " counter(page) " 页"; font-size: 7pt; color: #9aa3ad; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Songti SC", "STHeiti", sans-serif;
+    color: #2b2b2b; font-size: 10.5pt; line-height: 1.6; background: #fff;
+  }
+  :root {
+    --bar:    #8a1c1c;
+    --red:    #c0392b;
+    --redln:  #c0392b;
+    --ink:    #2b2b2b;
+    --muted:  #8a929c;
+    --th:     #3f4348;
+    --th2:    #4b5158;
+    --line:   #d9dee5;
+    --zebra:  #f5f6f8;
+    --pos:    #1f8a4c;
+    --neg:    #c0392b;
+  }
+  .topbar { position: fixed; top: 0; left: 0; width: 100%; height: 8mm; background: var(--bar); }
+
+  .cover { padding-top: 12mm; }
+  .cover-title { font-size: 26pt; color: var(--ink); font-weight: 700; margin: 8px 0 2px; }
+  .cover-sub   { font-size: 22pt; color: var(--red); font-weight: 800; margin-bottom: 14px; }
+  .cover-meta  { font-size: 10pt; color: var(--muted); }
+  .cover-meta b{ color: #5a6470; font-weight: 600; }
+  .rule-red    { border: none; border-top: 2px solid var(--redln); margin: 16px 0 18px; }
+
+  h2.sec {
+    font-size: 14pt; color: var(--red); font-weight: 800; letter-spacing: .5px;
+    padding-bottom: 5px; border-bottom: 2px solid var(--redln); margin: 22px 0 12px;
+  }
+  h3 { font-size: 11pt; color: #5a6470; margin: 14px 0 6px; }
+
+  p { margin: 7px 0; }
+  .lead { margin: 8px 0; }
+  ul.bul { margin: 6px 0 6px 4px; list-style: none; }
+  ul.bul li { position: relative; padding-left: 16px; margin: 5px 0; }
+  ul.bul li::before { content: "•"; color: var(--red); position: absolute; left: 2px; font-weight: 700; }
+  .muted { color: var(--muted); }
+  .small { font-size: 9pt; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.3pt; margin: 8px 0 6px; }
+  th, td { padding: 6px 9px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--th); color: #fff; font-weight: 600; font-size: 8.8pt; border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--zebra); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pos { color: var(--pos); font-weight: 600; }
+  .neg { color: var(--neg); font-weight: 600; }
+  tr.key td { font-weight: 700; }
+  tr.key td:first-child { color: var(--red); }
+  .desc { display: block; color: var(--muted); font-size: 8pt; font-weight: 400; margin-top: 2px; }
+  table caption { caption-side: top; text-align: left; font-size: 8.3pt; color: var(--muted); padding: 2px 0; }
+
+  .read { background: #fbfafa; border: 1px solid var(--line); border-left: 3px solid var(--red);
+          padding: 9px 13px; margin: 8px 0; font-size: 9.6pt; }
+  .read .rt { color: var(--red); font-weight: 700; }
+  ol.read-list { margin: 4px 0 0 18px; }
+  ol.read-list li { margin: 4px 0; }
+
+  .chart { display: flex; align-items: flex-end; gap: 18px; height: 150px; padding: 10px 8px 0;
+           border: 1px solid var(--line); margin: 8px 0; }
+  .chart .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .chart .bar { width: 60%; background: var(--red); border-radius: 2px 2px 0 0; }
+  .chart .cap { font-size: 8pt; color: var(--muted); margin-bottom: 4px; text-align: center; }
+  .chart .qx  { font-size: 8.5pt; color: #5a6470; margin-top: 4px; }
+
+  .toc { columns: 1; font-size: 10pt; }
+  .toc div { padding: 3px 0; border-bottom: 1px dotted var(--line); }
+
+  .q { color: var(--red); font-weight: 700; margin: 12px 0 3px; }
+  .quote { color: #3a4753; margin: 3px 0 3px 0; }
+  .quote .who { font-weight: 700; color: #5a6470; }
+
+  .disclaimer { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line);
+                font-size: 8.3pt; color: var(--muted); }
+  .src { font-size: 8.6pt; }
+  .src a { color: #2c4a73; word-break: break-all; }
+  .pagebreak { page-break-before: always; }
+  section { page-break-inside: auto; }
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<!-- ==================== 封面 ==================== -->
+<div class="cover">
+  <div class="cover-title">京东集团（JD.com, Inc.）</div>
+  <div class="cover-sub">FY2021 财报整理</div>
+  <div class="cover-meta">
+    <b>纳斯达克: JD ｜ 港交所: 9618</b> &nbsp;|&nbsp; 财年截至 2021-12-31 &nbsp;|&nbsp; 整理日期：2026-06-25
+  </div>
+  <hr class="rule-red">
+
+  <table>
+    <thead><tr><th style="width:46%">核心指标（人民币百万元，每股数据除外）</th><th class="num">FY2021</th><th class="num">同比</th></tr></thead>
+    <tbody>
+      <tr><td>全年总营收<span class="desc">公司一年内主营业务获得的全部收入，尚未扣除任何成本和费用</span></td><td class="num">951,592</td><td class="num pos">+27.6%</td></tr>
+      <tr><td>其中：商品收入（自营 1P）<span class="desc">京东自营商品销售收入：电子家电 + 日用百货</span></td><td class="num">815,655</td><td class="num pos">+25.1%</td></tr>
+      <tr><td>其中：服务收入（平台/广告/物流）<span class="desc">3P 平台佣金与广告、物流及其他服务收入</span></td><td class="num">135,937</td><td class="num pos">+44.7%</td></tr>
+      <tr><td>营业利润（GAAP）<span class="desc">营收减去营业成本与销售、管理、研发费用后的利润，反映主业本身的赚钱能力</span></td><td class="num">4,141</td><td class="num neg">-66.5%</td></tr>
+      <tr><td>归母净利润（GAAP）<span class="desc">扣完所有成本、费用、利息、税之后，最终归属于公司股东的利润</span></td><td class="num neg">(3,560)</td><td class="num neg">转亏</td></tr>
+      <tr><td>Non-GAAP 归母净利润<span class="desc">在净利润基础上加回股权激励、投资公允价值变动等非现金项，更接近「经营层面」的盈利</span></td><td class="num">17,207</td><td class="num pos">+2.3%</td></tr>
+      <tr><td>经营活动现金流净额<span class="desc">主营业务实际收到的现金减去付出的现金，衡量利润的「含金量」</span></td><td class="num">42,301</td><td class="num neg">-0.6%</td></tr>
+      <tr><td>现金+短期投资（年末）<span class="desc">账上可随时动用的资金：现金、受限资金及短期投资</span></td><td class="num">191,256</td><td class="num">2020 年末 151,096</td></tr>
+      <tr><td>摊薄每 ADS 收益（GAAP，元）<span class="desc">每份美国存托凭证（1 ADS = 2 股 A 类普通股）分摊到的净利润</span></td><td class="num neg">(2.29)</td><td class="num">2020 为 31.68</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lead">FY2021 京东「增收不增利」：营收增长 27.6% 至 9,516 亿元、用户与 GMV 双位数扩张，但 GAAP 层面因联营企业损益由盈转亏（-49 亿元）、投资公允价值变化以及京喜/京东产发等新业务亏损扩大（-106 亿元），归母净利由上年盈利 494 亿元转为亏损 36 亿元。剔除这些非现金与战略性投入后，Non-GAAP 归母净利润 172 亿元仍较上年 168 亿元小幅增长，经营现金流稳在 423 亿元——主业「真金白银」的赚钱能力并未恶化。本年处于「下沉+供应链外部化」战略投入期，京东物流港股上市、JD Cloud&AI 出表是两大资本/组织事项。</p>
+  <p class="small muted">方法与口径说明：本报告由整理者基于京东集团官方业绩公告（GlobeNewswire/IR）、SEC 6-K 文件及电话会记录独立整理。财务数字采用 GAAP 与 Non-GAAP 双口径，单位为人民币百万元（除每股数据），为未经审计的业绩公告口径，可能与经审计 20-F 年报略有差异。美元换算口径以官方公告 1 美元 = 6.3726 元（2021-12-31）为准。比率类指标若为整理者计算已注明。仅供研究参考，不构成投资建议。</p>
+</div>
+
+<!-- ==================== 目录 ==================== -->
+<div class="pagebreak"></div>
+<h2 class="sec">目录</h2>
+<div class="toc">
+  <div>一、公司概况</div>
+  <div>二、FY2021 业绩总览</div>
+  <div>三、分季度经营表现</div>
+  <div>四、合并利润表（全年）</div>
+  <div>五、合并资产负债表</div>
+  <div>六、合并现金流量表</div>
+  <div>七、Non-GAAP 调节与股权激励</div>
+  <div>八、股东回报与资本结构</div>
+  <div>九、业务与战略动态</div>
+  <div>十、管理层评论摘录</div>
+  <div>十一、关键财务比率</div>
+  <div>十二、风险与关注点</div>
+  <div>十三、期后事项</div>
+  <div>十四、资料来源</div>
+  <div>附录：研读问答记录</div>
+</div>
+
+<!-- ==================== 一、公司概况 ==================== -->
+<section>
+  <h2 class="sec">一、公司概况</h2>
+  <p class="lead">京东集团（JD.com, Inc.）是一家「以供应链为基础的技术与服务企业」，注册于开曼群岛、总部位于北京，2014 年 5 月在纳斯达克上市（代码 JD），2020 年 6 月在港交所二次上市（代码 9618）。其核心是自营（1P）+ 第三方平台（3P）相结合的电商零售，并向物流、健康、产发（地产）、工业品、国际等供应链相关领域延伸。</p>
+  <ul class="bul">
+    <li><b>京东零售</b>——集团绝对主体与利润来源，含京东商城自营、3P 平台、京东超市、京喜、JD MALL、全渠道；FY2021 收入 8,663 亿元、经营利润 266 亿元（利润率约 3.1%）。</li>
+    <li><b>京东物流（02618.HK）</b>——2021-05-28 港股独立上市；一体化供应链物流，FY2021 收入 1,047 亿元（+43%）、外部客户收入占比首超 50%，全年经营亏损 18 亿元但下半年转正。</li>
+    <li><b>新业务</b>——京东产发、京喜（社区团购/下沉）、海外业务、技术等；FY2021 收入 261 亿元、经营亏损 106 亿元，为集团 GAAP 利润主要拖累。</li>
+    <li><b>达达集团（DADA）</b>——即时零售/到家与众包配送，京东持股的纳斯达克上市关联公司（2021 年内仍按权益法核算，2022 年起逐步并表）。</li>
+  </ul>
+  <p>治理与人员：刘强东任董事局主席兼集团 CEO；徐雷 2021-09-06 由京东零售 CEO 升任京东集团总裁（辛利军接任京东零售 CEO）；许冉任 CFO。集团员工逾 38 万人（多为物流一线）。FY2021 业绩于 2022-03-10 以业绩公告（6-K）形式披露，经审计 20-F 年报于 2022 年 4 月提交 SEC。</p>
+</section>
+
+<!-- ==================== 二、业绩总览 ==================== -->
+<section>
+  <h2 class="sec">二、FY2021 业绩总览</h2>
+  <table>
+    <thead><tr><th>指标（人民币百万元，每股数据除外）</th><th class="num">FY2020</th><th class="num">FY2021</th><th class="num">同比</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>总营收</td><td class="num">745,802</td><td class="num">951,592</td><td class="num pos">+27.6%</td></tr>
+      <tr><td>— 商品收入（自营 1P）</td><td class="num">651,879</td><td class="num">815,655</td><td class="num pos">+25.1%</td></tr>
+      <tr><td>— 服务收入（平台/广告/物流）</td><td class="num">93,923</td><td class="num">135,937</td><td class="num pos">+44.7%</td></tr>
+      <tr><td>营业成本</td><td class="num">636,694</td><td class="num">822,525</td><td class="num neg">+29.2%</td></tr>
+      <tr><td>履约费用</td><td class="num">48,700</td><td class="num">59,055</td><td class="num neg">+21.3%</td></tr>
+      <tr><td>销售及营销费用</td><td class="num">27,156</td><td class="num">38,743</td><td class="num neg">+42.7%</td></tr>
+      <tr><td>研发费用</td><td class="num">16,149</td><td class="num">16,332</td><td class="num neg">+1.1%</td></tr>
+      <tr><td>管理费用</td><td class="num">6,409</td><td class="num">11,562</td><td class="num neg">+80.4%</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">12,343</td><td class="num">4,141</td><td class="num neg">-66.5%</td></tr>
+      <tr><td>Non-GAAP 营业利润</td><td class="num">15,337</td><td class="num">13,419</td><td class="num neg">-12.5%</td></tr>
+      <tr class="key"><td>归母净利润</td><td class="num">49,405</td><td class="num neg">(3,560)</td><td class="num neg">转亏</td></tr>
+      <tr><td>Non-GAAP 归母净利润</td><td class="num">16,828</td><td class="num">17,207</td><td class="num pos">+2.3%</td></tr>
+      <tr><td>摊薄每 ADS 收益（元）</td><td class="num">31.68</td><td class="num neg">(2.29)</td><td class="num neg">转亏</td></tr>
+      <tr><td>经营活动现金流净额</td><td class="num">42,544</td><td class="num">42,301</td><td class="num neg">-0.6%</td></tr>
+      <tr><td>现金、受限资金及短期投资（年末）</td><td class="num">151,096</td><td class="num">191,256</td><td class="num pos">+26.6%</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <ol class="read-list">
+      <li>收入端高质量增长：营收 +27.6%，且服务收入 +44.7% 远快于商品收入 +25.1%，服务占比由 12.6% 升至 14.3%，3P 平台与广告变现、京东物流外部化驱动结构优化。</li>
+      <li>利润率被新业务与费用拖累：营业利润率从 1.65% 降到 0.44%。营业成本增速（+29.2%）快于营收，毛利率从 14.63% 降至 13.56%；管理费用 +80.4%、销售费用 +42.7%（含京喜下沉投入与营销）是主因，研发费用基本持平。</li>
+      <li>GAAP 转亏主因「线下」：营业利润仍为正，但权益法投资损益由 +43 亿转为 -49 亿（联营企业减值/亏损）、加之投资公允价值变化与减值，把税前推成亏损 26 亿；上年净利 494 亿含 353 亿一次性投资收益（Others, Net），基数极高，故同比「转亏」更多是会计与基数效应。Non-GAAP 净利反而 +2.3%。</li>
+      <li>现金与资产稳健：经营现金流 423 亿元与上年基本持平，年末广义现金（现金+受限+短投）191,256 百万元增至 1,913 亿元，资产负债表健康，亏损并非经营性失血。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 三、分季度经营表现 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">三、分季度经营表现</h2>
+  <table>
+    <thead><tr><th>指标（人民币百万元）</th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">全年</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>总营收</td><td class="num">203,201</td><td class="num">253,803</td><td class="num">218,666</td><td class="num">275,922</td><td class="num">951,592</td></tr>
+      <tr><td>同比增速</td><td class="num pos">+39.0%</td><td class="num pos">+26.2%</td><td class="num pos">+25.5%</td><td class="num pos">+23.0%</td><td class="num pos">+27.6%</td></tr>
+      <tr class="key"><td>营业利润（GAAP）</td><td class="num">3,983</td><td class="num">4,194</td><td class="num">355</td><td class="num neg">(392)</td><td class="num">4,141</td></tr>
+      <tr><td>同比变动</td><td class="num pos">大幅改善</td><td class="num neg">下滑</td><td class="num neg">大幅下滑</td><td class="num neg">转亏</td><td class="num neg">-66.5%</td></tr>
+      <tr class="key"><td>Non-GAAP 归母净利润</td><td class="num">4,001</td><td class="num">4,601</td><td class="num">5,015</td><td class="num">3,590</td><td class="num">17,207</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart">
+    <div class="col"><div class="cap">203,201<br>营业利润率 2.0%</div><div class="bar" style="height:88px"></div><div class="qx">Q1</div></div>
+    <div class="col"><div class="cap">253,803<br>营业利润率 1.7%</div><div class="bar" style="height:110px"></div><div class="qx">Q2</div></div>
+    <div class="col"><div class="cap">218,666<br>营业利润率 0.2%</div><div class="bar" style="height:95px"></div><div class="qx">Q3</div></div>
+    <div class="col"><div class="cap">275,922<br>营业利润率 -0.1%</div><div class="bar" style="height:120px"></div><div class="qx">Q4</div></div>
+  </div>
+
+  <div class="read">
+    <span class="rt">季度走势解读</span>
+    <ol class="read-list">
+      <li><b>Q1</b>：营收 +39% 为全年最高增速（含低基数与并表口径）；4/1 达成 5 亿年活用户里程碑；JD Cloud&AI 自 3/31 起出表，本季起改按三分部披露。</li>
+      <li><b>Q2</b>：营收 +26.2%；618 累计下单额 3,438 亿元；单季净增活跃用户约 3,200 万为「史上最大」；京东物流 5/28 港股上市。</li>
+      <li><b>Q3</b>：营收 +25.5%；GAAP 归母净亏 28 亿元（投资公允价值变动），但 Non-GAAP 净利 50 亿元为全年单季最高；京喜聚焦 10 省、单均履约成本降近 50%；西安首家 JD MALL 开业。</li>
+      <li><b>Q4</b>：营收 +23%；双 11 累计下单额超 3,491 亿元；GAAP 经营亏损 3.92 亿、归母净亏 52 亿元（新业务投入与减值集中），Non-GAAP 净利仍达 36 亿元。</li>
+    </ol>
+  </div>
+  <p class="small muted">注：分季营业利润与 Non-GAAP 净利来自各季业绩公告；季度合计与全年存在四舍五入及合并抵销差异。Q1 营业利润同比因上年同期低基数，定性为大幅改善。</p>
+</section>
+
+<!-- ==================== 四、合并利润表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">四、合并利润表（全年，未经审计业绩公告口径）</h2>
+  <table>
+    <thead><tr><th>项目（人民币百万元，每股数据除外）</th><th class="num">FY2020</th><th class="num">FY2021</th></tr></thead>
+    <tbody>
+      <tr><td>营业收入</td><td class="num">745,802</td><td class="num">951,592</td></tr>
+      <tr><td>营业成本</td><td class="num">(636,694)</td><td class="num">(822,525)</td></tr>
+      <tr><td>履约费用</td><td class="num">(48,700)</td><td class="num">(59,055)</td></tr>
+      <tr><td>销售及营销费用</td><td class="num">(27,156)</td><td class="num">(38,743)</td></tr>
+      <tr><td>研发费用</td><td class="num">(16,149)</td><td class="num">(16,332)</td></tr>
+      <tr><td>管理费用</td><td class="num">(6,409)</td><td class="num">(11,562)</td></tr>
+      <tr><td>开发物业销售收益</td><td class="num">1,649</td><td class="num">767</td></tr>
+      <tr><td>营业费用合计（含成本）</td><td class="num">(733,459)</td><td class="num">(947,451)</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">12,343</td><td class="num">4,141</td></tr>
+      <tr><td>权益法核算的投资损益</td><td class="num">4,291</td><td class="num">(4,918)</td></tr>
+      <tr><td>利息费用</td><td class="num">(1,125)</td><td class="num">(1,213)</td></tr>
+      <tr><td>其他收益/(损失)净额</td><td class="num">35,310</td><td class="num">(590)</td></tr>
+      <tr><td>税前利润/(亏损)</td><td class="num">50,819</td><td class="num">(2,581)</td></tr>
+      <tr><td>所得税费用</td><td class="num">(1,482)</td><td class="num">(1,887)</td></tr>
+      <tr class="key"><td>净利润/(亏损)（归属于普通股股东）</td><td class="num">49,405</td><td class="num">(3,560)</td></tr>
+      <tr><td>基本每 ADS 收益（元）</td><td class="num">32.70</td><td class="num">(2.29)</td></tr>
+      <tr><td>摊薄每 ADS 收益（元）</td><td class="num">31.68</td><td class="num">(2.29)</td></tr>
+      <tr><td>加权平均股本——摊薄（千股 A/B 类普通股）</td><td class="num">3,109,024</td><td class="num">3,107,437</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：1 ADS = 2 股普通股，每 ADS 收益按普通股加权平均数折算。FY2021 因亏损，基本与摊薄每股一致（潜在稀释证券具反摊薄效应）。Q4 单季：营收 2,759 亿元（+23%）、GAAP 经营亏损 3.92 亿元、GAAP 归母净亏 52 亿元、Non-GAAP 归母净利 36 亿元。营业费用合计含开发物业销售收益的抵减口径，与官方分项合计存在四舍五入差异。</p>
+</section>
+
+<!-- ==================== 五、合并资产负债表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">五、合并资产负债表（未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（人民币百万元）</th><th class="num">2020-12-31</th><th class="num">2021-12-31</th></tr></thead>
+    <tbody>
+      <tr><td>现金及现金等价物</td><td class="num">86,085</td><td class="num">70,767</td></tr>
+      <tr><td>受限资金</td><td class="num">4,434</td><td class="num">5,926</td></tr>
+      <tr><td>短期投资</td><td class="num">60,577</td><td class="num">114,564</td></tr>
+      <tr><td>应收账款净额</td><td class="num">7,112</td><td class="num">11,900</td></tr>
+      <tr><td>存货净额</td><td class="num">58,933</td><td class="num">75,601</td></tr>
+      <tr><td>预付款及其他流动资产</td><td class="num">7,077</td><td class="num">11,456</td></tr>
+      <tr class="key"><td>流动资产合计</td><td class="num">234,801</td><td class="num">299,672</td></tr>
+      <tr><td>物业、设备及软件净额</td><td class="num">22,597</td><td class="num">32,944</td></tr>
+      <tr><td>对联营企业的投资</td><td class="num">58,501</td><td class="num">63,223</td></tr>
+      <tr><td>商誉</td><td class="num">10,904</td><td class="num">12,433</td></tr>
+      <tr class="key"><td>非流动资产合计</td><td class="num">187,487</td><td class="num">196,835</td></tr>
+      <tr class="key"><td>资产总计</td><td class="num">422,288</td><td class="num">496,507</td></tr>
+      <tr><td>短期借款</td><td class="num">—</td><td class="num">4,368</td></tr>
+      <tr><td>应付账款（应付商家/供应商款）</td><td class="num">106,818</td><td class="num">140,484</td></tr>
+      <tr><td>预收客户款</td><td class="num">20,998</td><td class="num">29,106</td></tr>
+      <tr class="key"><td>流动负债合计</td><td class="num">174,017</td><td class="num">221,636</td></tr>
+      <tr><td>非流动负债合计</td><td class="num">26,652</td><td class="num">28,087</td></tr>
+      <tr class="key"><td>负债总计</td><td class="num">200,669</td><td class="num">249,723</td></tr>
+      <tr><td>夹层权益（可赎回非控股权益）</td><td class="num">17,133</td><td class="num">1,212</td></tr>
+      <tr><td>归属母公司股东权益</td><td class="num">187,543</td><td class="num">208,912</td></tr>
+      <tr class="key"><td>股东权益总计（含非控股权益）</td><td class="num">204,486</td><td class="num">245,572</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>资产总计由 4,223 亿增至 4,965 亿元（+17.6%）。广义现金储备（现金+受限+短投）由 1,511 亿增至 1,913 亿元，占总资产约 38.5%，财务极稳健。负债端以经营性占款为主——应付账款 1,405 亿、预收客户款 291 亿，本质是对供应商与平台商家的免息「类金融」占款，几乎无重大有息负债（短期借款仅 44 亿）。夹层权益从 171 亿骤降至 12 亿，主因京东物流上市后相关可赎回权益转为普通权益/出表。归母权益由 1,875 亿增至 2,089 亿元，尽管 GAAP 当年亏损，权益仍增长，反映非控股权益重估、京东物流上市摊薄收益及其他综合收益贡献。</p>
+  </div>
+</section>
+
+<!-- ==================== 六、合并现金流量表 ==================== -->
+<section>
+  <h2 class="sec">六、合并现金流量表（全年，未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（人民币百万元）</th><th class="num">FY2020</th><th class="num">FY2021</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>经营活动现金流净额</td><td class="num">42,544</td><td class="num">42,301</td></tr>
+      <tr><td>投资活动现金流净额</td><td class="num">(57,811)</td><td class="num">(74,248)</td></tr>
+      <tr><td>筹资活动现金流净额</td><td class="num">71,072</td><td class="num">19,503</td></tr>
+      <tr><td>汇率变动影响</td><td class="num">(5,082)</td><td class="num">(1,500)</td></tr>
+      <tr class="key"><td>现金及受限资金净增加/(减少)额</td><td class="num">50,723</td><td class="num">(13,943)</td></tr>
+      <tr><td>自由现金流（经营现金流−资本开支，整理者列示）</td><td class="num">34,922</td><td class="num">26,228</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>经营现金流 423 亿元，对应 GAAP 归母净亏 36 亿元——经营造血远好于账面利润，印证「亏损是会计/投资科目所致，而非主业失血」。投资活动净流出扩大至 742 亿元，主因短期投资（理财/债券）大幅增配约 540 亿元（短投余额由 606 亿增至 1,146 亿）及资本开支增加，属现金内部腾挪而非真实消耗。筹资净流入由上年 711 亿（含港股二次上市、京东健康/物流融资）回落至 195 亿元（京东物流上市募资）。自由现金流 262 亿元（上年 349 亿元），下降主因履约/物流基础设施资本开支加大。</p>
+  </div>
+</section>
+
+<!-- ==================== 七、Non-GAAP 调节 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">七、Non-GAAP 调节与股权激励</h2>
+  <p class="lead">京东 Non-GAAP 口径在 GAAP 基础上剔除：股权激励费用（SBC）、无形资产摊销、收购相关减值、对联营企业的投资及其减值的损益、可转债公允价值变动、有效税率影响等非现金或非经营项，以更贴近主业经营盈利。</p>
+  <table>
+    <thead><tr><th>项目（人民币百万元）</th><th class="num">FY2020</th><th class="num">FY2021</th></tr></thead>
+    <tbody>
+      <tr><td>营业利润（GAAP）</td><td class="num">12,343</td><td class="num">4,141</td></tr>
+      <tr><td>加：股权激励费用</td><td class="num">4,156</td><td class="num">9,134</td></tr>
+      <tr><td>加/减：无形资产摊销及其他调整</td><td class="num">(1,162)</td><td class="num">144</td></tr>
+      <tr class="key"><td>Non-GAAP 营业利润</td><td class="num">15,337</td><td class="num">13,419</td></tr>
+      <tr><td>归母净利润/(亏损)（GAAP）</td><td class="num">49,405</td><td class="num">(3,560)</td></tr>
+      <tr><td>加：股权激励费用</td><td class="num">4,156</td><td class="num">9,134</td></tr>
+      <tr><td>加/减：投资公允价值变动、联营损益及减值等</td><td class="num">(36,733)</td><td class="num">11,633</td></tr>
+      <tr class="key"><td>Non-GAAP 归母净利润</td><td class="num">16,828</td><td class="num">17,207</td></tr>
+    </tbody>
+  </table>
+  <p class="small">股权激励费用 FY2021 升至 91.3 亿元（上年 41.6 亿元，+120%），约占营收 1.0%，主因 2021 二季度提升基层员工福利、扩大股权激励池（「共同富裕」背景）。GAAP 与 Non-GAAP 归母净利差异约 207 亿元，几乎全部来自投资类（联营企业损益 -49 亿、公允价值变动与减值），说明 FY2021 的 GAAP 亏损主要是「投资记账」而非经营恶化。表中无形摊销等小项为整理者按官方调节表归并列示，金额或与逐项披露略有差异。</p>
+</section>
+
+<!-- ==================== 八、股东回报 ==================== -->
+<section>
+  <h2 class="sec">八、股东回报与资本结构</h2>
+  <p class="lead">FY2021 京东未派发年度现金股息（首次年度分红要到 FY2022）。股东回报以股票回购为主：年初至 Q1 已按 2020-03 授权的 20 亿美元额度回购约 1,000 万份 ADS、约 8 亿美元；2021-12-29 董事会将回购授权由 20 亿美元上调至 30 亿美元，并将期限延长至 2024-03-17，是当年最重要的股东回报动作。</p>
+  <p>资本结构上，京东账面广义现金 1,913 亿元、几乎无有息负债，净现金极为充裕；摊薄加权平均股数由 31.09 亿股微降至 31.07 亿股，股权激励行权带来的稀释被回购大体对冲。巨额净现金的优先用途仍是战略投入（下沉、物流/产发基础设施、供应链技术）与生态收购（达达、德邦），而非大规模返还股东——管理层 FY2021 仍处「增长优先、兼顾盈利」的过渡期。</p>
+</section>
+
+<!-- ==================== 九、业务与战略动态 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">九、业务与战略动态</h2>
+  <h3>1. 京东物流港股独立上市</h3>
+  <p>2021-05-28 京东物流（02618.HK）在港交所主板挂牌，招股价 40.36 港元、募资约 245.9 亿港元，为当年港股第二大 IPO、京东系第 4 家港股上市公司。全年收入破千亿（1,047 亿元，+43%），外部客户收入占比首次超过 50%，2021 下半年及 Q4 经营利润率转正，标志供应链能力外部化变现进入新阶段。</p>
+  <h3>2. JD Cloud & AI 出表、京东科技成立</h3>
+  <p>2021-01-11 京东将云与 AI 业务整合进京东数科、成立京东科技子集团；2021-03-31 京东云及 AI 业务以约 157 亿元注入京东数科，自该日起不再并入集团报表，京东持股约 42%。这是 FY2021 财务口径的重要变化，也使集团更聚焦以供应链为基础的主航道。</p>
+  <h3>3. 下沉市场：京喜由扩张转向聚焦</h3>
+  <p>京喜/京喜拼拼为下沉主力，但烧钱拉新带来新业务巨亏（-106 亿元）。2021 年 7 月起京喜主动收缩至 10 个选定省份，单均履约成本较业务早期降低近 50%，强调靠供应链与本地化、而非补贴拼规模。下沉投入是全年新业务亏损的最主要来源，也是 GAAP 利润承压的战略性因素。</p>
+  <h3>4. 即时零售与全渠道</h3>
+  <p>2021 京东即时零售（Shop Now/京东到家）规模已达约 100 亿元；9/30 全国首家 JD MALL 在西安开业（约 4.2 万㎡）。集团于 2022 年 Q1 完成对达达、德邦的收购并自 3 月起并表，强化即时零售与大件快运网络——这是从「次日达」向「分钟级」全渠道延伸的关键布局。</p>
+  <h3>5. 平台监管与定位</h3>
+  <p>2021 年中国互联网平台监管趋严（反垄断、数据安全、个人信息保护）。徐雷在 Q2/Q3 电话会系统回应，认为纠正资本无序扩张「对京东长期有利」，京东已完成自查整改；管理层反复强调「以供应链为基础的技术与服务提供商」定位，以质量与效率导向取代补贴驱动。</p>
+</section>
+
+<!-- ==================== 十、管理层评论摘录 ==================== -->
+<section>
+  <h2 class="sec">十、管理层评论摘录（按季度）</h2>
+  <div class="q">Q1（2021-05-19）</div>
+  <p class="quote"><span class="who">徐雷（京东零售 CEO）：</span>京东已「从中国收入最大的零售公司，演进为以供应链为基础的技术与服务提供商」；截至 4/1 年活用户达 5 亿里程碑，过去 12 个月净增 1.12 亿、逾 80% 来自低线市场。</p>
+  <div class="q">Q2（2021-08-23）</div>
+  <p class="quote"><span class="who">徐雷：</span>本季净增活跃用户约 3,200 万为「史上单季最大增量」；首次系统回应平台监管，认为纠正资本无序扩张「对京东长期有利」，京东已完成自查整改并与监管积极沟通。</p>
+  <div class="q">Q3（2021-11-18）</div>
+  <p class="quote"><span class="who">徐雷（京东集团总裁）：</span>京喜自 7 月起聚焦 10 个选定省份，单均履约成本较早期降低近 50%；下沉赛道需 5–10 年长期投入建基础设施与心智，反对不可持续的烧钱扩张。</p>
+  <div class="q">Q4 + 全年（2022-03-10）</div>
+  <p class="quote"><span class="who">徐雷：</span>京东目标「不是追求单一经营/财务指标的高增长」，而是整体健康可持续增长；「靠补贴的流量驱动模式正被质量与效率导向模式取代……时间在我们这边」。<br><span class="who">许冉（CFO）：</span>全年服务收入占比两年间由 12% 升至 15%；2022 要靠「主动、可持续、高质量增长策略」抢份额，KPI 更看重盈利、新业务年度投入不超过 2021。</p>
+  <p class="small muted">以上为英文电话会原文的中文摘译，措辞以公司官方稿为准。</p>
+</section>
+
+<!-- ==================== 十一、关键财务比率 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">十一、关键财务比率</h2>
+  <table>
+    <thead><tr><th>比率</th><th class="num">FY2020</th><th class="num">FY2021</th><th class="num">变动</th></tr></thead>
+    <tbody>
+      <tr><td>毛利率<span class="desc">（营收−营业成本）÷营收：商品和服务本身的利润空间</span></td><td class="num">14.63%</td><td class="num">13.56%</td><td class="num neg">-1.07pct</td></tr>
+      <tr><td>营业利润率<span class="desc">营业利润÷营收：主业每 100 元收入最终赚到的钱</span></td><td class="num">1.65%</td><td class="num">0.44%</td><td class="num neg">-1.21pct</td></tr>
+      <tr><td>净利率<span class="desc">归母净利润÷营收：每 100 元收入归股东的利润</span></td><td class="num">6.62%</td><td class="num">-0.37%</td><td class="num neg">-6.99pct</td></tr>
+      <tr><td>销售费用率<span class="desc">销售及营销费用÷营收：补贴与获客投放的强度</span></td><td class="num">3.64%</td><td class="num">4.07%</td><td class="num neg">+0.43pct</td></tr>
+      <tr><td>研发费用率<span class="desc">研发费用÷营收：技术与算力投入的强度</span></td><td class="num">2.17%</td><td class="num">1.72%</td><td class="num pos">-0.45pct</td></tr>
+      <tr><td>有效所得税率<span class="desc">所得税费用÷税前利润：实际承担的综合税率</span></td><td class="num">2.92%</td><td class="num">不适用</td><td class="num">—</td></tr>
+      <tr><td>ROE<span class="desc">归母净利润÷归母股东权益：股东每投入 100 元一年赚多少</span></td><td class="num">26.34%</td><td class="num">-1.70%</td><td class="num neg">-28.0pct</td></tr>
+      <tr><td>经营现金流／归母净利润<span class="desc">大于 1 说明账面利润足额变成了真金白银</span></td><td class="num">0.86x</td><td class="num">不适用（净利为负）</td><td class="num">—</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：比率类指标为整理者依据公开披露数据计算，口径可能与公司略有差异。FY2021 税前与归母净利为负，有效税率、现金/利润倍数不适用；ROE 以归属母公司股东权益为分母。FY2020 净利率与 ROE 偏高，主因当年含约 353 亿元一次性投资收益（Others, Net），非经常性。</p>
+</section>
+
+<!-- ==================== 十二、风险与关注点 ==================== -->
+<section>
+  <h2 class="sec">十二、风险与关注点</h2>
+  <ol class="read-list">
+    <li>盈利质量与新业务持续失血：新业务 FY2021 经营亏损 106 亿元，京喜/社区团购投入回报不确定；若下沉竞争（拼多多、美团）持续，亏损收敛节奏存疑。</li>
+    <li>利润率被结构性压制：毛利率降至 13.6%、营业利润率仅 0.44%，高频低毛利的超市/日百占比上升，1P 重资产模式天然利润率薄。</li>
+    <li>投资类损益波动巨大：GAAP 利润高度依赖联营企业（达达、京东系生态）损益与公允价值变动，FY2020 一次性收益 353 亿、FY2021 转为拖累，盈利可预测性差。</li>
+    <li>中国互联网监管：反垄断、数据安全、个人信息保护、平台「二选一」等政策不确定性，可能影响营销玩法与生态扩张。</li>
+    <li>中概股审计与 VIE 风险：HFCAA 退市压力、VIE 架构合规性，是 FY2021—2022 中概股共同的尾部风险（京东已港股双重主要上市以对冲）。</li>
+    <li>宏观与消费疲弱：2021 下半年起消费转弱、疫情反复影响履约与需求；管理层已预判 2022 上半年消费偏保守。</li>
+  </ol>
+</section>
+
+<!-- ==================== 十三、期后事项 ==================== -->
+<section>
+  <h2 class="sec">十三、期后事项（截至 2026-06-25 整理日）</h2>
+  <ul class="bul">
+    <li>2022 年 Q1 京东完成对德邦股份（大件快运）与达达集团的收购并自 3 月起并表，强化即时零售与供应链网络。</li>
+    <li>2022-03-10 披露 FY2021 业绩同时，重申 30 亿美元回购授权（2021-12-29 上调，有效至 2024-03-17）。</li>
+    <li>经审计 20-F 年报于 2022 年 4 月提交 SEC，含完整审计意见与 VIE/HFCAA 披露。</li>
+    <li>FY2022 起京东首次推出年度现金股息（每 ADS 0.63 美元，2023 年 4 月派发），标志从「增长优先」转向「兼顾股东回报」。</li>
+  </ul>
+</section>
+
+<!-- ==================== 十四、资料来源 ==================== -->
+<section>
+  <h2 class="sec">十四、资料来源</h2>
+  <ul class="bul src">
+    <li>① 京东集团 FY2021 Q4 及全年业绩公告（GlobeNewswire，含三大报表与 Non-GAAP 调节）：<a href="https://www.globenewswire.com/en/news-release/2022/03/10/2400581/34064/en/JD-com-Announces-Fourth-Quarter-and-Full-Year-2021-Results.html">https://www.globenewswire.com/en/news-release/2022/03/10/2400581/34064/en/JD-com-Announces-Fourth-Quarter-and-Full-Year-2021-Results.html</a></li>
+    <li>① 京东 IR 同一公告页：<a href="https://ir.jd.com/news-releases/news-release-details/jdcom-announces-fourth-quarter-and-full-year-2021-results">https://ir.jd.com/news-releases/news-release-details/jdcom-announces-fourth-quarter-and-full-year-2021-results</a></li>
+    <li>① 京东 Q1 2021 业绩新闻稿（含 5 亿用户里程碑）：<a href="https://www.globenewswire.com/news-release/2021/05/19/2232310/0/en/JD-com-Announces-First-Quarter-2021-Results.html">https://www.globenewswire.com/news-release/2021/05/19/2232310/0/en/JD-com-Announces-First-Quarter-2021-Results.html</a></li>
+    <li>① 京东 Q3 2021 业绩公告（IR）：<a href="https://ir.jd.com/news-releases/news-release-details/jdcom-announces-third-quarter-2021-results">https://ir.jd.com/news-releases/news-release-details/jdcom-announces-third-quarter-2021-results</a></li>
+    <li>① 回购授权由 20 亿上调至 30 亿美元 · SEC 6-K（2021-12-29）：<a href="https://www.sec.gov/Archives/edgar/data/0001549802/000119312521368385/d271732dex991.htm">https://www.sec.gov/Archives/edgar/data/0001549802/000119312521368385/d271732dex991.htm</a></li>
+    <li>② Q1 2021 电话会 transcript（Motley Fool）：<a href="https://www.fool.com/earnings/call-transcripts/2021/05/19/jdcom-jd-q1-2021-earnings-call-transcript/">https://www.fool.com/earnings/call-transcripts/2021/05/19/jdcom-jd-q1-2021-earnings-call-transcript/</a></li>
+    <li>② Q4+全年 2021 电话会 transcript（Nasdaq）：<a href="https://www.nasdaq.com/articles/jd.com-jd-q4-2021-earnings-call-transcript">https://www.nasdaq.com/articles/jd.com-jd-q4-2021-earnings-call-transcript</a></li>
+    <li>② 京东物流港股上市（证券时报网）：<a href="https://news.stcn.com/sd/202105/t20210528_3282165.html">https://news.stcn.com/sd/202105/t20210528_3282165.html</a></li>
+    <li>② 京东云及 AI 注入京东数科、不再并表（新浪科技）：<a href="https://finance.sina.com.cn/tech/2021-03-31/doc-ikmyaawa2947113.shtml">https://finance.sina.com.cn/tech/2021-03-31/doc-ikmyaawa2947113.shtml</a></li>
+    <li>② 徐雷升任集团总裁/人事（21 经济网）：<a href="http://www.21jingji.com/article/20210906/herald/7520a99c2adea764bbcd2a2783252f2c.html">http://www.21jingji.com/article/20210906/herald/7520a99c2adea764bbcd2a2783252f2c.html</a></li>
+  </ul>
+  <div class="disclaimer">
+    免责声明：本文件为第三方独立整理的研究资料，并非京东官方文件。FY2021 三大报表数据取自公司业绩公告（未经审计口径），可能与经审计 20-F 年报存在差异；涉及第三方/媒体来源的部分已标注。本文件不构成任何投资建议。
+  </div>
+</section>
+
+<!-- ==================== 附录：研读问答记录 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">附录：研读问答记录</h2>
+  <p class="small muted">以下为研读本期财报过程中的问答与讨论记录。观点部分注明依据层级：财报原文 / 三方解读 / 个人推断。</p>
+  <div class="q">一、营收 +27.6%、Non-GAAP 净利还增长，为什么 GAAP 会从赚 494 亿变成亏 36 亿？</div>
+  <p>（财报原文）核心是两块「投资记账」与一块基数效应。其一，权益法核算的联营企业损益由 FY2020 的 +43 亿元转为 FY2021 的 -49 亿元（达达等关联公司亏损/减值）；其二，「其他收益净额」由 FY2020 的 +353 亿元（大量一次性投资公允价值收益）变成 FY2021 的 -5.9 亿元——仅这两项摆动就约 450 亿元。营业利润本身仍为正（41 亿元）。剔除这些非现金投资项后的 Non-GAAP 归母净利反而 +2.3% 至 172 亿元。所以「转亏」主要是会计与高基数，而非主业失血。</p>
+  <div class="q">二、营业利润为什么从 123 亿元掉到 41 亿元？哪项费用是元凶？</div>
+  <p>（财报原文+整理者计算）营收 +27.6% 但营业成本 +29.2%、毛利率从 14.63% 降到 13.56%（高频低毛利的超市/日百占比上升）。费用端：管理费用 +80.4%（含股权激励 SBC 翻倍至 91 亿元）、销售费用 +42.7%（京喜下沉与营销投放）。新业务整体经营亏损扩大到 -106 亿元，是吞掉京东零售 266 亿元利润的最大黑洞。研发费用基本持平、履约费用率反而下降，不是问题点。</p>
+  <div class="q">三、亏损了，但经营现金流还有 423 亿元、年末现金增加，矛盾吗？</div>
+  <p>（财报原文+个人推断）不矛盾。GAAP 亏损主要来自不动用现金的投资减值/公允价值科目，经营现金流把这些非现金项加回后仍稳在 423 亿元。年末广义现金（现金+受限+短投）从 1,511 亿增至 1,913 亿元，主因是把现金转去配置短期投资（短投 +540 亿）以及京东物流上市募资。这正是「利润含金量」的体现——账面亏，但主业实际在产生现金。</p>
+  <div class="q">四、为什么京东几乎没有有息负债，资产负债表却撑得这么大？</div>
+  <p>（个人推断+财报原文）京东负债端 2,497 亿元里，应付账款 1,405 亿、预收客户款 291 亿是主体，本质是对供应商和平台商家的免息占款——靠规模与账期形成的「类金融」无息杠杆。短期借款仅 44 亿元。这是 1P 自营零售商的典型资产负债结构：用经营性占款支撑庞大的存货与履约网络，而非靠银行举债，财务风险低。</p>
+  <div class="q">五、京东物流上市、JD Cloud&AI 出表，对看 FY2021 报表有何影响？</div>
+  <p>（财报原文）两件事都改变了合并口径。JD Cloud&AI 自 2021-03-31 起不再并表（注入京东数科），京东持股约 42%，本季起改按「京东零售/京东物流/新业务」三分部披露——做同比时要注意口径不完全可比。京东物流 5/28 港股上市仍并表（京东控股），但其上市带来非控股权益与夹层权益的重大变动（夹层权益从 171 亿降到 12 亿），也是归母权益在亏损年仍增长的原因之一。</p>
+</section>
+
+</body>
+</html>

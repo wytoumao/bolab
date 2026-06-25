@@ -1,0 +1,36 @@
+{{ define "main" }}
+<div class="container">
+    {{ if .Ancestors }}
+    <nav class="breadcrumb">
+        {{ range .Ancestors.Reverse }}
+            {{ if .IsHome }}
+                <a href="{{ .RelPermalink }}">{{ i18n "home" }}</a>
+            {{ else }}
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{ end }}
+            <span class="sep">/</span>
+        {{ end }}
+        <span class="current">{{ .Title }}</span>
+    </nav>
+    {{ end }}
+
+    <div class="page-header">
+        <h1>{{ .Title }}</h1>
+        {{ if .Description }}
+        <p class="page-description">{{ .Description }}</p>
+        {{ end }}
+    </div>
+
+    <div class="inv-grid">
+        {{ range .Pages }}
+        <a href="{{ .RelPermalink }}" class="inv-card">
+            <div class="inv-card-body">
+                <h3>{{ .Title }}</h3>
+                {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+            </div>
+            <span class="inv-arrow">→</span>
+        </a>
+        {{ end }}
+    </div>
+</div>
+{{ end }}

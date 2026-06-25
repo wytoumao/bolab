@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>京东集团 FY2022 财报整理</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 14mm 16mm 14mm;
+    @bottom-left  { content: "京东集团（JD.com）FY2022 财报整理 · 据公开资料独立整理 · 非官方文件 · 不构成投资建议"; font-size: 7pt; color: #9aa3ad; }
+    @bottom-right { content: "第 " counter(page) " 页"; font-size: 7pt; color: #9aa3ad; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Songti SC", "STHeiti", sans-serif;
+    color: #2b2b2b; font-size: 10.5pt; line-height: 1.6; background: #fff;
+  }
+  :root {
+    --bar:    #8a1c1c;
+    --red:    #c0392b;
+    --redln:  #c0392b;
+    --ink:    #2b2b2b;
+    --muted:  #8a929c;
+    --th:     #3f4348;
+    --th2:    #4b5158;
+    --line:   #d9dee5;
+    --zebra:  #f5f6f8;
+    --pos:    #1f8a4c;
+    --neg:    #c0392b;
+  }
+  .topbar { position: fixed; top: 0; left: 0; width: 100%; height: 8mm; background: var(--bar); }
+
+  .cover { padding-top: 12mm; }
+  .cover-title { font-size: 26pt; color: var(--ink); font-weight: 700; margin: 8px 0 2px; }
+  .cover-sub   { font-size: 22pt; color: var(--red); font-weight: 800; margin-bottom: 14px; }
+  .cover-meta  { font-size: 10pt; color: var(--muted); }
+  .cover-meta b{ color: #5a6470; font-weight: 600; }
+  .rule-red    { border: none; border-top: 2px solid var(--redln); margin: 16px 0 18px; }
+
+  h2.sec {
+    font-size: 14pt; color: var(--red); font-weight: 800; letter-spacing: .5px;
+    padding-bottom: 5px; border-bottom: 2px solid var(--redln); margin: 22px 0 12px;
+  }
+  h3 { font-size: 11pt; color: #5a6470; margin: 14px 0 6px; }
+
+  p { margin: 7px 0; }
+  .lead { margin: 8px 0; }
+  ul.bul { margin: 6px 0 6px 4px; list-style: none; }
+  ul.bul li { position: relative; padding-left: 16px; margin: 5px 0; }
+  ul.bul li::before { content: "•"; color: var(--red); position: absolute; left: 2px; font-weight: 700; }
+  .muted { color: var(--muted); }
+  .small { font-size: 9pt; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.3pt; margin: 8px 0 6px; }
+  th, td { padding: 6px 9px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--th); color: #fff; font-weight: 600; font-size: 8.8pt; border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--zebra); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pos { color: var(--pos); font-weight: 600; }
+  .neg { color: var(--neg); font-weight: 600; }
+  tr.key td { font-weight: 700; }
+  tr.key td:first-child { color: var(--red); }
+  .desc { display: block; color: var(--muted); font-size: 8pt; font-weight: 400; margin-top: 2px; }
+  table caption { caption-side: top; text-align: left; font-size: 8.3pt; color: var(--muted); padding: 2px 0; }
+
+  .read { background: #fbfafa; border: 1px solid var(--line); border-left: 3px solid var(--red);
+          padding: 9px 13px; margin: 8px 0; font-size: 9.6pt; }
+  .read .rt { color: var(--red); font-weight: 700; }
+  ol.read-list { margin: 4px 0 0 18px; }
+  ol.read-list li { margin: 4px 0; }
+
+  .chart { display: flex; align-items: flex-end; gap: 18px; height: 150px; padding: 10px 8px 0;
+           border: 1px solid var(--line); margin: 8px 0; }
+  .chart .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .chart .bar { width: 60%; background: var(--red); border-radius: 2px 2px 0 0; }
+  .chart .cap { font-size: 8pt; color: var(--muted); margin-bottom: 4px; text-align: center; }
+  .chart .qx  { font-size: 8.5pt; color: #5a6470; margin-top: 4px; }
+
+  .toc { columns: 1; font-size: 10pt; }
+  .toc div { padding: 3px 0; border-bottom: 1px dotted var(--line); }
+
+  .q { color: var(--red); font-weight: 700; margin: 12px 0 3px; }
+  .quote { color: #3a4753; margin: 3px 0 3px 0; }
+  .quote .who { font-weight: 700; color: #5a6470; }
+
+  .disclaimer { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line);
+                font-size: 8.3pt; color: var(--muted); }
+  .src { font-size: 8.6pt; }
+  .src a { color: #2c4a73; word-break: break-all; }
+  .pagebreak { page-break-before: always; }
+  section { page-break-inside: auto; }
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<!-- ==================== 封面 ==================== -->
+<div class="cover">
+  <div class="cover-title">京东集团（JD.com, Inc.）</div>
+  <div class="cover-sub">FY2022 财报整理</div>
+  <div class="cover-meta">
+    <b>NASDAQ: JD &nbsp;|&nbsp; 港交所: 9618</b> &nbsp;|&nbsp; 财年截至 2022-12-31 &nbsp;|&nbsp; 整理日期：2026-06-25
+  </div>
+  <hr class="rule-red">
+
+  <table>
+    <thead><tr><th style="width:46%">核心指标（人民币 / RMB）</th><th class="num">FY2022</th><th class="num">变动</th></tr></thead>
+    <tbody>
+      <tr><td>全年总营收<span class="desc">公司一年内主营业务获得的全部收入，尚未扣除任何成本和费用</span></td><td class="num">10,462.36 亿元</td><td class="num pos">+9.9%</td></tr>
+      <tr><td>其中：商品收入（自营 1P）<span class="desc">京东自营商品销售收入，含电子家电、日用百货</span></td><td class="num">8,650.62 亿元</td><td class="num pos">+6.1%</td></tr>
+      <tr><td>其中：服务收入（平台/广告/物流）<span class="desc">第三方平台佣金、广告，及物流等服务收入</span></td><td class="num">1,811.74 亿元</td><td class="num pos">+33.3%</td></tr>
+      <tr><td>营业利润<span class="desc">营收减去营业成本与履约、销售、管理、研发费用后的利润，反映主业本身的赚钱能力</span></td><td class="num">197.23 亿元</td><td class="num pos">+376%</td></tr>
+      <tr><td>归母净利润（GAAP）<span class="desc">扣完所有成本、费用、利息、税之后，最终归属于公司股东的利润</span></td><td class="num">103.80 亿元</td><td class="num pos">扭亏（上年 -35.60 亿）</td></tr>
+      <tr><td>Non-GAAP 归母净利润<span class="desc">在净利润基础上加回股权激励、投资公允价值变动等非现金/非经营项，更接近「经营层面」盈利</span></td><td class="num">282.20 亿元</td><td class="num pos">+64.0%</td></tr>
+      <tr><td>经营活动现金流净额<span class="desc">主营业务实际收到的现金减去付出的现金，衡量利润的「含金量」</span></td><td class="num">578.19 亿元</td><td class="num pos">+36.7%</td></tr>
+      <tr><td>现金+受限资金+短期投资（年末）<span class="desc">账上可随时动用的资金：现金、存款及短期理财、债券等</span></td><td class="num">2,262.10 亿元</td><td class="num">上年 1,912.57 亿</td></tr>
+      <tr><td>摊薄每 ADS 收益（GAAP）<span class="desc">每份美国存托凭证（1 ADS = 2 股普通股）分摊到的净利润</span></td><td class="num">RMB 6.42</td><td class="num">上年 -2.29</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lead">FY2022 是京东「增收又增利、量变转质」的转折年：全年营收首次突破 1 万亿元（+9.9%），但主线从规模扩张切换到「降本增效、高质量增长」——GAAP 营业利润从 41 亿跃升至 197 亿、归母净利润由亏转盈至 104 亿，Non-GAAP 归母净利润大增 64% 至 282 亿，净利率 2.7% 创历史新高。最大变量是利润率而非增速：上半年受奥密克戎与消费疲弱压制（Q2 仅 +5.4%），京东物流全年首次扭亏盈亏平衡、达达/CNLP/德邦相继并表，年末刘强东重回前台、把「低价」重新确立为最高战略词。</p>
+  <p class="small muted">方法与口径说明：本报告由整理者基于京东 IR 业绩公告、SEC 6-K（2023-03-09）等公开一手资料独立整理。除特别说明外均为人民币、未经审计 GAAP 口径；美元换算采用公司披露汇率 US$1=RMB6.8972（2022-12-30）。Non-GAAP 为公司自定义口径。仅供研究参考，不构成投资建议。</p>
+</div>
+
+<!-- ==================== 目录 ==================== -->
+<div class="pagebreak"></div>
+<h2 class="sec">目录</h2>
+<div class="toc">
+  <div>一、公司概况</div>
+  <div>二、FY2022 业绩总览</div>
+  <div>三、分季度经营表现</div>
+  <div>四、合并利润表（全年）</div>
+  <div>五、合并资产负债表</div>
+  <div>六、合并现金流量表</div>
+  <div>七、Non-GAAP 调节与股权激励</div>
+  <div>八、股东回报与资本结构</div>
+  <div>九、业务与战略动态</div>
+  <div>十、管理层评论摘录</div>
+  <div>十一、关键财务比率</div>
+  <div>十二、风险与关注点</div>
+  <div>十三、期后事项</div>
+  <div>十四、资料来源</div>
+  <div>附录：研读问答记录</div>
+</div>
+
+<!-- ==================== 一、公司概况 ==================== -->
+<section>
+  <h2 class="sec">一、公司概况</h2>
+  <p class="lead">京东集团（JD.com, Inc.）是一家以供应链为基础的技术与服务企业，注册于开曼群岛、总部位于北京，2014 年在纳斯达克上市（JD）、2020 年在港交所二次上市（9618）。以自营电商（1P）起家，逐步演化为「零售 + 物流 + 即时零售 + 产发 + 健康 + 工业」的供应链生态。FY2022 公司将报告口径分为四大分部：</p>
+  <ul class="bul">
+    <li><b>京东零售</b>——核心利润来源，含 1P 自营、3P 开放平台、广告，以及京东健康、京东工业等；FY2022 收入 9,299.29 亿元、经营利润 348.52 亿元。</li>
+    <li><b>京东物流（JDL，02618.HK）</b>——内外部一体化供应链物流，FY2022 收入 1,374.02 亿元、首次实现全年经营盈利 5.28 亿元；德邦自 2022/7 月底并表。</li>
+    <li><b>达达集团（DADA，纳斯达克）</b>——本地即时配送与零售平台（京东到家、达达快送），自 2022/2 月底并表，FY2022 并表收入 80.30 亿元、经营亏损 11.22 亿元。</li>
+    <li><b>新业务</b>——京东产发、京喜、海外业务及前沿技术，FY2022 收入 217.79 亿元、经营亏损 52.95 亿元（亏损同比大幅收窄）。</li>
+  </ul>
+  <p>治理与人员：2022-04-07 起徐雷任京东集团 CEO，刘强东转任董事局主席（聚焦长期战略），许冉任 CFO；年末刘强东重回一线主导「低价」战略调整。京东向 SEC 提交 FY2022 年报（20-F），并于 2023-03-09 通过 6-K 披露 Q4 与全年业绩及首次年度股息。截至 2022-12-31 已发行 3,180 百万股、流通 3,136 百万股普通股。</p>
+</section>
+
+<!-- ==================== 二、业绩总览 ==================== -->
+<section>
+  <h2 class="sec">二、FY2022 业绩总览</h2>
+  <table>
+    <thead><tr><th>指标（RMB 百万，每股数据除外）</th><th class="num">FY2021</th><th class="num">FY2022</th><th class="num">同比</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>总净收入</td><td class="num">951,592</td><td class="num">1,046,236</td><td class="num pos">+9.9%</td></tr>
+      <tr><td>— 商品收入（净）</td><td class="num">815,655</td><td class="num">865,062</td><td class="num pos">+6.1%</td></tr>
+      <tr><td>— 服务收入（净）</td><td class="num">135,937</td><td class="num">181,174</td><td class="num pos">+33.3%</td></tr>
+      <tr><td>营业成本</td><td class="num">(822,526)</td><td class="num">(899,163)</td><td class="num neg">+9.3%</td></tr>
+      <tr><td>履约费用</td><td class="num">(59,055)</td><td class="num">(63,011)</td><td class="num neg">+6.7%</td></tr>
+      <tr><td>销售及营销费用</td><td class="num">(38,743)</td><td class="num">(37,772)</td><td class="num pos">-2.5%</td></tr>
+      <tr><td>研发费用</td><td class="num">(16,332)</td><td class="num">(16,893)</td><td class="num neg">+3.4%</td></tr>
+      <tr><td>管理费用</td><td class="num">(11,562)</td><td class="num">(11,053)</td><td class="num pos">-4.4%</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">4,141</td><td class="num">19,723</td><td class="num pos">+376%</td></tr>
+      <tr><td>Non-GAAP 营业利润</td><td class="num">13,419</td><td class="num">27,584</td><td class="num pos">+105.6%</td></tr>
+      <tr class="key"><td>归母净利润（GAAP）</td><td class="num">(3,560)</td><td class="num">10,380</td><td class="num pos">扭亏</td></tr>
+      <tr><td>Non-GAAP 归母净利润</td><td class="num">17,207</td><td class="num">28,220</td><td class="num pos">+64.0%</td></tr>
+      <tr><td>摊薄每 ADS 收益（GAAP, RMB）</td><td class="num">(2.29)</td><td class="num">6.42</td><td class="num pos">扭亏</td></tr>
+      <tr><td>经营活动现金流净额</td><td class="num">42,301</td><td class="num">57,819</td><td class="num pos">+36.7%</td></tr>
+      <tr><td>现金、受限资金及短期投资（年末）</td><td class="num">191,257</td><td class="num">226,210</td><td class="num pos">+18.3%</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <ol class="read-list">
+      <li>收入增速放缓但结构优化：商品收入仅 +6.1%（受消费疲弱、3C/服装承压），服务收入 +33.3% 是引擎——其中物流及其他服务收入因德邦/达达并表大增至 992 亿、平台广告收入 820 亿，服务收入占总收入比从 14% 升至 17.3%。</li>
+      <li>利润率改善主因是费用纪律而非毛利暴涨：毛利率仅从 13.6% 微升至 14.1%；真正发力的是销售费用率 4.1%→3.6%、履约费用率 6.2%→6.0%、新业务亏损从 106 亿砍到 53 亿，三项共同把营业利润推高近 4 倍。</li>
+      <li>净利由亏转盈，但被非经营项拖累：全年税前利润 138.67 亿，归母净利仅 103.80 亿，差额来自长期投资公允价值损失（39.85 亿）、投资处置净损失（约 34.64 亿）、商誉/无形/投资减值（32.49 亿）及 30.1% 的有效税率；这也是 GAAP（104 亿）与 Non-GAAP（282 亿）差距高达 178 亿的根源。</li>
+      <li>现金趋势强劲：经营现金流 578 亿 / 归母净利 104 亿 ≈ 5.6 倍，含金量极高（自营账期与预收款占款贡献）；自由现金流 356 亿（上年 262 亿）；年末广义现金储备 2,262 亿。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 三、分季度经营表现 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">三、分季度经营表现</h2>
+  <table>
+    <thead><tr><th>指标（RMB 亿元）</th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">全年</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>总净收入</td><td class="num">2,397</td><td class="num">2,676</td><td class="num">2,435</td><td class="num">2,954</td><td class="num">10,462</td></tr>
+      <tr><td>同比增速</td><td class="num pos">+18.0%</td><td class="num pos">+5.4%</td><td class="num pos">+11.4%</td><td class="num pos">+7.1%</td><td class="num pos">+9.9%</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">24</td><td class="num">38</td><td class="num">87</td><td class="num">48</td><td class="num">197</td></tr>
+      <tr><td>营业利润率</td><td class="num">1.0%</td><td class="num">1.4%</td><td class="num">3.6%</td><td class="num">1.6%</td><td class="num">1.9%</td></tr>
+      <tr class="key"><td>Non-GAAP 归母净利润</td><td class="num">40</td><td class="num">65</td><td class="num">100</td><td class="num">77</td><td class="num">282</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart">
+    <div class="col"><div class="cap">2,397 亿<br>营业利润率 1.0%</div><div class="bar" style="height:97px"></div><div class="qx">Q1</div></div>
+    <div class="col"><div class="cap">2,676 亿<br>营业利润率 1.4%</div><div class="bar" style="height:109px"></div><div class="qx">Q2</div></div>
+    <div class="col"><div class="cap">2,435 亿<br>营业利润率 3.6%</div><div class="bar" style="height:99px"></div><div class="qx">Q3</div></div>
+    <div class="col"><div class="cap">2,954 亿<br>营业利润率 1.6%</div><div class="bar" style="height:120px"></div><div class="qx">Q4</div></div>
+  </div>
+
+  <div class="read">
+    <span class="rt">季度走势解读</span>
+    <ol class="read-list">
+      <li><b>Q1</b>：增速最高（+18.0%），但 3 月起奥密克戎冲击北上广深、4 月订单取消率上升；管理层 3 月中旬即启动严格成本费用控制，年活跃用户 5.805 亿、达达自 2 月底并表。</li>
+      <li><b>Q2</b>：徐雷称「上市以来最难季度」，季内 GDP 仅 +0.4%、社零 -4.6%，营收增速跌至 +5.4%；但京东物流 Non-GAAP 经营利润首次转正，服务收入首破总收入 15%，PLUS 会员破 3000 万。</li>
+      <li><b>Q3</b>：盈利能力高点——京东零售经营利润率首破 5%（5.2%）、单季 Non-GAAP 净利首破 100 亿、净利率 4.1% 创新高；德邦 7 月底并表推动服务收入 +42.2%，京东货运航空投运。</li>
+      <li><b>Q4</b>：营收 2,954 亿（大促季最高），商品收入仅 +1.2%（消费疲软+疫情放开初期物流扰动），但服务收入仍 +40.3%；履约毛利率 8.2% 为历次大促季最高；宣布首次年度股息。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 四、合并利润表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">四、合并利润表（全年，未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（RMB 百万，每股数据除外）</th><th class="num">FY2021</th><th class="num">FY2022</th></tr></thead>
+    <tbody>
+      <tr><td>营业收入（净）</td><td class="num">951,592</td><td class="num">1,046,236</td></tr>
+      <tr><td>营业成本</td><td class="num">(822,526)</td><td class="num">(899,163)</td></tr>
+      <tr><td>履约费用</td><td class="num">(59,055)</td><td class="num">(63,011)</td></tr>
+      <tr><td>销售及营销费用</td><td class="num">(38,743)</td><td class="num">(37,772)</td></tr>
+      <tr><td>研发费用</td><td class="num">(16,332)</td><td class="num">(16,893)</td></tr>
+      <tr><td>管理费用</td><td class="num">(11,562)</td><td class="num">(11,053)</td></tr>
+      <tr><td>出售开发性物业收益</td><td class="num">767</td><td class="num">1,379</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">4,141</td><td class="num">19,723</td></tr>
+      <tr><td>权益法核算的投资损益</td><td class="num">(4,918)</td><td class="num">(2,195)</td></tr>
+      <tr><td>利息费用</td><td class="num">(1,213)</td><td class="num">(2,106)</td></tr>
+      <tr><td>其他收益/(损失)净额</td><td class="num">(590)</td><td class="num">(1,555)</td></tr>
+      <tr><td>税前利润/(亏损)</td><td class="num">(2,580)</td><td class="num">13,867</td></tr>
+      <tr><td>所得税费用</td><td class="num">(1,887)</td><td class="num">(4,176)</td></tr>
+      <tr><td>净利润/(亏损)</td><td class="num">(4,467)</td><td class="num">9,691</td></tr>
+      <tr><td>减：非控制性权益损益</td><td class="num">(923)</td><td class="num">(697)</td></tr>
+      <tr class="key"><td>归母净利润/(亏损)</td><td class="num">(3,560)</td><td class="num">10,380</td></tr>
+      <tr><td>基本每 ADS 收益（RMB）</td><td class="num">(2.29)</td><td class="num">6.64</td></tr>
+      <tr><td>摊薄每 ADS 收益（RMB）</td><td class="num">(2.29)</td><td class="num">6.42</td></tr>
+      <tr><td>加权平均股本——摊薄（百万股）</td><td class="num">3,107</td><td class="num">3,181</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：单位为 RMB 百万元。京东以「履约费用」单列（含采购、仓储、配送、客服、支付处理），故毛利率口径需以营收减营业成本计算。利息及投资收益、汇兑等并入「其他收益/损失」与「权益法损益」科目。Q4 单季：营收 2,954.46 亿、营业利润 48.28 亿、归母净利 30.32 亿（上年同期亏损 51.65 亿）。</p>
+</section>
+
+<!-- ==================== 五、合并资产负债表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">五、合并资产负债表（未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（RMB 百万）</th><th class="num">2021-12-31</th><th class="num">2022-12-31</th></tr></thead>
+    <tbody>
+      <tr><td>现金及现金等价物</td><td class="num">70,767</td><td class="num">78,861</td></tr>
+      <tr><td>受限资金</td><td class="num">5,926</td><td class="num">6,254</td></tr>
+      <tr><td>短期投资</td><td class="num">114,564</td><td class="num">141,095</td></tr>
+      <tr><td>应收账款净额</td><td class="num">11,900</td><td class="num">20,576</td></tr>
+      <tr><td>存货净额</td><td class="num">75,601</td><td class="num">77,949</td></tr>
+      <tr><td>预付款及其他流动资产</td><td class="num">11,455</td><td class="num">15,156</td></tr>
+      <tr class="key"><td>流动资产合计</td><td class="num">299,672</td><td class="num">351,074</td></tr>
+      <tr><td>物业、设备及软件净额</td><td class="num">32,944</td><td class="num">55,080</td></tr>
+      <tr><td>权益法投资</td><td class="num">63,222</td><td class="num">57,641</td></tr>
+      <tr><td>商誉</td><td class="num">12,433</td><td class="num">23,123</td></tr>
+      <tr class="key"><td>非流动资产合计</td><td class="num">196,835</td><td class="num">244,176</td></tr>
+      <tr class="key"><td>资产总计</td><td class="num">496,507</td><td class="num">595,250</td></tr>
+      <tr><td>应付账款</td><td class="num">140,484</td><td class="num">160,607</td></tr>
+      <tr><td>预收客户款（合同负债）</td><td class="num">29,106</td><td class="num">33,713</td></tr>
+      <tr><td>短期借款</td><td class="num">4,368</td><td class="num">12,146</td></tr>
+      <tr class="key"><td>流动负债合计</td><td class="num">221,636</td><td class="num">266,561</td></tr>
+      <tr><td>长期借款</td><td class="num">—</td><td class="num">20,009</td></tr>
+      <tr><td>无担保优先票据</td><td class="num">9,386</td><td class="num">10,224</td></tr>
+      <tr class="key"><td>非流动负债合计</td><td class="num">28,087</td><td class="num">54,566</td></tr>
+      <tr class="key"><td>负债总计</td><td class="num">249,723</td><td class="num">321,127</td></tr>
+      <tr><td>夹层权益（可赎回非控制性权益）</td><td class="num">1,212</td><td class="num">590</td></tr>
+      <tr><td>归属京东股东权益</td><td class="num">208,911</td><td class="num">213,366</td></tr>
+      <tr><td>非控制性权益</td><td class="num">36,661</td><td class="num">60,167</td></tr>
+      <tr class="key"><td>股东权益总计</td><td class="num">245,572</td><td class="num">273,533</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>总资产从 4,965 亿增至 5,953 亿（+19.9%），增量主要来自达达/CNLP/德邦并表带来的物业设备（329→551 亿）、土地使用权与商誉（124→231 亿）。广义现金储备 2,262 亿，占总资产 38%，账面非常厚实。有息负债显著上升：短期借款 44→121 亿、新增长期借款 200 亿（主因 CNLP/德邦并购及京东产发融资），但相对 2,735 亿股东权益与巨额净现金仍属低杠杆。负债端以经营性占款为主——应付账款 1,606 亿 + 预收款 337 亿合计约 1,943 亿，是「先收钱后付供应商」自营模式的典型现金流来源。股东权益增长主要来自非控制性权益（京东物流/产发等子公司引入外部投资人），归母权益仅微增 2,089→2,134 亿（受特别股息约 140 亿元派发影响）。</p>
+  </div>
+</section>
+
+<!-- ==================== 六、合并现金流量表 ==================== -->
+<section>
+  <h2 class="sec">六、合并现金流量表（全年，未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（RMB 百万）</th><th class="num">FY2021</th><th class="num">FY2022</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>经营活动现金流净额</td><td class="num">42,301</td><td class="num">57,819</td></tr>
+      <tr><td>投资活动现金流净额</td><td class="num">未单列</td><td class="num">约 (54,000)</td></tr>
+      <tr><td>筹资活动现金流净额</td><td class="num">未单列</td><td class="num">约 1,200</td></tr>
+      <tr><td>资本开支（含开发性物业）净额</td><td class="num">(18,565)</td><td class="num">(21,980)</td></tr>
+      <tr class="key"><td>自由现金流（公司口径）</td><td class="num">26,228</td><td class="num">35,595</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>经营现金流 578 亿 / 归母净利 104 亿 ≈ 5.6 倍，含金量极高，反映自营模式占款与折旧摊销回流。投资活动净流出约 540 亿，主要为短期投资增加、资本开支以及收购 CNLP 与德邦的现金支付。筹资活动净流入约 12 亿（银行贷款、京东产发 B 类优先股融资、京东物流配售净流入，部分被派息抵消）。自由现金流（公司定义为经营现金流剔除白条应收影响后减资本开支）356 亿、创历史新高，足以覆盖约 140 亿元特别股息。</p>
+  </div>
+  <p class="small muted">注：6-K 现金流量披露以「自由现金流」桥接表为主，投资/筹资活动净额取自公司管理层讨论正文口径（约数）；汇率变动影响与现金净增加额公司未单列具体行，故此处不列示。资本开支 FY2022 = 开发性物业 175.04 亿 + 其他资本开支 44.76 亿 = 219.80 亿。</p>
+</section>
+
+<!-- ==================== 七、Non-GAAP 调节 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">七、Non-GAAP 调节与股权激励</h2>
+  <p class="lead">京东 Non-GAAP 口径在 GAAP 基础上剔除：股权激励费用（SBC）、并购无形资产摊销、业务合作安排影响、出售开发性物业收益；净利润口径还进一步剔除长期投资公允价值变动、投资处置净损益、商誉/无形/投资减值，并扣除上述调整的税务影响。</p>
+  <table>
+    <thead><tr><th>项目（RMB 百万）</th><th class="num">FY2021</th><th class="num">FY2022</th></tr></thead>
+    <tbody>
+      <tr><td>营业利润（GAAP）</td><td class="num">4,141</td><td class="num">19,723</td></tr>
+      <tr><td>加：股权激励费用</td><td class="num">9,134</td><td class="num">7,548</td></tr>
+      <tr><td>加：并购无形资产摊销</td><td class="num">940</td><td class="num">1,217</td></tr>
+      <tr><td>加/(减)：业务合作安排影响</td><td class="num">(29)</td><td class="num">475</td></tr>
+      <tr><td>减：出售开发性物业收益</td><td class="num">(767)</td><td class="num">(1,379)</td></tr>
+      <tr class="key"><td>Non-GAAP 营业利润</td><td class="num">13,419</td><td class="num">27,584</td></tr>
+      <tr><td>归母净利润（GAAP）</td><td class="num">(3,560)</td><td class="num">10,380</td></tr>
+      <tr><td>加：股权激励费用</td><td class="num">8,293</td><td class="num">6,388</td></tr>
+      <tr><td>加：并购无形资产摊销</td><td class="num">853</td><td class="num">845</td></tr>
+      <tr><td>加：商誉/无形/投资减值</td><td class="num">6,077</td><td class="num">3,249</td></tr>
+      <tr><td>加：长期投资公允价值变动损失</td><td class="num">7,295</td><td class="num">3,985</td></tr>
+      <tr><td>加/(减)：投资处置/视同处置净损益</td><td class="num">(134)</td><td class="num">3,464</td></tr>
+      <tr><td>其他（权益法调整、业务合作、税务影响等）</td><td class="num">(1,617)</td><td class="num">(91)</td></tr>
+      <tr class="key"><td>Non-GAAP 归母净利润</td><td class="num">17,207</td><td class="num">28,220</td></tr>
+    </tbody>
+  </table>
+  <p class="small">点评：FY2022 股权激励 75.48 亿元，占营收约 0.7%、同比下降 17%（控费见效）。GAAP 与 Non-GAAP 归母净利差距高达 178 亿元，主要并非 SBC（仅 64 亿），而是当年集中确认的投资相关损失——长期投资公允价值损失 39.85 亿、投资处置净损失 34.64 亿、各类减值 32.49 亿，合计逾百亿。这意味着 282 亿 Non-GAAP 净利更能反映「经营层面」的真实盈利能力，而 104 亿 GAAP 净利被一次性投资损失大幅压低。</p>
+</section>
+
+<!-- ==================== 八、股东回报 ==================== -->
+<section>
+  <h2 class="sec">八、股东回报与资本结构</h2>
+  <p class="lead">FY2022 京东股东回报明显升级，年内涉及两笔分红：(1) 2022-05-04 宣布特别现金股息每普通股 0.63 美元 / 每 ADS 1.26 美元，合计约 20 亿美元（约 140 亿元，已在 2022 年派发）；(2) 2023-03-09 随年报宣布首次年度现金股息每普通股 0.31 美元 / 每 ADS 0.62 美元，合计约 10 亿美元，并宣布自 2023 年起建立年度股息政策。Q2 电话会披露过去三年通过分红+回购累计向股东返还现金近 150 亿元。</p>
+  <p>股本与资本结构：加权平均摊薄股数从 3,107 升至 3,181 百万股（轻微稀释，主要来自股权激励行权与子公司层面安排），截至 2022-12-31 流通普通股 3,136 百万股。公司净现金充裕（广义现金储备 2,262 亿、有息负债合计约 423 亿），但资金优先投向供应链基础设施（资本开支 220 亿）、并购（CNLP、德邦）与子公司融资，而非大规模回购。「巨额净现金 + 谨慎回报政策」的矛盾在 FY2022 通过首设年度股息政策开始缓解，标志资本配置从「再投资优先」向「兼顾股东回报」过渡。</p>
+</section>
+
+<!-- ==================== 九、业务与战略动态 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">九、业务与战略动态</h2>
+  <h3>1. 降本增效、高质量增长成为全年最高主线</h3>
+  <p>2022 年初管理层即决定从规模扩张转向利润与现金流导向，3 月中旬启动严格成本费用控制。成效显著：销售费用率 4.1%→3.6%、履约费用率 6.2%→6.0%、新业务亏损从 106 亿砍至 53 亿，推动 GAAP 营业利润近 4 倍增长、京东零售经营利润率全年 3.7%（Q3 单季首破 5%）、全年 Non-GAAP 净利率 2.7% 创历史新高。</p>
+  <h3>2. 京东物流外部化兑现 + 德邦/达达/CNLP 并表</h3>
+  <p>京东物流（JDL）FY2022 收入 1,374 亿、连续三季盈利、全年实现盈亏平衡（经营利润 5.28 亿），外部收入占比近 70%；2022/7 月底完成对德邦控股收购（约 89.76 亿元）并表，增强大件快运网络；京东货运航空（南通主基地）获 CCAR-121 部合格证投运。达达自 2 月底、CNLP（京东产发）自 3 月起并表，年末仓库超 1,500 个、管理面积超 3,000 万平方米。</p>
+  <h3>3. 「低价」战略回归与刘强东重回前台</h3>
+  <p>2022-11-20 刘强东在内部经营管理培训会定调「低价是‘1’，品质和服务是两个‘0’」「失去低价优势会成为第二个苏宁」「低价是唯一基础性武器」；11-22 全员信宣布 2023 年起对 2,000 多名副总监及以上管理者现金减薪 10%–20%、设立 100 亿元无息员工住房保障基金、承诺德邦外包员工转正。徐雷在 Q4 电话会对外表述为「最稳定的天天低价」，并预告 2023 年「百亿补贴」与面向中小商家的「春晓计划」——为 2023 低价战略定调。</p>
+  <h3>4. 即时零售、产业供应链与健康医疗布局</h3>
+  <p>即时零售（Shop Now / 达达 / 京东到家）连接 15,000+ 线下门店、覆盖 1,700+ 品类，作为 Apple 唯一即时零售首发平台售出数十万台 iPhone 14；京东工业服务 10 万+ 工厂；疫情期间京东健康提供防疫门诊与药品保供。同时收缩亏损的海外 B2C 自营与部分京喜业务。</p>
+</section>
+
+<!-- ==================== 十、管理层评论摘录 ==================== -->
+<section>
+  <h2 class="sec">十、管理层评论摘录（按季度）</h2>
+  <div class="q">Q1（电话会 2022-05-17）</div>
+  <p class="quote"><span class="who">徐雷（集团 CEO）：</span>面对奥密克戎，京东再次发挥供应链能力驰援上海、调配逾 4,000 名一线员工保供；已主动调整用户策略、更聚焦用户质量，优化新业务投入节奏；企业要有长期心态、坚守战略优先级，同时保持短期灵活性。</p>
+  <div class="q">Q2（电话会 2022-08-23）</div>
+  <p class="quote"><span class="who">徐雷（集团 CEO）：</span>本季宏观多因素叠加、GDP 仅 +0.4%、社零下滑 4.6%，是「上市以来最具挑战的一个季度」；核心零售净增逾 1,000 万用户、PLUS 会员 7 月破 3,000 万；「按京东自己的理解和方向做供应链，不跟随任何人」。</p>
+  <div class="q">Q3（电话会 2022-11-18）</div>
+  <p class="quote"><span class="who">许冉（CFO）：</span>单季 Non-GAAP 净利首破 100 亿、净利率 4.1% 创新高；京东零售经营利润率首破 5%；京东物流连续两季盈亏平衡、外部收入占比近 70%；现金及短期投资约 2,180 亿元。</p>
+  <div class="q">Q4 + 全年（电话会 2023-03-09）</div>
+  <p class="quote"><span class="who">徐雷（集团 CEO）：</span>全年营收首破万亿，「将持续聚焦降本、增效、不断改善用户体验」；价格上「目标是让消费者认知到京东提供最稳定的天天低价」；复盘过去对新业务「过多包容与试错」，已收缩缺乏规模效应的新业务。<br><span class="who">许冉（CFO）：</span>宣布 10 亿美元年度现金股息、并计划建立年度股息政策；全年服务收入占比升至 20%（口径含物流服务）；全年 Non-GAAP 净利 282 亿、净利率 2.7% 创新高。</p>
+  <p class="small muted">以上为英文电话会原文与中文新闻稿的摘译，措辞以京东官方稿为准；徐雷低价/增效表述另见晚点 LatePost 报道。</p>
+</section>
+
+<!-- ==================== 十一、关键财务比率 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">十一、关键财务比率</h2>
+  <table>
+    <thead><tr><th>比率</th><th class="num">FY2021</th><th class="num">FY2022</th><th class="num">变动</th></tr></thead>
+    <tbody>
+      <tr><td>毛利率<span class="desc">（营收−营业成本）÷营收：商品和服务本身的利润空间</span></td><td class="num">13.6%</td><td class="num">14.1%</td><td class="num pos">+0.5pct</td></tr>
+      <tr><td>营业利润率<span class="desc">营业利润÷营收：主业每 100 元收入最终赚到的钱</span></td><td class="num">0.44%</td><td class="num">1.89%</td><td class="num pos">+1.45pct</td></tr>
+      <tr><td>净利率（归母）<span class="desc">归母净利润÷营收：每 100 元收入归股东的利润</span></td><td class="num">-0.37%</td><td class="num">0.99%</td><td class="num pos">+1.36pct</td></tr>
+      <tr><td>Non-GAAP 净利率<span class="desc">Non-GAAP 归母净利÷营收</span></td><td class="num">1.8%</td><td class="num">2.7%</td><td class="num pos">+0.9pct</td></tr>
+      <tr><td>销售费用率<span class="desc">销售及营销费用÷营收：补贴与获客投放的强度</span></td><td class="num">4.1%</td><td class="num">3.6%</td><td class="num pos">-0.5pct</td></tr>
+      <tr><td>研发费用率<span class="desc">研发费用÷营收：技术与算力投入的强度</span></td><td class="num">1.7%</td><td class="num">1.6%</td><td class="num pos">-0.1pct</td></tr>
+      <tr><td>履约费用率<span class="desc">履约费用÷营收：仓配履约成本强度</span></td><td class="num">6.2%</td><td class="num">6.0%</td><td class="num pos">-0.2pct</td></tr>
+      <tr><td>有效所得税率<span class="desc">所得税费用÷税前利润：实际承担的综合税率</span></td><td class="num">不适用（税前亏损）</td><td class="num">30.1%</td><td class="num">—</td></tr>
+      <tr><td>ROE<span class="desc">净利润÷股东权益：股东每投入 100 元一年赚多少</span></td><td class="num">-1.8%</td><td class="num">3.5%</td><td class="num pos">+5.3pct</td></tr>
+      <tr><td>经营现金流／归母净利润<span class="desc">大于 1 说明账面利润足额变成了真金白银</span></td><td class="num">不适用（亏损）</td><td class="num">5.57×</td><td class="num">—</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：比率类指标为整理者依据公开披露数据计算（整理者计算），口径可能与公司略有差异。毛利率以总营收减营业成本计算；ROE 以全口径净利润÷股东权益总计（含非控制性权益）计算；有效税率 = 所得税 4,176÷税前利润 13,867。</p>
+</section>
+
+<!-- ==================== 十二、风险与关注点 ==================== -->
+<section>
+  <h2 class="sec">十二、风险与关注点</h2>
+  <ol class="read-list">
+    <li>毛利率天花板低：自营 1P 模式毛利率仅约 14%，利润改善高度依赖费用纪律而非毛利提升；2023 年「百亿补贴」让利可能侵蚀毛利或抬高营销费用，盈利持续性存疑。</li>
+    <li>低价竞争与拼多多压力：刘强东「丢了低价优势会成为第二个苏宁」的警示本质是性价比心智被侵蚀；重塑低价心智需真金白银投入，短期对利润率构成压力。</li>
+    <li>非经营性投资损失波动大：FY2022 长期投资公允价值损失 39.85 亿、投资处置净损失 34.64 亿、减值 32.49 亿，使 GAAP 净利仅为 Non-GAAP 的 37%；持有的众多被投公司（含联营）公允价值随市场剧烈波动。</li>
+    <li>并表带来结构性变化：达达、CNLP、德邦相继并表推升资产、商誉（121→231 亿）与有息负债（新增 200 亿长期借款），整合与商誉减值风险需关注。</li>
+    <li>新业务仍亏损：新业务全年亏损 52.95 亿、达达亏损 11.22 亿，京喜、海外、产发等盈利路径尚不清晰。</li>
+    <li>宏观与监管：消费疲弱、疫情扰动（Q3 一度 17% 收件地址受影响）、平台经济监管与中概股审计/退市政策等外部不确定性持续存在。</li>
+  </ol>
+</section>
+
+<!-- ==================== 十三、期后事项 ==================== -->
+<section>
+  <h2 class="sec">十三、期后事项（截至整理日 2026-06-25 回溯）</h2>
+  <ul class="bul">
+    <li>2023-03-08：京东设立 ESG 委员会，刘强东任主席，公司治理职能并入。</li>
+    <li>2023-03-09：随 FY2022 年报宣布首次年度现金股息（每 ADS 0.62 美元，合计约 10 亿美元）并拟建年度股息政策；同步预告 2023 年「百亿补贴」与「春晓计划」。</li>
+    <li>2023 年：京东正式上线「百亿补贴」，全面转向低价战略；徐雷于 2023 年因健康原因卸任集团 CEO，许冉接任 CEO。</li>
+  </ul>
+</section>
+
+<!-- ==================== 十四、资料来源 ==================== -->
+<section>
+  <h2 class="sec">十四、资料来源</h2>
+  <ul class="bul src">
+    <li>京东 Q4 与全年 2022 业绩及股息公告（SEC Form 6-K，2023-03-09，三大报表主数字来源） <a href="https://www.sec.gov/Archives/edgar/data/1549802/000119312523065225/d474071dex991.htm">https://www.sec.gov/Archives/edgar/data/1549802/000119312523065225/d474071dex991.htm</a></li>
+    <li>京东 Q4 与全年 2022 业绩新闻稿（GlobeNewswire） <a href="https://www.globenewswire.com/news-release/2023/03/09/2623761/34064/en/jd-com-announces-fourth-quarter-and-full-year-2022-results-and-dividend.html">https://www.globenewswire.com/news-release/2023/03/09/2623761/34064/en/jd-com-announces-fourth-quarter-and-full-year-2022-results-and-dividend.html</a></li>
+    <li>京东 Q1 2022 业绩公告（IR） <a href="https://ir.jd.com/news-releases/news-release-details/jdcom-announces-first-quarter-2022-results">https://ir.jd.com/news-releases/news-release-details/jdcom-announces-first-quarter-2022-results</a></li>
+    <li>京东 Q2 2022 业绩公告（IR） <a href="https://ir.jd.com/news-releases/news-release-details/jdcom-announces-second-quarter-and-interim-2022-results">https://ir.jd.com/news-releases/news-release-details/jdcom-announces-second-quarter-and-interim-2022-results</a></li>
+    <li>京东 Q3 2022 业绩公告（IR） <a href="https://ir.jd.com/news-releases/news-release-details/jdcom-announces-third-quarter-2022-results">https://ir.jd.com/news-releases/news-release-details/jdcom-announces-third-quarter-2022-results</a></li>
+    <li>特别现金股息公告（GlobeNewswire，2022-05-04） <a href="https://www.globenewswire.com/news-release/2022/05/04/2435416/34064/en/JD-com-Announces-Special-Cash-Dividend.html">https://www.globenewswire.com/news-release/2022/05/04/2435416/34064/en/JD-com-Announces-Special-Cash-Dividend.html</a></li>
+    <li>Q1/Q2 2022 电话会 transcript（Motley Fool） <a href="https://www.fool.com/earnings/call-transcripts/2022/08/23/jdcom-jd-q2-2022-earnings-call-transcript/">https://www.fool.com/earnings/call-transcripts/2022/08/23/jdcom-jd-q2-2022-earnings-call-transcript/</a></li>
+    <li>刘强东内部讲话「低价是 1」（晚点 LatePost / 腾讯新闻，三方解读） <a href="https://news.qq.com/rain/a/20221123A09ZPD00">https://news.qq.com/rain/a/20221123A09ZPD00</a></li>
+  </ul>
+  <div class="disclaimer">
+    免责声明：本文件为第三方独立整理的研究资料，并非京东官方文件。所有 FY2022 数据为未经审计 GAAP 口径，可能与经审计 20-F 年报存在差异；Non-GAAP 为公司自定义口径；涉及第三方解读的部分已标注。本文件不构成任何投资建议。
+  </div>
+</section>
+
+<!-- ==================== 附录：研读问答记录 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">附录：研读问答记录</h2>
+  <p class="small muted">以下为研读 FY2022 财报过程中的问答与讨论记录。观点部分注明依据层级：财报原文 / 三方解读 / 个人推断。</p>
+  <div class="q">一、营收只增 9.9%，为什么营业利润能涨近 4 倍？</div>
+  <p>（财报原文）核心是费用纪律而非毛利暴涨。毛利率仅从 13.6% 微升至 14.1%，但销售费用率从 4.1% 降到 3.6%、履约费用率从 6.2% 降到 6.0%、管理费用绝对额还下降了 4.4%，叠加新业务亏损从 106 亿砍到 53 亿。营收每增 1 元的同时费用增得更慢，营业利润从 41 亿放大到 197 亿。这正是「降本增效」主线的财务体现。</p>
+  <div class="q">二、GAAP 净利 104 亿和 Non-GAAP 净利 282 亿，差的 178 亿是什么？该信哪个？</div>
+  <p>（财报原文 + 个人推断）差额的大头不是股权激励（SBC 仅约 64 亿），而是当年集中确认的投资相关损失：长期投资公允价值变动损失 39.85 亿、投资处置/视同处置净损失 34.64 亿、商誉/无形/投资减值 32.49 亿，外加并购无形摊销与税务影响。这些是非经营、非现金或一次性项目。判断主业真实盈利能力时 Non-GAAP（282 亿、净利率 2.7%）更具参考性；但 GAAP 的投资损失也提示了京东庞大对外投资组合的真实波动风险，不能完全忽视。</p>
+  <div class="q">三、京东物流全年盈亏平衡，含金量如何？</div>
+  <p>（财报原文 + 三方解读）京东物流 FY2022 收入 1,374 亿、经营利润仅 5.28 亿，利润率不足 0.4%，且这一年有德邦（7 月底）并表的口径增厚。但意义在于「外部化」拐点：外部收入占比近 70%、连续三季盈利，证明 JDL 不再单纯是京东自营的成本中心，而是能独立经营的物流公司。利润率薄说明仍处规模换效率阶段，盈利能力的真正释放要看后续。</p>
+  <div class="q">四、账上有 2,262 亿现金，为什么只派 10 亿美元股息、不大手笔回购？</div>
+  <p>（个人推断 + 财报原文）FY2022 资金优先投向供应链基础设施（资本开支 220 亿）、并购（CNLP、德邦）与子公司融资，体现「再投资优先」的传统资本配置。但 2023-03-09 首设年度股息政策是明确信号——随着增速放缓、自由现金流稳定在 350 亿+，京东开始把「净现金过厚 vs 股东回报不足」的矛盾纳入议程，向兼顾股东回报过渡。叠加 2022 年 20 亿美元特别股息，全年股东回报实际并不低。</p>
+  <div class="q">五、刘强东 11 月「低价是唯一基础性武器」对 2022 财报意味着什么？</div>
+  <p>（三方解读，晚点 LatePost）这更多是为 2023 定调而非影响 2022 数字。2022 报表呈现的是「降本增效、利润修复」的果实；而刘强东的警示（怕丢低价心智、成第二个苏宁）指向的是对拼多多等性价比对手的应对。它预示 2023 年京东将以「百亿补贴」主动让利、可能牺牲部分短期利润率来重塑低价心智——也就是说，FY2022 漂亮的利润率，在 2023 战略转向下未必能线性延续，这是阅读这份财报时最该警惕的「下一年伏笔」。</p>
+</section>
+
+</body>
+</html>

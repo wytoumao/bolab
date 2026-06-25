@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>京东集团 FY2025 财报整理</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 14mm 16mm 14mm;
+    @bottom-left  { content: "京东集团（JD.com）FY2025 财报整理 · 据公开资料独立整理 · 非官方文件 · 不构成投资建议"; font-size: 7pt; color: #9aa3ad; }
+    @bottom-right { content: "第 " counter(page) " 页"; font-size: 7pt; color: #9aa3ad; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Songti SC", "STHeiti", sans-serif;
+    color: #2b2b2b; font-size: 10.5pt; line-height: 1.6; background: #fff;
+  }
+  :root {
+    --bar:    #8a1c1c;   /* 顶部暗红条 */
+    --red:    #c0392b;   /* 章节标题 / 关键数字 */
+    --redln:  #c0392b;   /* 红色分隔线 */
+    --ink:    #2b2b2b;
+    --muted:  #8a929c;   /* 小灰字说明 */
+    --th:     #3f4348;   /* 深灰表头 */
+    --th2:    #4b5158;
+    --line:   #d9dee5;
+    --zebra:  #f5f6f8;
+    --pos:    #1f8a4c;
+    --neg:    #c0392b;
+  }
+  /* 顶部暗红条：position:fixed 在每一页重复；top:0 相对纸张顶边，避免分页时错位到页脚 */
+  .topbar { position: fixed; top: 0; left: 0; width: 100%; height: 8mm; background: var(--bar); }
+
+  /* ---------- 封面 ---------- */
+  .cover { padding-top: 12mm; }
+  .cover-title { font-size: 26pt; color: var(--ink); font-weight: 700; margin: 8px 0 2px; }
+  .cover-sub   { font-size: 22pt; color: var(--red); font-weight: 800; margin-bottom: 14px; }
+  .cover-meta  { font-size: 10pt; color: var(--muted); }
+  .cover-meta b{ color: #5a6470; font-weight: 600; }
+  .rule-red    { border: none; border-top: 2px solid var(--redln); margin: 16px 0 18px; }
+
+  /* ---------- 章节标题 ---------- */
+  h2.sec {
+    font-size: 14pt; color: var(--red); font-weight: 800; letter-spacing: .5px;
+    padding-bottom: 5px; border-bottom: 2px solid var(--redln); margin: 22px 0 12px;
+  }
+  h3 { font-size: 11pt; color: #5a6470; margin: 14px 0 6px; }
+
+  p { margin: 7px 0; }
+  .lead { margin: 8px 0; }
+  ul.bul { margin: 6px 0 6px 4px; list-style: none; }
+  ul.bul li { position: relative; padding-left: 16px; margin: 5px 0; }
+  ul.bul li::before { content: "•"; color: var(--red); position: absolute; left: 2px; font-weight: 700; }
+  .muted { color: var(--muted); }
+  .small { font-size: 9pt; }
+
+  /* ---------- 表格 ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 9.3pt; margin: 8px 0 6px; }
+  th, td { padding: 6px 9px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--th); color: #fff; font-weight: 600; font-size: 8.8pt; border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--zebra); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pos { color: var(--pos); font-weight: 600; }
+  .neg { color: var(--neg); font-weight: 600; }
+  tr.key td { font-weight: 700; }
+  tr.key td:first-child { color: var(--red); }
+  .desc { display: block; color: var(--muted); font-size: 8pt; font-weight: 400; margin-top: 2px; }
+  table caption { caption-side: top; text-align: left; font-size: 8.3pt; color: var(--muted); padding: 2px 0; }
+
+  /* ---------- 解读 / 要点框 ---------- */
+  .read { background: #fbfafa; border: 1px solid var(--line); border-left: 3px solid var(--red);
+          padding: 9px 13px; margin: 8px 0; font-size: 9.6pt; }
+  .read .rt { color: var(--red); font-weight: 700; }
+  ol.read-list { margin: 4px 0 0 18px; }
+  ol.read-list li { margin: 4px 0; }
+
+  /* ---------- 分季度柱状图（CSS 简版） ---------- */
+  .chart { display: flex; align-items: flex-end; gap: 18px; height: 150px; padding: 10px 8px 0;
+           border: 1px solid var(--line); margin: 8px 0; }
+  .chart .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .chart .bar { width: 60%; background: var(--red); border-radius: 2px 2px 0 0; }
+  .chart .cap { font-size: 8pt; color: var(--muted); margin-bottom: 4px; text-align: center; }
+  .chart .qx  { font-size: 8.5pt; color: #5a6470; margin-top: 4px; }
+
+  /* ---------- 目录 ---------- */
+  .toc { columns: 1; font-size: 10pt; }
+  .toc div { padding: 3px 0; border-bottom: 1px dotted var(--line); }
+
+  /* ---------- 管理层 / 问答 ---------- */
+  .q { color: var(--red); font-weight: 700; margin: 12px 0 3px; }
+  .quote { color: #3a4753; margin: 3px 0 3px 0; }
+  .quote .who { font-weight: 700; color: #5a6470; }
+
+  .disclaimer { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line);
+                font-size: 8.3pt; color: var(--muted); }
+  .src { font-size: 8.6pt; }
+  .src a { color: #2c4a73; word-break: break-all; }
+  .pagebreak { page-break-before: always; }
+  section { page-break-inside: auto; }
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<!-- ==================== 封面 ==================== -->
+<div class="cover">
+  <div class="cover-title">京东集团（JD.com, Inc.）</div>
+  <div class="cover-sub">FY2025 财报整理</div>
+  <div class="cover-meta">
+    <b>纳斯达克: JD ｜ 港交所: 9618</b> &nbsp;|&nbsp; 财年截至 2025-12-31 &nbsp;|&nbsp; 整理日期：2026-06-25
+  </div>
+  <hr class="rule-red">
+
+  <table>
+    <thead><tr><th style="width:46%">核心指标（人民币百万元，每股数据除外）</th><th class="num">FY2025</th><th class="num">同比变动</th></tr></thead>
+    <tbody>
+      <tr><td>全年总营收<span class="desc">公司一年内主营业务获得的全部收入，尚未扣除任何成本和费用</span></td><td class="num">1,309,085</td><td class="num pos">+13.0%</td></tr>
+      <tr><td>其中：京东零售<span class="desc">自营 1P 电商 + 第三方平台/广告，含京东健康、京东工业（分部口径，含分部间交易）</span></td><td class="num">1,126,399</td><td class="num pos">+10.9%</td></tr>
+      <tr><td>其中：京东物流<span class="desc">一体化供应链物流，含内部与外部客户（分部口径）</span></td><td class="num">217,146</td><td class="num pos">+18.8%</td></tr>
+      <tr><td>其中：新业务<span class="desc">京东外卖、京东产发、京喜及海外业务等（分部口径）</span></td><td class="num">49,282</td><td class="num pos">+157.3%</td></tr>
+      <tr><td>营业利润<span class="desc">营收减去营业成本与履约、销售、研发、管理费用后的利润，反映主业本身的赚钱能力</span></td><td class="num">2,774</td><td class="num neg">-92.8%</td></tr>
+      <tr><td>归母净利润<span class="desc">扣完所有成本、费用、利息、税之后，最终归属于公司股东的利润</span></td><td class="num">19,631</td><td class="num neg">-52.5%</td></tr>
+      <tr><td>Non-GAAP 归母净利润<span class="desc">在净利润基础上加回股权激励等非现金项，更接近「经营层面」的盈利</span></td><td class="num">26,961</td><td class="num neg">-43.6%</td></tr>
+      <tr><td>经营活动现金流净额<span class="desc">主营业务实际收到的现金减去付出的现金，衡量利润的「含金量」</span></td><td class="num">18,991</td><td class="num neg">-67.3%</td></tr>
+      <tr><td>现金+短期投资（年末）<span class="desc">账上可随时动用的资金：现金及等价物 + 短期投资（未含受限资金）</span></td><td class="num">213,232</td><td class="num neg">-8.9%</td></tr>
+      <tr><td>摊薄每 ADS 收益（GAAP）<span class="desc">每份 ADS（=2 股普通股）分摊到的净利润，按摊薄股数计算</span></td><td class="num">12.90</td><td class="num neg">-52.0%</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lead">FY2025 京东呈现典型的<strong>「增收不增利」</strong>：全年营收首破万亿、达 1.31 万亿元（+13.0%），创历史新高；但 2 月上线的<strong>京东外卖/即时零售</strong>引发与美团、阿里的全行业补贴大战，新业务全年经营亏损 466 亿元，几乎抵消核心业务利润，集团营业利润由上年 387 亿元骤降至 28 亿元（营业利润率仅 0.2%），归母净利润由 414 亿元降至 196 亿元。核心零售（京东零售）韧性十足——收入 +10.9%、经营利润率升至 4.6% 连续第 6 年扩张。管理层称<strong>外卖投入已于 2025 年见顶，2026 年若竞争趋于理性将逐步下降</strong>。本年是京东以利润换增长、押注即时零售与全球化的战略投入大年。</p>
+  <p class="small muted">方法与口径说明：本报告由第三方依据京东 IR 业绩公告、美国 SEC 6-K（EX-99.1）、官方新闻稿等公开一手资料独立整理，三大报表数字以官方未经审计季度/全年口径为准；美元换算采用公司公告口径（US$1=RMB7.0011，2025-12-31）；比率类指标为整理者计算，可能与公司略有差异。仅供研究参考，不构成投资建议。</p>
+</div>
+
+<!-- ==================== 目录 ==================== -->
+<div class="pagebreak"></div>
+<h2 class="sec">目录</h2>
+<div class="toc">
+  <div>一、公司概况</div>
+  <div>二、FY2025 业绩总览</div>
+  <div>三、分季度经营表现</div>
+  <div>四、合并利润表（全年）</div>
+  <div>五、合并资产负债表</div>
+  <div>六、合并现金流量表</div>
+  <div>七、Non-GAAP 调节与股权激励</div>
+  <div>八、股东回报与资本结构</div>
+  <div>九、业务与战略动态</div>
+  <div>十、管理层评论摘录</div>
+  <div>十一、关键财务比率</div>
+  <div>十二、风险与关注点</div>
+  <div>十三、期后事项</div>
+  <div>十四、资料来源</div>
+  <div>附录：研读问答记录</div>
+</div>
+
+<!-- ==================== 一、公司概况 ==================== -->
+<section>
+  <h2 class="sec">一、公司概况</h2>
+  <p class="lead">京东集团（JD.com, Inc.）是中国领先的以供应链为基础的技术与服务企业，1998 年由刘强东创立，2014 年于纳斯达克上市（代码 JD）、2020 年在香港二次上市（9618），注册地开曼群岛，总部位于北京。京东以自营 1P 电商起家，自建仓配一体化物流体系，业务已延伸至即时零售/外卖、物流、健康、工业、产发及海外。</p>
+  <ul class="bul">
+    <li><b>京东零售（JD Retail）</b>——集团基石，含自营商品（1P）与第三方平台/广告（3P），涵盖电子家电、综合百货（商超等），并含京东健康、京东工业等子分部；FY2025 收入 1.13 万亿元、占集团绝大部分，经营利润率 4.6%。</li>
+    <li><b>京东物流（JD Logistics, 02618.HK）</b>——一体化供应链物流，含内部（服务京东商城）与外部第三方客户；FY2025 收入 2,171 亿元（+18.8%）、经营利润 53 亿元。</li>
+    <li><b>新业务（New Businesses）</b>——含<strong>京东外卖（2025/2 上线）</strong>、京东产发（JD Property）、京喜（下沉低价）及海外业务（Joybuy）；FY2025 收入 493 亿元（+157.3%），但因外卖补贴大战经营亏损 466 亿元。</li>
+    <li><b>达达集团（Dada）</b>——即时零售与配送平台（京东到家/达达快送），2025 年京东已完成私有化、并入即时零售协同（不再单列上市分部）。</li>
+  </ul>
+  <p>治理与人员：CEO 许冉（Sandy Xu）、CFO 单甦（Ian Shan）；创始人兼董事局主席刘强东（Richard Liu）2025 年高调回归一线，主导外卖与即时零售战略。京东 FY2025 年度业绩于 2026-03-05 公告，年报 20-F 于 2026 年中向 SEC 提交。集团全职员工逾 60 万人（含一线物流、外卖骑手）。</p>
+</section>
+
+<!-- ==================== 二、业绩总览 ==================== -->
+<section>
+  <h2 class="sec">二、FY2025 业绩总览</h2>
+  <table>
+    <thead><tr><th>指标（人民币百万元，每股数据除外）</th><th class="num">FY2024</th><th class="num">FY2025</th><th class="num">同比</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>总营收</td><td class="num">1,158,819</td><td class="num">1,309,085</td><td class="num pos">+13.0%</td></tr>
+      <tr><td>— 其中：商品收入（1P）</td><td class="num">920,883</td><td class="num">1,015,803</td><td class="num pos">+10.3%</td></tr>
+      <tr><td>— 其中：服务收入（3P/广告/物流）</td><td class="num">237,936</td><td class="num">293,282</td><td class="num pos">+23.6%</td></tr>
+      <tr><td>营业成本</td><td class="num">974,951</td><td class="num">1,099,057</td><td class="num neg">+12.7%</td></tr>
+      <tr><td>履约费用</td><td class="num">70,426</td><td class="num">88,176</td><td class="num neg">+25.2%</td></tr>
+      <tr><td>销售及营销费用</td><td class="num">47,953</td><td class="num">83,953</td><td class="num neg">+75.1%</td></tr>
+      <tr><td>研发费用</td><td class="num">17,031</td><td class="num">22,229</td><td class="num neg">+30.5%</td></tr>
+      <tr><td>管理费用</td><td class="num">8,888</td><td class="num">11,980</td><td class="num neg">+34.8%</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">38,700</td><td class="num">2,774</td><td class="num neg">-92.8%</td></tr>
+      <tr><td>Non-GAAP 营业利润</td><td class="num">44,000</td><td class="num">9,600</td><td class="num neg">-78.2%</td></tr>
+      <tr class="key"><td>归母净利润</td><td class="num">41,359</td><td class="num">19,631</td><td class="num neg">-52.5%</td></tr>
+      <tr><td>Non-GAAP 归母净利润</td><td class="num">47,800</td><td class="num">26,961</td><td class="num neg">-43.6%</td></tr>
+      <tr><td>摊薄每 ADS 收益（GAAP，人民币元）</td><td class="num">26.86</td><td class="num">12.90</td><td class="num neg">-52.0%</td></tr>
+      <tr><td>经营活动现金流净额</td><td class="num">58,095</td><td class="num">18,991</td><td class="num neg">-67.3%</td></tr>
+      <tr><td>现金、现金等价物及短期投资（年末）</td><td class="num">233,995</td><td class="num">213,232</td><td class="num neg">-8.9%</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <ol class="read-list">
+      <li><b>增收的两台引擎</b>：全年营收 +13.0% 创纪录，商品收入 +10.3%（以旧换新国补拉动电子家电、综合百货全年 +15.3%），服务收入 +23.6%（marketplace/广告全年约 +18.9%、物流外部收入扩张）。但增量很大一块来自外卖：新业务收入 +157.3%。</li>
+      <li><b>利润率被新业务吞没</b>：营业利润 387 亿→28 亿、营业利润率 3.3%→0.2%。主因是营销费用 +75.1%（外卖/即时零售补贴）、履约费用 +25.2%（骑手与履约扩张）。核心京东零售经营利润率反而 4.0%→4.6%、连续第 6 年扩张，说明拖累全部来自新业务投入。</li>
+      <li><b>非经营项部分缓冲净利</b>：权益法投资收益由 23 亿增至 80 亿元、其他收益净额由 134 亿增至 173 亿元，叠加有效税率走低（13.3%→8.6%），使归母净利润降幅（-52.5%）小于营业利润降幅（-92.8%）。</li>
+      <li><b>现金「含金量」下滑</b>：经营现金流由 581 亿骤降至 190 亿元、自由现金流由 437 亿降至 65 亿元，主因外卖投入、以旧换新占款及经营利润下降；年末广义现金（现金+短投）2,132 亿元，仍维持净现金、资产负债稳健。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 三、分季度经营表现 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">三、分季度经营表现</h2>
+  <table>
+    <thead><tr><th>指标（人民币百万元）</th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">全年</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>总营收</td><td class="num">301,079</td><td class="num">356,742</td><td class="num">298,980</td><td class="num">352,284</td><td class="num">1,309,085</td></tr>
+      <tr><td>同比增速</td><td class="num pos">+15.8%</td><td class="num pos">+22.4%</td><td class="num pos">+14.9%</td><td class="num pos">+1.5%</td><td class="num pos">+13.0%</td></tr>
+      <tr class="key"><td>营业利润/(亏损)</td><td class="num">10,535</td><td class="num">-900</td><td class="num">-1,072</td><td class="num">-5,789</td><td class="num">2,774</td></tr>
+      <tr><td>同比增速</td><td class="num pos">+31.0%</td><td class="num neg">转亏</td><td class="num neg">转亏</td><td class="num neg">转亏</td><td class="num neg">-92.8%</td></tr>
+      <tr class="key"><td>归母净利润/(亏损)</td><td class="num">10,890</td><td class="num">6,201</td><td class="num">5,253</td><td class="num">-2,713</td><td class="num">19,631</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：营业利润为整理者据各季 6-K 利润表整理（GAAP）；Q1 营业利润同比基于上年同期约 80 亿元；Q2–Q4 因外卖投入由盈转亏。各季营收合计 1,309,085 与全年一致。</p>
+
+  <div class="chart">
+    <div class="col"><div class="cap">301,079<br>利润率 3.5%</div><div class="bar" style="height:103px"></div><div class="qx">Q1</div></div>
+    <div class="col"><div class="cap">356,742<br>利润率 -0.3%</div><div class="bar" style="height:120px"></div><div class="qx">Q2</div></div>
+    <div class="col"><div class="cap">298,980<br>利润率 -0.4%</div><div class="bar" style="height:101px"></div><div class="qx">Q3</div></div>
+    <div class="col"><div class="cap">352,284<br>利润率 -1.6%</div><div class="bar" style="height:119px"></div><div class="qx">Q4</div></div>
+  </div>
+
+  <div class="read">
+    <span class="rt">季度走势解读</span>
+    <ol class="read-list">
+      <li><b>Q1</b>：外卖刚上线、财务影响尚不显著，营收 +15.8% 加速、Non-GAAP 归母净利 +43%，是全年唯一「双增」季度。</li>
+      <li><b>Q2</b>：618 + 外卖全面铺开，营收 +22.4% 为全年最高增速，但新业务经营亏损扩大至约 148 亿元，集团转入经营亏损。</li>
+      <li><b>Q3</b>：外卖亏损环比收窄、UE 改善；电子家电进入国补高基数、增速回落至 +14.9%；年活用户 10 月破 7 亿。</li>
+      <li><b>Q4</b>：电子家电 -12% 受高基数拖累，营收仅 +1.5%；外卖等新业务投入致经营亏损 58 亿元、归母转为净亏损 27 亿元；但管理层称外卖投入已见顶、Q4 环比再降约 20%。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 四、合并利润表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">四、合并利润表（全年，未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（人民币百万元，每股数据除外）</th><th class="num">FY2024</th><th class="num">FY2025</th></tr></thead>
+    <tbody>
+      <tr><td>营业收入</td><td class="num">1,158,819</td><td class="num">1,309,085</td></tr>
+      <tr><td>营业成本</td><td class="num">(974,951)</td><td class="num">(1,099,057)</td></tr>
+      <tr><td>履约费用</td><td class="num">(70,426)</td><td class="num">(88,176)</td></tr>
+      <tr><td>销售及营销费用</td><td class="num">(47,953)</td><td class="num">(83,953)</td></tr>
+      <tr><td>研发费用</td><td class="num">(17,031)</td><td class="num">(22,229)</td></tr>
+      <tr><td>管理费用</td><td class="num">(8,888)</td><td class="num">(11,980)</td></tr>
+      <tr><td>商誉减值</td><td class="num">(799)</td><td class="num">(1,303)</td></tr>
+      <tr><td>出售开发物业收益</td><td class="num">1,527</td><td class="num">387</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">38,700</td><td class="num">2,774</td></tr>
+      <tr><td>权益法核算的投资损益</td><td class="num">2,327</td><td class="num">8,025</td></tr>
+      <tr><td>利息支出</td><td class="num">(2,896)</td><td class="num">(2,803)</td></tr>
+      <tr><td>其他收益净额（利息及投资收益等）</td><td class="num">13,371</td><td class="num">17,327</td></tr>
+      <tr><td>税前利润</td><td class="num">51,538</td><td class="num">25,323</td></tr>
+      <tr><td>所得税费用</td><td class="num">(6,878)</td><td class="num">(2,181)</td></tr>
+      <tr class="key"><td>净利润（归属于普通股股东）</td><td class="num">41,359</td><td class="num">19,631</td></tr>
+      <tr><td>基本每 ADS 收益（人民币元）</td><td class="num">27.67</td><td class="num">13.79</td></tr>
+      <tr><td>摊薄每 ADS 收益（人民币元）</td><td class="num">26.86</td><td class="num">12.90</td></tr>
+      <tr><td>加权平均股数——摊薄（百万股普通股）</td><td class="num">3,041</td><td class="num">2,939</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：税前利润含权益法投资损益后口径；归母净利润与税前+权益法−所得税的差额为归属非控股权益/可赎回权益部分，公司未在新闻稿单列。Q4 单季：营收 352,284（+1.5%）、营业亏损 5,789、归母净亏损 2,713（上年同期净利 9,854）。1 ADS = 2 股普通股。</p>
+</section>
+
+<!-- ==================== 五、合并资产负债表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">五、合并资产负债表（未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（人民币百万元）</th><th class="num">2024-12-31</th><th class="num">2025-12-31</th></tr></thead>
+    <tbody>
+      <tr><td>现金及现金等价物</td><td class="num">108,350</td><td class="num">137,488</td></tr>
+      <tr><td>受限资金</td><td class="num">7,366</td><td class="num">12,137</td></tr>
+      <tr><td>短期投资</td><td class="num">125,645</td><td class="num">75,744</td></tr>
+      <tr><td>应收账款净额、存货及其他流动资产</td><td class="num">145,337</td><td class="num">149,052</td></tr>
+      <tr class="key"><td>流动资产合计</td><td class="num">386,698</td><td class="num">374,421</td></tr>
+      <tr class="key"><td>非流动资产合计</td><td class="num">311,536</td><td class="num">320,780</td></tr>
+      <tr class="key"><td>资产总计</td><td class="num">698,234</td><td class="num">695,201</td></tr>
+      <tr><td>应付商家及供应商款、合同负债等</td><td class="num">~284,000</td><td class="num">~300,000</td></tr>
+      <tr><td>有息借款及其他负债</td><td class="num">~101,000</td><td class="num">~101,400</td></tr>
+      <tr class="key"><td>负债总计</td><td class="num">384,937</td><td class="num">401,418</td></tr>
+      <tr><td>夹层权益（可赎回非控股权益）</td><td class="num">484</td><td class="num">—</td></tr>
+      <tr class="key"><td>股东权益总计</td><td class="num">312,813</td><td class="num">293,783</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>资产总计基本持平（6,982 亿→6,952 亿元），但结构变化明显：短期投资由 1,256 亿降至 757 亿元、现金及等价物升至 1,375 亿元——主要是把短投转为现金用于外卖投入、回购与分红。广义现金储备（现金+受限+短投）约 2,254 亿元，仍显著高于有息负债，<strong>维持净现金状态</strong>。负债端以经营性占款（应付商家/供应商款、合同负债）为主，财务杠杆健康。股东权益由 3,128 亿降至 2,938 亿元，主因全年回购约 30 亿美元股份并全部注销，叠加分红。（注：应付/借款明细行为整理者据流动负债结构估算，仅作占比示意，精确科目以 20-F 为准。）</p>
+  </div>
+</section>
+
+<!-- ==================== 六、合并现金流量表 ==================== -->
+<section>
+  <h2 class="sec">六、合并现金流量表（全年，未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（人民币百万元）</th><th class="num">FY2024</th><th class="num">FY2025</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>经营活动现金流净额</td><td class="num">58,095</td><td class="num">18,991</td></tr>
+      <tr><td>投资活动现金流净额</td><td class="num">(871)</td><td class="num">41,832</td></tr>
+      <tr><td>筹资活动现金流净额</td><td class="num">(21,004)</td><td class="num">(26,728)</td></tr>
+      <tr><td>汇率变动影响</td><td class="num">98</td><td class="num">(186)</td></tr>
+      <tr class="key"><td>自由现金流（公司口径）</td><td class="num">43,740</td><td class="num">6,476</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>经营现金流由 581 亿骤降至 190 亿元，经营现金流/归母净利润由 1.4 倍降至 0.97 倍——利润「含金量」明显下降，主因外卖大额投入、以旧换新带来的应收占款，以及经营利润收缩。投资活动转为净流入 418 亿元，主要是赎回定期存款与理财产品（短投腾挪为现金）；筹资活动净流出 267 亿元，主要用于股份回购（约 30 亿美元）与净偿还借款，部分被分红与新发借款抵消。<strong>自由现金流由 437 亿元降至仅 65 亿元</strong>，是全年战略投入强度的直接体现。</p>
+  </div>
+</section>
+
+<!-- ==================== 七、Non-GAAP 调节 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">七、Non-GAAP 调节与股权激励</h2>
+  <p class="lead">京东 Non-GAAP 口径在 GAAP 基础上主要剔除：股权激励费用（SBC）、无形资产摊销（并购形成）、商誉/长期资产减值、出售物业及股权投资的公允价值变动与一次性损益、以及相关税务影响等非现金/非经营项，以更贴近经营层面的盈利。</p>
+  <table>
+    <thead><tr><th>项目（人民币百万元）</th><th class="num">FY2024</th><th class="num">FY2025</th></tr></thead>
+    <tbody>
+      <tr><td>营业利润（GAAP）</td><td class="num">38,700</td><td class="num">2,774</td></tr>
+      <tr><td>加：股权激励费用</td><td class="num">2,999</td><td class="num">4,726</td></tr>
+      <tr><td>加：无形资产摊销、减值及其他调整</td><td class="num">2,301</td><td class="num">2,100</td></tr>
+      <tr class="key"><td>Non-GAAP 营业利润</td><td class="num">44,000</td><td class="num">9,600</td></tr>
+      <tr><td>归母净利润（GAAP）</td><td class="num">41,359</td><td class="num">19,631</td></tr>
+      <tr><td>加：股权激励费用</td><td class="num">2,999</td><td class="num">4,726</td></tr>
+      <tr><td>加/减：投资公允价值变动、减值及其他（税后净额）</td><td class="num">3,442</td><td class="num">2,604</td></tr>
+      <tr class="key"><td>Non-GAAP 归母净利润</td><td class="num">47,800</td><td class="num">26,961</td></tr>
+    </tbody>
+  </table>
+  <p class="small">FY2025 股权激励费用 47 亿元、约占营收 0.4%，规模温和。GAAP 与 Non-GAAP 营业利润差距（28 亿 vs 96 亿元）主要来自减值与摊销；净利润层面 GAAP 19.6 亿与 Non-GAAP 27.0 亿元差额约 73 亿元。Non-GAAP EBITDA 全年 183 亿元（上年 519 亿元）。（无形摊销/减值/公允变动等中间调节项为整理者据公告区间数据匡算，合计数 9,600 与 26,961 为公司披露口径。）</p>
+</section>
+
+<!-- ==================== 八、股东回报 ==================== -->
+<section>
+  <h2 class="sec">八、股东回报与资本结构</h2>
+  <p class="lead">即便在利润大幅承压的投入大年，京东仍维持了较强的股东回报。<strong>分红：</strong>董事会批准 2025 年度现金股息每股普通股 0.5 美元、每 ADS 1.0 美元（与上年持平），合计约 14 亿美元，2026 年 4 月派发。<strong>回购：</strong>全年回购约 1.832 亿股 A 类普通股（约 9,160 万 ADS），约占 2024 年末股本的 6.3%、金额约 30 亿美元，且回购股份<strong>全部注销</strong>；这部分属 2024 年 8 月批准的 50 亿美元回购计划（有效期至 2027 年 8 月），年末尚余约 20 亿美元额度。</p>
+  <p>股本与资本结构：摊薄加权平均股数由 3,041 百万股降至 2,939 百万股（约 -3.4%），回购注销带来实质性 EPS 增厚；股权激励行权为主要稀释来源但规模有限。公司维持净现金（广义现金约 2,254 亿元远高于有息负债），但 FY2025 自由现金流仅 65 亿元，远低于约 100 亿美元/年的分红+回购支出——这部分缺口由账上短期投资腾挪与既有现金储备覆盖。资金优先级：①外卖/即时零售与全球化战略投入；②维持分红+回购的股东回报承诺；③供应链与 AI/自动化能力建设。</p>
+</section>
+
+<!-- ==================== 九、业务与战略动态 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">九、业务与战略动态</h2>
+  <h3>1. 京东外卖与即时零售：以利润换增长的全年主线</h3>
+  <p>2025 年 2 月京东外卖正式上线，主打「品质堂食」，5/1 前入驻商家全年免佣金，并成为<strong>首个为全职骑手缴纳五险一金（全成本由京东承担）</strong>的平台，与美团、阿里（淘宝闪购）展开全行业补贴大战。日订单从 4 月近 2,000 万快速攀升，618 期间突破 2,500 万单、优质堂食门店超 150 万家、全职骑手超 12 万。刘强东多次公开强调外卖「永远净利润不超过 5%」「前端卖饭菜可以永远不赚钱、靠背后供应链赚钱」，秉持「三毛五原则」。新业务全年经营亏损 466 亿元，但管理层称外卖亏损自上线以来逐季环比收窄、Q4 再降约 20%，<strong>投入已于 2025 年见顶</strong>。</p>
+  <h3>2. 核心零售韧性：综合百货与广告接棒电子家电</h3>
+  <p>京东零售全年收入 +10.9%、经营利润率升至 4.6%（连续第 6 年扩张）。电子家电上半年受以旧换新国补拉动强劲、下半年进入高基数；综合百货（商超等）全年 +15.3%、连续多季双位数增长成为新引擎；marketplace/广告全年约 +18.9%、3P 活跃商家 Q4 同比 +270%。外卖带来的高频流量对零售形成交叉转化（最早 cohort 转化率 Q3 近 50%），并对 Q4 广告收入增量贡献 2–3 个百分点。用户侧：QAC 全年约 +40%、购物频次 +40%+、年活跃用户 10 月突破 7 亿。</p>
+  <h3>3. 七鲜小厨、全球化与 AI</h3>
+  <p>2025 年 7 月推出「七鲜小厨（7Fresh Kitchen）」，以「外卖+自提」、专业厨师透明厨房现炒切入，三年拟投超百亿、建超万家门店，解决食安并对标美团的差异化模式。全球化方面，Joybuy 欧洲依托自建 JoyExpress 物流网（欧洲 60 多个仓库），于 2026 年 3 月在英、荷、德、法、比、卢六国正式上线；并拟收购德国电器零售商 CECONOMY（待监管批准）。AI 方面，9 月 JD Discovery 发布 AI 路线图（TaTaTa 数字人、JoyInside 等），JoyAI 支撑超 1,000 个应用、2025 年 Token 调用量较 2024 年增长近 100 倍。</p>
+</section>
+
+<!-- ==================== 十、管理层评论摘录 ==================== -->
+<section>
+  <h2 class="sec">十、管理层评论摘录（按季度）</h2>
+  <div class="q">Q1（2025-05-13）</div>
+  <p class="quote"><span class="who">许冉（CEO）：</span>「我们不把外卖看作独立业务，它深植于京东零售的基础设施与生态」；进入外卖「是为做可持续的长期业务，而非追求某季度的短期财务目标」，当前重点排序为体验 &gt; 规模 &gt; ROI。</p>
+  <div class="q">Q2（2025-08-14）</div>
+  <p class="quote"><span class="who">许冉（CEO）：</span>外卖是「5 年、10 年甚至 20 年的业务，不是一两个季度的商业模式」；7 月起竞争加剧，但京东「不相信低质量竞争对行业有价值」，靠精细化补贴与规模化履约提升单位经济（UE）。</p>
+  <div class="q">Q3（2025-11-13）</div>
+  <p class="quote"><span class="who">许冉（CEO）：</span>外卖 Q3 实现亏损环比收窄、靠 UE 改善；年活用户 10 月突破 7 亿；最早一批拉新用户 cohort 转化率已接近 50%，长期看京东获客成本会下降。</p>
+  <div class="q">Q4 + 全年（2026-03-05）</div>
+  <p class="quote"><span class="who">单甦（CFO）：</span>「我们相信外卖投入已在 2025 年见顶，若市场竞争趋于理性，2026 年将逐步下降」；2025 年度分红约 14 亿美元、全年回购约 30 亿美元（占股本 6.3%）全部注销。<br><span class="who">许冉（CEO）：</span>核心 JD Retail 全年实现收入与经营利润双位数增长、利润率连续第 6 年扩张；进入 2026 已看到持续向上趋势。</p>
+  <p class="small muted">以上为英文 transcript / 官方稿的中文摘译，措辞以京东官方稿为准。</p>
+</section>
+
+<!-- ==================== 十一、关键财务比率 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">十一、关键财务比率</h2>
+  <table>
+    <thead><tr><th>比率</th><th class="num">FY2024</th><th class="num">FY2025</th><th class="num">变动</th></tr></thead>
+    <tbody>
+      <tr><td>毛利率<span class="desc">（营收−营业成本）÷营收：商品和服务本身的利润空间</span></td><td class="num">15.9%</td><td class="num">16.0%</td><td class="num pos">+0.2pp</td></tr>
+      <tr><td>营业利润率<span class="desc">营业利润÷营收：主业每 100 元收入最终赚到的钱</span></td><td class="num">3.3%</td><td class="num">0.2%</td><td class="num neg">-3.1pp</td></tr>
+      <tr><td>净利率<span class="desc">归母净利润÷营收：每 100 元收入归股东的利润</span></td><td class="num">3.6%</td><td class="num">1.5%</td><td class="num neg">-2.1pp</td></tr>
+      <tr><td>销售费用率<span class="desc">销售及营销费用÷营收：补贴与获客投放的强度</span></td><td class="num">4.1%</td><td class="num">6.4%</td><td class="num neg">+2.3pp</td></tr>
+      <tr><td>研发费用率<span class="desc">研发费用÷营收：技术与算力投入的强度</span></td><td class="num">1.5%</td><td class="num">1.7%</td><td class="num neg">+0.2pp</td></tr>
+      <tr><td>有效所得税率<span class="desc">所得税费用÷税前利润：实际承担的综合税率</span></td><td class="num">13.3%</td><td class="num">8.6%</td><td class="num pos">-4.7pp</td></tr>
+      <tr><td>ROE<span class="desc">归母净利润÷期末股东权益：股东每投入 100 元一年赚多少</span></td><td class="num">13.2%</td><td class="num">6.7%</td><td class="num neg">-6.5pp</td></tr>
+      <tr><td>经营现金流／归母净利润<span class="desc">大于 1 说明账面利润足额变成了真金白银</span></td><td class="num">1.40</td><td class="num">0.97</td><td class="num neg">-0.43</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：比率类指标为整理者依据公开披露数据计算，口径可能与公司略有差异。毛利率/营业利润率/净利率与公司披露的 16.0%/0.2%/1.5% 一致；ROE 采用期末股东权益、销售费用率含营销费用口径。</p>
+</section>
+
+<!-- ==================== 十二、风险与关注点 ==================== -->
+<section>
+  <h2 class="sec">十二、风险与关注点</h2>
+  <ol class="read-list">
+    <li><b>外卖/即时零售盈亏不确定</b>：新业务全年亏损 466 亿元，几乎吞没核心利润。管理层称投入已见顶，但「2026 年下降」以「竞争趋于理性」为前提；若美团、阿里继续补贴战，亏损收窄节奏可能不及预期。</li>
+    <li><b>电子家电高基数与国补退坡</b>：以旧换新国补 2025 上半年消耗较快，电子家电 Q4 已 -12%，2026 上半年仍面临高基数；内存涨价致手机/数码涨价或压制销量。</li>
+    <li><b>现金流与股东回报的张力</b>：自由现金流降至 65 亿元，而年度分红+回购支出约 100 亿美元，缺口靠存量现金与短投腾挪覆盖；若投入持续、回报承诺不变，将持续消耗现金储备。</li>
+    <li><b>全球化与并购执行风险</b>：Joybuy 欧洲自建物流重资产、回报周期长；拟收购 CECONOMY 待监管批准，存在审批与整合不确定性。</li>
+    <li><b>监管与「反内卷」政策</b>：外卖补贴战引发监管关注，平台经济「反内卷」导向下，补贴/佣金/骑手用工成本可能受政策约束。</li>
+  </ol>
+</section>
+
+<!-- ==================== 十三、期后事项 ==================== -->
+<section>
+  <h2 class="sec">十三、期后事项（截至 2026-06-25）</h2>
+  <ul class="bul">
+    <li>2026-03-05 公告 Q4 及全年业绩并宣派 2025 年度股息（$1.0/ADS，约 14 亿美元），2026 年 4 月派发。</li>
+    <li>2026-03 Joybuy 欧洲在英、荷、德、法、比、卢六国正式上线，依托自建 JoyExpress 物流网。</li>
+    <li>京东 FY2025 年度报告（Form 20-F）于 2026 年中向 SEC 提交；拟收购 CECONOMY 仍在监管审查中。</li>
+    <li>管理层指引 2026 年外卖投入将低于 2025 年（以竞争理性为前提）、核心京东零售利润健康增长，重申长期高个位数净利率目标。</li>
+  </ul>
+</section>
+
+<!-- ==================== 十四、资料来源 ==================== -->
+<section>
+  <h2 class="sec">十四、资料来源</h2>
+  <ul class="bul src">
+    <li>京东 IR · 2025 年 Q4 及全年业绩公告（官方新闻稿）：<a href="https://ir.jd.com/news-releases/news-release-details/jdcom-announces-fourth-quarter-and-full-year-2025-results-and">https://ir.jd.com/news-releases/news-release-details/jdcom-announces-fourth-quarter-and-full-year-2025-results-and</a></li>
+    <li>美国 SEC · Form 6-K（EX-99.1，2026-03-05 提交，含合并利润表/资产负债表/现金流量表与分部表，三大报表主数字来源）：<a href="https://www.sec.gov/Archives/edgar/data/1549802/000119312526092445/d150586dex991.htm">https://www.sec.gov/Archives/edgar/data/1549802/000119312526092445/d150586dex991.htm</a></li>
+    <li>京东 IR · 业绩公告列表（含 Q1/Q2/Q3 2025 公告）：<a href="https://ir.jd.com/news-releases">https://ir.jd.com/news-releases</a></li>
+    <li>各季电话会 transcript（Insider Monkey，定性内容交叉核对）：Q1 <a href="https://www.insidermonkey.com/blog/jd-com-inc-nasdaqjd-q1-2025-earnings-call-transcript-1533258/">链接</a> ｜ Q4+全年 <a href="https://www.insidermonkey.com/blog/jd-com-inc-nasdaqjd-q4-2025-earnings-call-transcript-1710630/">链接</a></li>
+    <li>股东回报决议与全年回购/分红（媒体交叉核对）：新浪财经 <a href="https://finance.sina.com.cn/wm/2026-03-09/doc-inhqmive6766634.shtml">https://finance.sina.com.cn/wm/2026-03-09/doc-inhqmive6766634.shtml</a></li>
+    <li>刘强东 2025-06-17 北京分享会全文（外卖与战略定性）：新浪财经 <a href="https://finance.sina.com.cn/stock/t/2025-06-18/doc-infannhn8321373.shtml">https://finance.sina.com.cn/stock/t/2025-06-18/doc-infannhn8321373.shtml</a></li>
+  </ul>
+  <div class="disclaimer">
+    免责声明：本文件为第三方独立整理的研究资料，并非公司官方文件。FY2025 数据为公司公告的未经审计口径，可能与经审计年报（20-F）存在差异；涉及整理者计算或估算的部分已标注。本文件不构成任何投资建议。
+  </div>
+</section>
+
+<!-- ==================== 附录：研读问答记录 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">附录：研读问答记录</h2>
+  <p class="small muted">以下为研读本期财报过程中的问答与讨论记录。观点部分注明依据层级：财报原文 / 三方解读 / 个人推断。</p>
+  <div class="q">一、营收创纪录 +13%，为什么净利润几乎腰斩？</div>
+  <p>（财报原文）核心是新业务（主要是京东外卖）的战略投入。新业务全年经营亏损 466 亿元（上年仅约 24 亿元），几乎抵消了京东零售 514 亿元的经营利润，使集团营业利润由 387 亿元降至 28 亿元。具体到费用：营销费用 +75.1%（外卖/即时零售补贴）、履约费用 +25.2%（骑手与履约扩张）。这是典型的「以利润换增长、换用户、换长期格局」。</p>
+  <div class="q">二、外卖到底亏在哪、什么时候能不亏？</div>
+  <p>（财报原文+三方解读）外卖亏损来自补贴（用户与商家）、骑手社保与履约成本，而京东对优质堂食商家免佣金、收入端尚未充分变现。管理层口径：外卖亏损自 2025/2 上线以来逐季环比收窄、Q4 再降约 20%，<strong>投入已于 2025 年见顶</strong>，2026 年若竞争理性将下降，UE 改善靠收入多元化（商家服务/广告变现）+ 补贴效率 + 规模化履约。但「竞争理性」是外部前提，存在不确定性。</p>
+  <div class="q">三、核心零售到底健不健康？是不是被外卖拖垮了？</div>
+  <p>（财报原文）恰恰相反。京东零售收入 +10.9%、经营利润率由 4.0% 升至 4.6%、连续第 6 年扩张，经营利润 514 亿元（上年 411 亿元）。综合百货全年 +15.3% 接棒电子家电成为新引擎，marketplace/广告 +18.9%。外卖反而给零售带来高频流量与交叉转化（最早 cohort 转化率近 50%），对 Q4 广告增量贡献 2–3pp。拖累全部来自新业务这一独立投入桶，核心盘面健康。</p>
+  <div class="q">四、利润大降，为什么还维持 30 亿美元回购 + 14 亿美元分红？现金扛得住吗？</div>
+  <p>（财报原文+个人推断）京东维持净现金（广义现金约 2,254 亿元远超有息负债），且回购股份全部注销、实质增厚 EPS，是对长期价值的信号。但 FY2025 自由现金流仅 65 亿元，而分红+回购约 100 亿美元，明显入不敷出——缺口由短期投资腾挪（投资活动净流入 418 亿元）与存量现金覆盖。短期可持续，但若高投入持续、FCF 不回升，这种回报强度会持续消耗现金储备，需关注 2026 年 FCF 能否随外卖减亏而修复。</p>
+  <div class="q">五、这份「增收不增利」的财报，应该怎么定性这一年？</div>
+  <p>（个人推断）FY2025 是京东的「战略投入大年/转型阵痛年」：用一年的利润（净利润少赚约 200 亿元）买入了外卖这条高频、海量用户入口，QAC +40%、年活破 7 亿，并完成即时零售、七鲜小厨、欧洲 Joybuy、AI 的战略卡位。判断成败的关键不在 2025 的利润表，而在 2026：外卖能否如管理层所言随竞争理性而减亏、核心零售利润能否继续扩张、FCF 能否修复。若三者兑现，2025 的低利润将被视为「合理代价」；若外卖补贴战延续、减亏不及预期，则需重新评估投入纪律。</p>
+</section>
+
+</body>
+</html>
+

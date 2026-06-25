@@ -13,6 +13,9 @@ other = "Blockchain"
 [tools]
 other = "Tools"
 
+[investment]
+other = "Investment"
+
 [articles]
 other = "articles"
 
