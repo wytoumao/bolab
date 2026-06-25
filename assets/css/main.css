@@ -348,6 +348,36 @@ footer {
     padding: 0;
 }
 
+/* 宽表格响应式：超宽时容器内横向滚动，不再撑爆移动端页面 */
+.article-content table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+    -webkit-overflow-scrolling: touch;
+}
+.article-content th,
+.article-content td {
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.7rem;
+    text-align: left;
+    vertical-align: top;
+}
+.article-content thead th {
+    background: var(--tag-bg);
+    font-weight: 600;
+    white-space: nowrap;
+}
+/* 长 URL / 长串在移动端自动换行；代码块横向滚动 */
+.article-content { overflow-wrap: break-word; }
+.article-content pre,
+.article-content .highlight { max-width: 100%; overflow-x: auto; }
+/* 安全网：任何超宽元素都不应让整页横向溢出 / 缩放 */
+html, body { overflow-x: hidden; max-width: 100%; }
+
 .article-content blockquote {
     border-left: 2px solid var(--fg);
     padding-left: 1.15rem;
@@ -506,6 +536,12 @@ footer {
 
     .post-title { font-size: 1.2rem; }
     .article-header h1 { font-size: 1.6rem; }
+
+    .article-content table { font-size: 0.82rem; }
+    .article-content th,
+    .article-content td { padding: 0.35rem 0.5rem; }
+    .article-content pre,
+    .article-content .highlight pre { font-size: 0.78rem; }
 }
 
 /* ===== Investment section ===== */
