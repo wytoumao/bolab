@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>京东集团 FY2023 财报整理</title>
 <style>
   @page {
@@ -90,6 +91,29 @@
   .src a { color: #2c4a73; word-break: break-all; }
   .pagebreak { page-break-before: always; }
   section { page-break-inside: auto; }
+/* ===== mobile-screen-patch v1 — applied by scripts/patch_report_mobile.py ===== */
+  @media screen and (max-width: 720px) {
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-size: 13px; line-height: 1.65; padding: 0 14px 32px;
+           max-width: 100%; overflow-x: hidden; overflow-wrap: break-word; }
+    .topbar { position: static; height: 6px; }          /* fixed 8mm 顶条 → 细的入流色条 */
+    .cover { padding-top: 16px; }
+    .cover-title { font-size: 21px; }
+    .cover-sub   { font-size: 18px; }
+    .cover-meta  { font-size: 11px; }
+    h2.sec { font-size: 15px; margin: 18px 0 10px; }
+    h3 { font-size: 13px; }
+    /* 宽表格：容器内横向滚动，不撑爆页面（纯 CSS，不改 HTML） */
+    table { display: block; width: 100%; overflow-x: auto;
+            -webkit-overflow-scrolling: touch; font-size: 11px; }
+    table caption { display: block; }
+    th, td { padding: 5px 7px; }
+    .chart { gap: 8px; height: 110px; padding: 8px 4px 0; }
+    .chart .cap, .chart .qx { font-size: 9px; }
+    .read { font-size: 11.5px; padding: 8px 10px; }
+    .toc { font-size: 12px; }
+  }
+/* ===== /mobile-screen-patch ===== */
 </style>
 </head>
 <body>
