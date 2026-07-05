@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>阿里巴巴电商事业群 FY2025 财报整理</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 14mm 16mm 14mm;
+    @bottom-left  { content: "阿里巴巴电商事业群（淘宝天猫 TTG + 国际 AIDC）· 阿里巴巴集团 BABA/9988 · FY2025 财报整理 · 据公开资料独立整理 · 非官方文件"; font-size: 7pt; color: #9aa3ad; }
+    @bottom-right { content: "第 " counter(page) " 页"; font-size: 7pt; color: #9aa3ad; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Songti SC", "STHeiti", sans-serif;
+    color: #2b2b2b; font-size: 10.5pt; line-height: 1.6; background: #fff;
+  }
+  :root {
+    --bar:    #8a1c1c;
+    --red:    #c0392b;
+    --redln:  #c0392b;
+    --ink:    #2b2b2b;
+    --muted:  #8a929c;
+    --th:     #3f4348;
+    --th2:    #4b5158;
+    --line:   #d9dee5;
+    --zebra:  #f5f6f8;
+    --pos:    #1f8a4c;
+    --neg:    #c0392b;
+  }
+  .topbar { position: fixed; top: 0; left: 0; width: 100%; height: 8mm; background: var(--bar); }
+
+  .cover { padding-top: 12mm; }
+  .cover-title { font-size: 26pt; color: var(--ink); font-weight: 700; margin: 8px 0 2px; }
+  .cover-sub   { font-size: 22pt; color: var(--red); font-weight: 800; margin-bottom: 14px; }
+  .cover-meta  { font-size: 10pt; color: var(--muted); }
+  .cover-meta b{ color: #5a6470; font-weight: 600; }
+  .rule-red    { border: none; border-top: 2px solid var(--redln); margin: 16px 0 18px; }
+
+  h2.sec {
+    font-size: 14pt; color: var(--red); font-weight: 800; letter-spacing: .5px;
+    padding-bottom: 5px; border-bottom: 2px solid var(--redln); margin: 22px 0 12px;
+  }
+  h3 { font-size: 11pt; color: #5a6470; margin: 14px 0 6px; }
+
+  p { margin: 7px 0; }
+  .lead { margin: 8px 0; }
+  ul.bul { margin: 6px 0 6px 4px; list-style: none; }
+  ul.bul li { position: relative; padding-left: 16px; margin: 5px 0; }
+  ul.bul li::before { content: "•"; color: var(--red); position: absolute; left: 2px; font-weight: 700; }
+  .muted { color: var(--muted); }
+  .small { font-size: 9pt; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9.3pt; margin: 8px 0 6px; }
+  th, td { padding: 6px 9px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--th); color: #fff; font-weight: 600; font-size: 8.8pt; border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--zebra); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pos { color: var(--pos); font-weight: 600; }
+  .neg { color: var(--neg); font-weight: 600; }
+  tr.key td { font-weight: 700; }
+  tr.key td:first-child { color: var(--red); }
+  .desc { display: block; color: var(--muted); font-size: 8pt; font-weight: 400; margin-top: 2px; }
+  table caption { caption-side: top; text-align: left; font-size: 8.3pt; color: var(--muted); padding: 2px 0; }
+
+  .read { background: #fbfafa; border: 1px solid var(--line); border-left: 3px solid var(--red);
+          padding: 9px 13px; margin: 8px 0; font-size: 9.6pt; }
+  .read .rt { color: var(--red); font-weight: 700; }
+  ol.read-list { margin: 4px 0 0 18px; }
+  ol.read-list li { margin: 4px 0; }
+
+  .chart { display: flex; align-items: flex-end; gap: 18px; height: 150px; padding: 10px 8px 0;
+           border: 1px solid var(--line); margin: 8px 0; }
+  .chart .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .chart .bar { width: 60%; background: var(--red); border-radius: 2px 2px 0 0; }
+  .chart .cap { font-size: 8pt; color: var(--muted); margin-bottom: 4px; text-align: center; }
+  .chart .qx  { font-size: 8.5pt; color: #5a6470; margin-top: 4px; }
+
+  .toc { columns: 1; font-size: 10pt; }
+  .toc div { padding: 3px 0; border-bottom: 1px dotted var(--line); }
+
+  .q { color: var(--red); font-weight: 700; margin: 12px 0 3px; }
+  .quote { color: #3a4753; margin: 3px 0 3px 0; }
+  .quote .who { font-weight: 700; color: #5a6470; }
+
+  .disclaimer { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line);
+                font-size: 8.3pt; color: var(--muted); }
+  .src { font-size: 8.6pt; }
+  .src a { color: #2c4a73; word-break: break-all; }
+  .pagebreak { page-break-before: always; }
+  section { page-break-inside: auto; }
+/* ===== mobile-screen-patch v1 — applied by scripts/patch_report_mobile.py ===== */
+  @media screen and (max-width: 720px) {
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-size: 13px; line-height: 1.65; padding: 0 14px 32px;
+           max-width: 100%; overflow-x: hidden; overflow-wrap: break-word; }
+    .topbar { position: static; height: 6px; }          /* fixed 8mm 顶条 → 细的入流色条 */
+    .cover { padding-top: 16px; }
+    .cover-title { font-size: 21px; }
+    .cover-sub   { font-size: 18px; }
+    .cover-meta  { font-size: 11px; }
+    h2.sec { font-size: 15px; margin: 18px 0 10px; }
+    h3 { font-size: 13px; }
+    /* 宽表格：容器内横向滚动，不撑爆页面（纯 CSS，不改 HTML） */
+    table { display: block; width: 100%; overflow-x: auto;
+            -webkit-overflow-scrolling: touch; font-size: 11px; }
+    table caption { display: block; }
+    th, td { padding: 5px 7px; }
+    .chart { gap: 8px; height: 110px; padding: 8px 4px 0; }
+    .chart .cap, .chart .qx { font-size: 9px; }
+    .read { font-size: 11.5px; padding: 8px 10px; }
+    .toc { font-size: 12px; }
+  }
+/* ===== /mobile-screen-patch ===== */
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<!-- ==================== 封面 ==================== -->
+<div class="cover">
+  <div class="cover-title">阿里巴巴电商事业群</div>
+  <div class="cover-meta">淘宝天猫集团（TTG）＋ 国际数字商业集团（AIDC）｜母体：阿里巴巴集团</div>
+  <div class="cover-sub">FY2025 财报整理</div>
+  <div class="cover-meta">
+    <b>NYSE: BABA ｜ HKEX: 9988</b> &nbsp;|&nbsp; 财年截至 2025-03-31 &nbsp;|&nbsp; 整理日期：2026-06-24
+  </div>
+  <hr class="rule-red">
+
+  <div class="read"><span class="rt">重要口径说明（请先读）：</span>「淘宝」在阿里巴巴集团内从未单独披露财务数据，可披露的最小单元是淘宝天猫集团（TTG），淘宝与天猫合并列报、无法拆分。2024 年 11 月阿里将 TTG（中国电商）与 AIDC（国际电商）合并为管理意义上的「阿里巴巴电商事业群」。本报告即以 TTG ＋ AIDC 两个财务分部代表「淘宝」所在的电商主体，合并口径为整理者按事业群架构汇总（阿里 FY2025 仍按 TTG、AIDC 等分部分别列报，并无官方「事业群合并」数字）。分部层面阿里仅披露收入与经调整 EBITA；利润表净利、资产负债表、现金流量表只有集团合并口径、无法拆分至事业群，本报告第四～六节为阿里集团合并数据并已明确标注。</div>
+
+  <table>
+    <thead><tr><th style="width:46%">核心指标（人民币百万元，每股除外）</th><th class="num">FY2025</th><th class="num">同比</th></tr></thead>
+    <tbody>
+      <tr><td>电商事业群总营收（TTG＋AIDC，整理者汇总）<span class="desc">淘宝天猫集团与国际数字商业集团两个分部收入之和</span></td><td class="num">582,127</td><td class="num pos">+8.3%</td></tr>
+      <tr><td>其中：淘宝天猫集团 TTG<span class="desc">中国零售（客户管理 CMR＋直营）＋中国批发，淘宝/天猫所在分部</span></td><td class="num">449,827</td><td class="num pos">+3%</td></tr>
+      <tr><td>其中：国际数字商业 AIDC<span class="desc">速卖通 AliExpress、Trendyol、Lazada、Daraz 等国际零售＋批发</span></td><td class="num">132,300</td><td class="num pos">+29%</td></tr>
+      <tr><td>其中：客户管理收入 CMR（TTG 变现核心）<span class="desc">向商家收取的营销/佣金/技术服务费，淘天最赚钱的收入</span></td><td class="num">322,346</td><td class="num pos">+6%</td></tr>
+      <tr><td>电商事业群经调整 EBITA（整理者汇总）<span class="desc">分部经营利润口径，剔除股权激励、无形摊销、商誉减值等</span></td><td class="num">181,095</td><td class="num neg">−3.0%</td></tr>
+      <tr><td>其中：TTG 经调整 EBITA<span class="desc">中国电商高盈利来源，FY2025 受用户体验投入小幅压制</span></td><td class="num">196,232</td><td class="num pos">+1%</td></tr>
+      <tr><td>其中：AIDC 经调整 EBITA<span class="desc">国际电商仍处投入期，亏损同比扩大</span></td><td class="num">−15,137</td><td class="num neg">亏损扩大</td></tr>
+      <tr><td>电商事业群经调整 EBITA 利润率（整理者计算）<span class="desc">经调整 EBITA ÷ 事业群收入</span></td><td class="num">31.1%</td><td class="num neg">−3.6pp</td></tr>
+      <tr><td colspan="3" class="small muted">（以下为阿里巴巴集团合并口径，无法拆分至事业群）</td></tr>
+      <tr><td>阿里集团总营收<span class="desc">含云、菜鸟、本地生活、大文娱等全部业务</span></td><td class="num">996,347</td><td class="num pos">+6%</td></tr>
+      <tr><td>阿里集团归母净利润（GAAP）<span class="desc">含投资公允价值变动等，与经营无直接关系，波动大</span></td><td class="num">130,109</td><td class="num pos">+63%</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lead">FY2025（截至 2025-03-31）电商事业群「增收、利润承压」：收入端 TTG＋AIDC 合计 +8.3%，其中 AIDC 凭速卖通 Choice、Trendyol 跨境放量 +29% 成为增长主引擎，TTG 收入仅 +3% 但变现核心 CMR 凭「软件服务费＋全站推」回升 +6%；利润端事业群经调整 EBITA −3.0%，主因 TTG 加大用户体验/技术投入叠加 AIDC 为抢国际市场亏损扩大至 151 亿。趋势上 Q4（截至 2025-03）CMR 提速至 +12%、AIDC 亏损环比收窄，事业群利润同比转正，呈现「先投入、后变现」的拐点信号。</p>
+  <p class="small muted">方法与口径：本报告由整理者依据阿里巴巴集团向 SEC 提交的 6-K 业绩公告（FY2025 全年及各季度 Exhibit 99.1）独立整理，数字均经四季度勾稽核对。美元换算按公告口径 US$1.00 = RMB7.2567（截至 2025-03-31）。业绩公告为未经审计口径（FY2025 审计于公告时仍在进行，经审计数以 20-F 年报为准）。比率类除注明外为整理者计算。仅供研究参考，不构成投资建议。</p>
+</div>
+
+<!-- ==================== 目录 ==================== -->
+<div class="pagebreak"></div>
+<h2 class="sec">目录</h2>
+<div class="toc">
+  <div>一、主体与口径说明</div>
+  <div>二、FY2025 电商事业群分部业绩总览（TTG＋AIDC）</div>
+  <div>三、分季度经营表现（事业群口径）</div>
+  <div>四、阿里巴巴集团合并利润表（全年）</div>
+  <div>五、阿里巴巴集团合并资产负债表</div>
+  <div>六、阿里巴巴集团合并现金流量表</div>
+  <div>七、Non-GAAP 调节与股权激励</div>
+  <div>八、股东回报与资本结构</div>
+  <div>九、业务与战略动态</div>
+  <div>十、管理层评论摘录</div>
+  <div>十一、关键财务比率</div>
+  <div>十二、风险与关注点</div>
+  <div>十三、期后事项</div>
+  <div>十四、资料来源</div>
+  <div>附录：研读问答记录</div>
+</div>
+
+<!-- ==================== 一、主体与口径说明 ==================== -->
+<section>
+  <h2 class="sec">一、主体与口径说明</h2>
+  <p class="lead">阿里巴巴集团（Alibaba Group Holding Limited，NYSE: BABA / HKEX: 9988，注册于开曼群岛，总部杭州）财年截至每年 3 月 31 日。本报告聚焦其电商主体，即淘宝、天猫所在的财务分部。理解本报告须先明确三层口径：</p>
+  <ul class="bul">
+    <li><b>淘宝 ≠ 单独披露</b>——阿里能披露的最小财务单元是淘宝天猫集团（TTG），淘宝与天猫合并列报；公司从不单独公布「淘宝」收入或利润，本报告无法、也不会编造淘宝单独数字。</li>
+    <li><b>「电商事业群」= TTG ＋ AIDC</b>——2024 年 11 月阿里把中国电商（TTG）与国际电商（AIDC）合并由蒋凡统一管理，称「阿里巴巴电商事业群」。这是管理架构；FY2025 财务上阿里仍把 TTG 与 AIDC 作为两个独立报告分部分别列报，没有官方的「事业群合并」报表。本报告中事业群合计数（收入 582,127、经调整 EBITA 181,095）均为整理者将两个分部相加所得，已逐处标注。</li>
+    <li><b>只有分部收入与经调整 EBITA 可得</b>——阿里分部披露止于「收入」与「经调整 EBITA」两项，没有分部级的净利润、资产负债表、现金流量表。因此本报告第四～六节（利润表、资产负债表、现金流量表）为阿里巴巴集团合并口径，用于提供母体财务背景，不可理解为电商事业群自身报表。</li>
+  </ul>
+  <h3>电商事业群两大分部构成</h3>
+  <ul class="bul">
+    <li><b>淘宝天猫集团 TTG</b>——中国零售商业：①客户管理收入 CMR（向商家收取的营销推广 + 佣金 + 技术服务费，淘天最核心利润来源）；②直营及其他（天猫超市、天猫国际等自营，按全额法计收入、毛利低）；以及中国批发（1688）。</li>
+    <li><b>国际数字商业集团 AIDC</b>——国际零售（速卖通 AliExpress 及其 Choice、土耳其 Trendyol、东南亚 Lazada、南亚 Daraz、Miravia 等）＋国际批发（Alibaba.com）。</li>
+  </ul>
+  <p>治理：董事长蔡崇信，集团 CEO 兼阿里云 CEO 吴泳铭，CFO 徐宏，电商事业群 CEO 蒋凡。注意：自 FY2026 第二季度起，阿里将 TTG 与饿了么、飞猪整合为新报告分部「阿里巴巴中国电商集团」，TTG 作为独立分部口径自 FY2026 起不再单列——FY2025 恰是 TTG / AIDC 清晰可比的最后一个完整财年（详见第十三节）。</p>
+</section>
+
+<!-- ==================== 二、业绩总览 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">二、FY2025 电商事业群分部业绩总览（TTG＋AIDC）</h2>
+  <p class="small muted">口径：阿里 FY2025（2024-04-01 至 2025-03-31）分部收入，单位人民币百万元。事业群合计为整理者汇总。</p>
+  <h3>分部收入</h3>
+  <table>
+    <thead><tr><th>分部 / 收入类型</th><th class="num">FY2024</th><th class="num">FY2025</th><th class="num">同比</th></tr></thead>
+    <tbody>
+      <tr><td>淘宝天猫集团 — 中国零售 · 客户管理收入 CMR</td><td class="num">304,009</td><td class="num">322,346</td><td class="num pos">+6%</td></tr>
+      <tr><td>淘宝天猫集团 — 中国零售 · 直营及其他</td><td class="num">110,405</td><td class="num">103,180</td><td class="num neg">−7%</td></tr>
+      <tr><td>淘宝天猫集团 — 中国零售小计</td><td class="num">414,414</td><td class="num">425,526</td><td class="num pos">+3%</td></tr>
+      <tr><td>淘宝天猫集团 — 中国批发（1688）</td><td class="num">20,479</td><td class="num">24,301</td><td class="num pos">+19%</td></tr>
+      <tr class="key"><td>淘宝天猫集团 TTG 合计</td><td class="num">434,893</td><td class="num">449,827</td><td class="num pos">+3%</td></tr>
+      <tr><td>国际数字商业 — 国际零售（速卖通/Trendyol/Lazada 等）</td><td class="num">81,654</td><td class="num">108,465</td><td class="num pos">+33%</td></tr>
+      <tr><td>国际数字商业 — 国际批发（Alibaba.com）</td><td class="num">20,944</td><td class="num">23,835</td><td class="num pos">+14%</td></tr>
+      <tr class="key"><td>国际数字商业 AIDC 合计</td><td class="num">102,598</td><td class="num">132,300</td><td class="num pos">+29%</td></tr>
+      <tr class="key"><td>电商事业群收入合计（整理者汇总）</td><td class="num">537,491</td><td class="num">582,127</td><td class="num pos">+8.3%</td></tr>
+    </tbody>
+  </table>
+  <h3>分部经调整 EBITA（分部经营利润口径）</h3>
+  <table>
+    <thead><tr><th>分部</th><th class="num">FY2024</th><th class="num">FY2025</th><th class="num">同比</th></tr></thead>
+    <tbody>
+      <tr><td>淘宝天猫集团 TTG</td><td class="num">194,827</td><td class="num">196,232</td><td class="num pos">+1%</td></tr>
+      <tr><td>国际数字商业 AIDC</td><td class="num">−8,035</td><td class="num">−15,137</td><td class="num neg">亏损扩大 88%</td></tr>
+      <tr class="key"><td>电商事业群经调整 EBITA 合计（整理者汇总）</td><td class="num">186,792</td><td class="num">181,095</td><td class="num neg">−3.0%</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <ol class="read-list">
+      <li>增长靠 AIDC、利润靠 TTG，结构分化明显。收入端 AIDC +29% 贡献绝大部分增量（占事业群收入比从 19.1% 升至 22.7%）；利润端 TTG 仍是唯一发动机（经调整 EBITA 196,232，利润率约 43.6%），AIDC 仍净投入。</li>
+      <li>TTG「收入仅 +3% 但 CMR +6%」的背离来自结构优化：低毛利的直营及其他主动收缩 −7%，高变现的客户管理收入 CMR +6%。CMR 提速的两大抓手是 2024 年 9 月起对成交额开征的软件服务费（约 0.6%）与 AI 营销工具「全站推」渗透率提升，即「变现率（take rate）」回升。</li>
+      <li>TTG 利润率小幅下滑（44.8%→43.6%），因公司主动把 CMR 增量再投入到价格力商品、客服、88VIP 会员权益与 AI 体验，换取用户与订单增长——是策略性让利，而非盈利能力恶化。</li>
+      <li>AIDC 亏损从 80 亿扩大到 151 亿，主因速卖通 Choice 跨境业务与欧洲、海湾市场扩张投入；但 Lazada 减亏、Trendyol 跨境盈利改善，使 Q4 单季亏损同比收窄（详见第三节），投入效率出现边际改善。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 三、分季度经营表现 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">三、分季度经营表现（事业群口径）</h2>
+  <p class="small muted">口径：阿里 FY2025 四个季度（Q1 截至 2024-06、Q2 截至 2024-09、Q3 截至 2024-12、Q4 截至 2025-03），单位人民币百万元；事业群合计与经调整 EBITA 为整理者按 TTG＋AIDC 汇总。四季合计与全年完全勾稽。</p>
+  <table>
+    <thead><tr><th>指标（人民币百万元）</th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">全年</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>事业群总营收（TTG＋AIDC）</td><td class="num">142,666</td><td class="num">130,666</td><td class="num">173,847</td><td class="num">134,948</td><td class="num">582,127</td></tr>
+      <tr><td>同比增速</td><td class="num pos">+4%</td><td class="num pos">+7%</td><td class="num pos">+10%</td><td class="num pos">+12%</td><td class="num pos">+8%</td></tr>
+      <tr><td>&nbsp;&nbsp;其中：TTG 收入</td><td class="num">113,373</td><td class="num">98,994</td><td class="num">136,091</td><td class="num">101,369</td><td class="num">449,827</td></tr>
+      <tr><td>&nbsp;&nbsp;其中：AIDC 收入</td><td class="num">29,293</td><td class="num">31,672</td><td class="num">37,756</td><td class="num">33,579</td><td class="num">132,300</td></tr>
+      <tr class="key"><td>事业群经调整 EBITA</td><td class="num">45,104</td><td class="num">41,685</td><td class="num">56,131</td><td class="num">38,175</td><td class="num">181,095</td></tr>
+      <tr><td>同比增速</td><td class="num neg">−8%</td><td class="num neg">−11%</td><td class="num neg">−1%</td><td class="num pos">+11%</td><td class="num neg">−3%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart">
+    <div class="col"><div class="cap">142,666<br>EBITA率 31.6%</div><div class="bar" style="height:45%"></div><div class="qx">Q1</div></div>
+    <div class="col"><div class="cap">130,666<br>EBITA率 31.9%</div><div class="bar" style="height:41%"></div><div class="qx">Q2</div></div>
+    <div class="col"><div class="cap">173,847<br>EBITA率 32.3%</div><div class="bar" style="height:55%"></div><div class="qx">Q3</div></div>
+    <div class="col"><div class="cap">134,948<br>EBITA率 28.3%</div><div class="bar" style="height:43%"></div><div class="qx">Q4</div></div>
+  </div>
+  <p class="small muted">柱高 = 该季事业群营收 ÷ 最大季（Q3）× 120px；EBITA 率 = 该季事业群经调整 EBITA ÷ 该季营收（整理者计算）。Q3 含双 11 旺季故收入最高。</p>
+
+  <div class="read">
+    <span class="rt">季度走势解读</span>
+    <ol class="read-list">
+      <li><b>Q1（截至 2024-06）</b>：收入 +4%，TTG 收入受变现率下行小幅 −1%（彼时新模式低货币化占比上升），AIDC +32%；事业群利润 −8%，TTG 主动加大用户投入、AIDC 亏损放大。</li>
+      <li><b>Q2（截至 2024-09）</b>：9 月起对成交额开征软件服务费、变现率企稳，但利润仍 −11%（投入高峰）。这是事业群盈利同比最弱的一季。</li>
+      <li><b>Q3（截至 2024-12）</b>：双 11 旺季收入冲高至 1,738 亿，TTG CMR +9%、变现率随软件服务费满季度生效与全站推渗透回升；利润同比降幅收窄到 −1%，拐点临近。</li>
+      <li><b>Q4（截至 2025-03）</b>：CMR 提速至 +12%、AIDC 亏损同比收窄，事业群利润同比转正 +11%——「先投入、后变现」逻辑兑现。但 Q4 是淡季，EBITA 率季节性回落到 28.3%。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 四、合并利润表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">四、阿里巴巴集团合并利润表（全年 · 未经审计）</h2>
+  <div class="read"><span class="rt">注意：</span>下表为阿里巴巴集团合并口径（含云、菜鸟、本地生活、大文娱、高鑫/银泰等全部业务），非电商事业群单独数据——分部级利润表阿里不披露。列示于此用于提供母体盈利背景。单位：人民币百万元（每股除外）。</div>
+  <table>
+    <thead><tr><th>项目（人民币百万元，每股除外）</th><th class="num">FY2024</th><th class="num">FY2025</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>营业收入</td><td class="num">941,168</td><td class="num">996,347</td></tr>
+      <tr><td>营业成本</td><td class="num">(586,323)</td><td class="num">(598,285)</td></tr>
+      <tr><td>产品开发费用（研发）</td><td class="num">(52,256)</td><td class="num">(57,151)</td></tr>
+      <tr><td>销售及市场费用</td><td class="num">(115,141)</td><td class="num">(144,021)</td></tr>
+      <tr><td>管理费用</td><td class="num">(41,985)</td><td class="num">(44,239)</td></tr>
+      <tr><td>无形资产摊销及减值</td><td class="num">(21,592)</td><td class="num">(6,336)</td></tr>
+      <tr><td>商誉减值</td><td class="num">(10,521)</td><td class="num">(6,171)</td></tr>
+      <tr><td>其他（损失）收益净额</td><td class="num">—</td><td class="num">761</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">113,350</td><td class="num">140,905</td></tr>
+      <tr><td>利息及投资收益净额</td><td class="num">(9,964)</td><td class="num">20,759</td></tr>
+      <tr><td>利息支出</td><td class="num">(7,947)</td><td class="num">(9,596)</td></tr>
+      <tr><td>其他收益净额</td><td class="num">6,157</td><td class="num">3,387</td></tr>
+      <tr><td>税前利润（权益法损益前）</td><td class="num">101,596</td><td class="num">155,455</td></tr>
+      <tr><td>所得税费用</td><td class="num">(22,529)</td><td class="num">(35,445)</td></tr>
+      <tr><td>权益法核算的投资损益</td><td class="num">(7,735)</td><td class="num">5,966</td></tr>
+      <tr><td>净利润</td><td class="num">71,332</td><td class="num">125,976</td></tr>
+      <tr class="key"><td>归母净利润（归属阿里普通股股东）</td><td class="num">80,009</td><td class="num">130,109</td></tr>
+      <tr><td>摊薄每股收益 EPS（人民币元/股）</td><td class="num">3.91</td><td class="num">6.70</td></tr>
+      <tr><td>摊薄每 ADS 收益（人民币元/ADS，1 ADS=8 股）</td><td class="num">31.24</td><td class="num">53.59</td></tr>
+      <tr><td>加权平均股本——摊薄（百万股）</td><td class="num">20,359</td><td class="num">19,318</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：集团归母净利 +63% 主要由非经营因素驱动——FY2024 投资净损失（利息及投资收益净额 −99.6 亿），FY2025 转为 +207.6 亿净收益（上市股权重估收益），叠加无形摊销与商誉减值大幅减少；经营利润本身 +24%。这部分波动与电商主业无直接关系，看电商真实经营应以第二、三节的分部经调整 EBITA 为准。Q4 单季（截至 2025-03）：集团营收 236,454（+7%）、经调整 EBITA 32,616（+36%）、归母净利 12,559。</p>
+</section>
+
+<!-- ==================== 五、合并资产负债表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">五、阿里巴巴集团合并资产负债表（未经审计）</h2>
+  <div class="read"><span class="rt">注意：</span>资产负债表仅有集团合并口径，无法拆分至电商事业群。单位：人民币百万元。</div>
+  <table>
+    <thead><tr><th>项目（人民币百万元）</th><th class="num">2024-03-31</th><th class="num">2025-03-31</th></tr></thead>
+    <tbody>
+      <tr><td>现金及现金等价物</td><td class="num">248,125</td><td class="num">145,487</td></tr>
+      <tr><td>短期投资</td><td class="num">262,955</td><td class="num">228,826</td></tr>
+      <tr><td>受限资金及托管应收款</td><td class="num">38,299</td><td class="num">43,781</td></tr>
+      <tr><td>预付款、应收款及其他（流动）</td><td class="num">143,536</td><td class="num">202,175</td></tr>
+      <tr><td>股权证券及其他投资（流动）</td><td class="num">59,949</td><td class="num">53,780</td></tr>
+      <tr class="key"><td>流动资产合计</td><td class="num">752,864</td><td class="num">674,049</td></tr>
+      <tr><td>股权证券及其他投资（非流动）</td><td class="num">220,942</td><td class="num">356,818</td></tr>
+      <tr><td>权益法投资</td><td class="num">203,131</td><td class="num">210,169</td></tr>
+      <tr><td>物业及设备净额（含云/AI 基建）</td><td class="num">185,161</td><td class="num">203,348</td></tr>
+      <tr><td>商誉</td><td class="num">259,679</td><td class="num">255,501</td></tr>
+      <tr class="key"><td>资产总计</td><td class="num">1,764,829</td><td class="num">1,804,227</td></tr>
+      <tr><td>应计费用、应付账款及其他负债（流动）</td><td class="num">297,883</td><td class="num">332,537</td></tr>
+      <tr><td>递延收入及客户预付款（流动）</td><td class="num">72,818</td><td class="num">68,335</td></tr>
+      <tr class="key"><td>流动负债合计</td><td class="num">421,507</td><td class="num">435,346</td></tr>
+      <tr><td>非流动无担保优先票据</td><td class="num">86,089</td><td class="num">122,398</td></tr>
+      <tr><td>非流动可转换优先票据</td><td class="num">—</td><td class="num">35,834</td></tr>
+      <tr class="key"><td>负债总计</td><td class="num">652,230</td><td class="num">714,121</td></tr>
+      <tr><td>留存收益</td><td class="num">597,897</td><td class="num">645,478</td></tr>
+      <tr><td>归属阿里股东权益合计</td><td class="num">986,544</td><td class="num">1,009,858</td></tr>
+      <tr><td>少数股东权益</td><td class="num">115,327</td><td class="num">68,535</td></tr>
+      <tr class="key"><td>权益总计</td><td class="num">1,101,871</td><td class="num">1,078,393</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>资产总计 1.80 万亿元基本稳定。广义现金储备（现金+短投）从 5,111 亿降至 3,743 亿，主因 FY2025 大额回购（US$119 亿）、分红与 843 亿元资本开支同时发生；同时长期股权投资（非流动）从 2,209 亿增至 3,568 亿，部分是现金向投资资产的再配置与上市股权重估。负债端新增 358 亿可转债、优先票据扩张，总负债/EBITDA 仅约 0.89 倍，杠杆很低；负债主体仍是经营性占款（应付/预收）。股东权益微增，少数股东权益大降（高鑫/银泰等资产处置）。</p>
+  </div>
+</section>
+
+<!-- ==================== 六、合并现金流量表 ==================== -->
+<section>
+  <h2 class="sec">六、阿里巴巴集团合并现金流量表（全年 · 未经审计）</h2>
+  <div class="read"><span class="rt">注意：</span>现金流量表仅有集团合并口径，无法拆分至电商事业群。单位：人民币百万元。</div>
+  <table>
+    <thead><tr><th>项目（人民币百万元）</th><th class="num">FY2024</th><th class="num">FY2025</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>经营活动现金流净额</td><td class="num">182,593</td><td class="num">163,509</td></tr>
+      <tr><td>投资活动现金流净额</td><td class="num">(21,824)</td><td class="num">(185,415)</td></tr>
+      <tr><td>筹资活动现金流净额</td><td class="num">(108,244)</td><td class="num">(76,215)</td></tr>
+      <tr><td>汇率变动影响</td><td class="num">4,389</td><td class="num">965</td></tr>
+      <tr class="key"><td>现金及受限资金净增加（减少）额</td><td class="num">56,914</td><td class="num">(97,156)</td></tr>
+      <tr><td>&nbsp;&nbsp;备查：资本开支（购建物业设备）</td><td class="num">(27,579)</td><td class="num">(84,278)</td></tr>
+      <tr><td>&nbsp;&nbsp;备查：自由现金流（Non-GAAP）</td><td class="num">156,210</td><td class="num">73,870</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>经营现金流 1,635 亿仍强劲，但自由现金流从 1,562 亿腰斩至 739 亿（−53%），唯一主因是资本开支从 276 亿暴增至 843 亿（约 3 倍）——全部投向云与 AI 算力基础设施，对应公司「三年 3,800 亿 AI+云」战略的启动。投资活动净流出从 218 亿放大到 1,854 亿（购置投资与基建并行）。筹资端净流出 762 亿（回购 + 分红，部分由发债对冲）。这是一份「主业现金牛 + 战略大投入」的现金流：经营造血能力没问题，FCF 的下滑是主动加杠杆投 AI 的结果，而非经营恶化。</p>
+  </div>
+</section>
+
+<!-- ==================== 七、Non-GAAP 调节 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">七、Non-GAAP 调节与股权激励（集团口径）</h2>
+  <p class="lead">阿里的核心 Non-GAAP 指标是经调整 EBITA（也是分部利润口径）与 Non-GAAP 净利润。前者从净利润加回利息、税、权益法损益后得到营业利润，再加回股权激励 SBC、无形摊销、商誉减值等非现金/非经营项；后者在净利润上加回 SBC、无形摊销、投资损益与减值及其税务影响。单位：人民币百万元（每股除外）。</p>
+  <table>
+    <thead><tr><th>项目（人民币百万元，每股除外）</th><th class="num">FY2024</th><th class="num">FY2025</th></tr></thead>
+    <tbody>
+      <tr><td>营业利润（GAAP）</td><td class="num">113,350</td><td class="num">140,905</td></tr>
+      <tr><td>加：股权激励费用 SBC</td><td class="num">18,546</td><td class="num">13,970</td></tr>
+      <tr><td>加：无形资产摊销及减值</td><td class="num">21,592</td><td class="num">6,336</td></tr>
+      <tr><td>加：商誉减值及其他</td><td class="num">11,540</td><td class="num">11,854</td></tr>
+      <tr class="key"><td>经调整 EBITA</td><td class="num">165,028</td><td class="num">173,065</td></tr>
+      <tr><td>加：折旧及土地使用权租赁成本</td><td class="num">26,640</td><td class="num">29,260</td></tr>
+      <tr class="key"><td>经调整 EBITDA</td><td class="num">191,668</td><td class="num">202,325</td></tr>
+      <tr><td>净利润（GAAP）</td><td class="num">71,332</td><td class="num">125,976</td></tr>
+      <tr><td>加：SBC + 无形摊销 + 投资损益/减值 + 税务影响（净）</td><td class="num">86,147</td><td class="num">32,146</td></tr>
+      <tr class="key"><td>Non-GAAP 净利润</td><td class="num">157,479</td><td class="num">158,122</td></tr>
+      <tr><td>Non-GAAP 摊薄每 ADS 收益（人民币元）</td><td class="num">62.23</td><td class="num">65.41</td></tr>
+    </tbody>
+  </table>
+  <p class="small">点评：股权激励 SBC 从 185 亿降至 140 亿（占集团收入约 2.0%→1.4%），随回购与组织调整持续下降，对股东友好。集团经调整 EBITA +5%、Non-GAAP 净利润几乎持平（+0.4%），而 GAAP 净利 +63% 的差异几乎全部来自投资公允价值变动这类非经营项——再次印证：看阿里经营质量要用经调整 EBITA，而非 GAAP 净利。</p>
+</section>
+
+<!-- ==================== 八、股东回报 ==================== -->
+<section>
+  <h2 class="sec">八、股东回报与资本结构（集团口径）</h2>
+  <p class="lead">FY2025 阿里股东回报力度显著：全年回购约 US$119 亿股份，使流通股净减少 5.1%（摊薄加权股本由 203.6 亿股降至 193.2 亿股）；董事会批准 FY2025 年度常规股息 US$1.05/ADS ＋ 一次性特别股息 US$0.95/ADS，合计 US$2.00/ADS，分红总额约 US$46 亿。回购 + 分红合计向股东返还约 US$165 亿。</p>
+  <p>资本结构上，集团账面广义现金（现金+短投）约 3,743 亿元、总负债/EBITDA 仅约 0.89 倍，净现金充裕；FY2025 同时启动「三年 3,800 亿元 AI+云基建」大投入。资金优先级由此清晰：① 投 AI+云与电商核心体验（资本开支三倍增）；② 持续回购缩股；③ 稳定分红。需注意上述回报与现金均为集团层面，无法对应到电商事业群单独贡献。</p>
+</section>
+
+<!-- ==================== 九、业务与战略动态 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">九、业务与战略动态</h2>
+  <h3>1. 「用户为先、AI 驱动」——TTG 从「保 GMV」转向「促体验+提变现」并行</h3>
+  <p>FY2025 淘天的主线是用 CMR 增量反哺用户体验：投入价格力商品、客服、88VIP 权益与 AI 应用，换取新客与订单增长；88VIP 会员同比双位数增长，至 Q4（截至 2025-03）超过 5,000 万（FY2025 Q3 为 4,900 万）。变现端，2024 年 9 月起对平台成交额开征软件服务费（约 0.6%），并推广 AI 全域营销工具「全站推」，二者合力推动变现率（take rate）自 Q1 的低点逐季回升，带动 CMR 全年 +6%、Q4 提速至 +12%。</p>
+  <h3>2. AIDC：跨境放量 + 减亏路径并行</h3>
+  <p>AIDC 收入 +29%，由速卖通 AliExpress（含 Choice 半托管）与土耳其 Trendyol 跨境业务驱动；地域聚焦欧洲与海湾市场。全年经调整 EBITA 亏损扩大至 −151 亿（投入扩张），但 Lazada 大幅减亏、Trendyol 跨境转盈、速卖通 Choice 单位经济（UE）环比改善，使 Q4 单季亏损同比收窄，显示投入效率拐点。</p>
+  <h3>3. AI+云成为「第二引擎」，资本开支三倍增</h3>
+  <p>2025-02 阿里宣布未来三年investing 超过 3,800 亿元建设云和 AI 基础设施（超过过去十年总和）。直接结果是 FY2025 资本开支由 276 亿增至 843 亿、自由现金流腰斩。虽云属独立分部，但 AI 能力（如「全站推」、AI 客服/导购）正反哺淘天电商体验与变现，是电商事业群战略的底层支撑。</p>
+  <h3>4. 资产做减法：聚焦核心</h3>
+  <p>FY2025 推进非核心资产处置（高鑫零售/大润发、银泰等），少数股东权益由 1,153 亿降至 685 亿；剔除已处置业务后，集团 Q4 收入「同口径」增速约 +10%（CFO 口径），反映「聚焦电商与 AI+云两大核心」的取舍。</p>
+</section>
+
+<!-- ==================== 十、管理层评论摘录 ==================== -->
+<section>
+  <h2 class="sec">十、管理层评论摘录（按季度）</h2>
+  <div class="q">Q3 财报会（2025-02-20，截至 2024-12 季度）</div>
+  <p class="quote"><span class="who">吴泳铭（集团 CEO）：</span>本季业绩反映「用户为先、AI 驱动」战略奏效、核心业务重回加速；淘天 CMR +9%、88VIP 达 4,900 万。同日宣布未来三年投入超 3,800 亿元建设云与 AI 基础设施，金额超过去十年总和。</p>
+  <div class="q">Q4 及 FY2025 全年财报会（2025-05-15，截至 2025-03 季度）</div>
+  <p class="quote"><span class="who">吴泳铭（集团 CEO）：</span>「本季度及全年业绩印证了我们『用户为先、AI 驱动』战略的持续有效，核心业务增长继续加速……淘宝天猫客户管理收入本季增长 12%，反映了对用户体验投入和有效变现的持续效果。展望未来，我们将聚焦核心业务，并继续把 AI＋云打造为长期增长的新引擎。」（中文摘译）</p>
+  <p class="quote"><span class="who">徐宏（CFO）：</span>「本季度表现强劲，收入增长 7%、EBITA 增长 36%……FY2025 我们回购了 US$119 亿股份，实现流通股净减少 5.1%；董事会另批准合计 US$46 亿的年度及特别股息。」（中文摘译）该季 AIDC 收入 +22%、亏损同比收窄，88VIP 超 5,000 万。</p>
+  <p class="small muted">以上为英文官方业绩公告的中文摘译，措辞以阿里官方稿为准。FY2025 各季业绩公告均由 SEC 6-K Exhibit 99.1 披露（见第十四节）。</p>
+</section>
+
+<!-- ==================== 十一、关键财务比率 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">十一、关键财务比率</h2>
+  <h3>A. 电商事业群口径（分部，整理者计算）</h3>
+  <table>
+    <thead><tr><th>比率</th><th class="num">FY2024</th><th class="num">FY2025</th><th class="num">变动</th></tr></thead>
+    <tbody>
+      <tr><td>事业群经调整 EBITA 利润率<span class="desc">事业群经调整 EBITA ÷ 事业群收入</span></td><td class="num">34.8%</td><td class="num">31.1%</td><td class="num neg">−3.6pp</td></tr>
+      <tr><td>TTG 经调整 EBITA 利润率<span class="desc">中国电商盈利能力，仍处高位</span></td><td class="num">44.8%</td><td class="num">43.6%</td><td class="num neg">−1.2pp</td></tr>
+      <tr><td>AIDC 经调整 EBITA 利润率<span class="desc">国际电商仍亏损，负值越大亏越多</span></td><td class="num">−7.8%</td><td class="num">−11.4%</td><td class="num neg">−3.6pp</td></tr>
+      <tr><td>客户管理收入 CMR 同比增速<span class="desc">淘天变现核心，反映变现率与 GMV</span></td><td class="num">—</td><td class="num">+6%</td><td class="num pos">提速（Q4 +12%）</td></tr>
+      <tr><td>AIDC 收入占事业群比重<span class="desc">国际业务的增长贡献度</span></td><td class="num">19.1%</td><td class="num">22.7%</td><td class="num pos">+3.6pp</td></tr>
+    </tbody>
+  </table>
+  <h3>B. 阿里巴巴集团口径（合并，整理者计算）</h3>
+  <table>
+    <thead><tr><th>比率</th><th class="num">FY2024</th><th class="num">FY2025</th><th class="num">变动</th></tr></thead>
+    <tbody>
+      <tr><td>毛利率<span class="desc">（营收−营业成本）÷营收</span></td><td class="num">37.7%</td><td class="num">40.0%</td><td class="num pos">+2.3pp</td></tr>
+      <tr><td>营业利润率<span class="desc">营业利润÷营收</span></td><td class="num">12.0%</td><td class="num">14.1%</td><td class="num pos">+2.1pp</td></tr>
+      <tr><td>归母净利率（GAAP）<span class="desc">受投资损益扰动，参考意义有限</span></td><td class="num">8.5%</td><td class="num">13.1%</td><td class="num pos">+4.6pp</td></tr>
+      <tr><td>研发费用率<span class="desc">产品开发费用÷营收</span></td><td class="num">5.6%</td><td class="num">5.7%</td><td class="num pos">+0.1pp</td></tr>
+      <tr><td>有效所得税率<span class="desc">所得税÷税前利润</span></td><td class="num">22.2%</td><td class="num">22.8%</td><td class="num pos">+0.6pp</td></tr>
+      <tr><td>ROE（归母净利÷期末股东权益）<span class="desc">含投资损益，非纯经营回报</span></td><td class="num">8.1%</td><td class="num">12.9%</td><td class="num pos">+4.8pp</td></tr>
+      <tr><td>经营现金流／归母净利润<span class="desc">利润含金量；&gt;1 即利润足额变现金</span></td><td class="num">2.28</td><td class="num">1.26</td><td class="num neg">−1.02</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：比率均为整理者依据公开披露数据计算，口径可能与公司略有差异。集团 ROE/净利率含投资公允价值变动等非经营项，波动大，评估电商经营应以 A 组分部 EBITA 率为准。</p>
+</section>
+
+<!-- ==================== 十二、风险与关注点 ==================== -->
+<section>
+  <h2 class="sec">十二、风险与关注点</h2>
+  <ol class="read-list">
+    <li><b>口径不可比风险（最需注意）</b>：自 FY2026 Q2 起 TTG 与饿了么、飞猪合并为「阿里巴巴中国电商集团」新分部，TTG 独立分部数据将不再单列，本报告的 TTG/AIDC 可比口径仅适用至 FY2025，跨年纵向对比会断档。</li>
+    <li><b>TTG 盈利被「即时零售」战投侵蚀</b>：FY2026 起淘宝闪购/即时零售 + 7 月宣布的 500 亿元消费补贴，将显著压低中国电商短期利润率，事业群 EBITA 率或进一步下行。</li>
+    <li><b>AIDC 减亏不确定</b>：国际业务 FY2025 亏损扩大至 151 亿，虽 Q4 边际改善，但跨境物流、欧洲/海湾扩张与地缘/关税（如美国小额包裹免税政策变化）均可能拖慢减亏节奏。</li>
+    <li><b>变现率提升的天花板与商家承受度</b>：软件服务费 + 全站推是 CMR 回升的主因，但持续提价受商家经营压力与竞争（拼多多、抖音电商）制约。</li>
+    <li><b>自由现金流持续承压</b>：3,800 亿 AI+云三年计划下，资本开支高企将令 FCF 维持低位，需平衡投入、回购与分红。</li>
+    <li><b>GAAP 净利受投资损益剧烈扰动</b>：+63% 的归母净利增长主要来自上市股权重估等非经营项，不可外推为经营改善。</li>
+  </ol>
+</section>
+
+<!-- ==================== 十三、期后事项 ==================== -->
+<section>
+  <h2 class="sec">十三、期后事项（FY2025 财年结束日 2025-03-31 之后，截至 2026-06-24）</h2>
+  <ul class="bul">
+    <li><b>2025-04 底</b>：淘宝 App 上线「淘宝闪购 / 即时零售」，依托饿了么商家与履约网络切入高频即时零售，目标拉升 DAU/MAU、购买频次与广告 CMR。</li>
+    <li><b>2025-05-15</b>：发布 FY2025 全年及 Q4 业绩；同期开源 Qwen3（Qwen 家族下载超 3 亿、衍生模型超 10 万）。</li>
+    <li><b>2025-06</b>：阿里将淘宝天猫集团 + 饿了么 + 飞猪整合为「阿里巴巴中国电商集团」，自 FY2026 Q2 起作为新报告分部——TTG 独立口径自此退出财报。</li>
+    <li><b>2025-07</b>：宣布未来投入 500 亿元补贴消费（淘宝闪购/即时零售）。</li>
+    <li><b>2025-08-29（FY2026 Q1，截至 2025-06）</b>：中国电商集团 CMR +10%；淘宝闪购上线 3 周推动 8 月淘宝 App 月活消费者 +25%、峰值日订单 1.2 亿；88VIP 超 5,300 万。</li>
+    <li><b>2025-09-24</b>：云栖大会吴泳铭提出迈向「超级人工智能 ASI」三阶段路线，并称将在 3,800 亿基础上持续追加 AI 投入。</li>
+    <li><b>后续季度</b>：FY2026 Q2（截至 2025-09）、Q3（截至 2025-12）业绩已陆续披露，电商主体以「中国电商集团 + AIDC」口径呈现，短期利润受即时零售与 AI 投入压制。</li>
+  </ul>
+</section>
+
+<!-- ==================== 十四、资料来源 ==================== -->
+<section>
+  <h2 class="sec">十四、资料来源</h2>
+  <h3>① 官方业绩公告 / IR / SEC 文件（三大报表与分部数字均以此为准）：</h3>
+  <ul class="bul src">
+    <li>阿里巴巴 FY2025 全年及 Q4（截至 2025-03-31）业绩公告，SEC 6-K Exhibit 99.1（2025-05-15）：<a href="https://www.sec.gov/Archives/edgar/data/0001577552/000110465925049400/tm2515233d1_ex99-1.htm">https://www.sec.gov/Archives/edgar/data/0001577552/000110465925049400/tm2515233d1_ex99-1.htm</a></li>
+    <li>阿里巴巴 FY2025 Q3（截至 2024-12-31）业绩公告，SEC 6-K Exhibit 99.1（2025-02-20）：<a href="https://www.sec.gov/Archives/edgar/data/1577552/000110465925015648/tm257183d1_ex99-1.htm">https://www.sec.gov/Archives/edgar/data/1577552/000110465925015648/tm257183d1_ex99-1.htm</a></li>
+    <li>阿里巴巴 FY2025 Q2（截至 2024-09-30）业绩公告，SEC 6-K Exhibit 99.1（2024-11-15）：<a href="https://www.sec.gov/Archives/edgar/data/1577552/000110465924119688/tm2428590d1_ex99-1.htm">https://www.sec.gov/Archives/edgar/data/1577552/000110465924119688/tm2428590d1_ex99-1.htm</a></li>
+    <li>阿里巴巴 FY2025 Q1（截至 2024-06-30）业绩公告，SEC 6-K Exhibit 99.1（2024-08-15）：<a href="https://www.sec.gov/Archives/edgar/data/1577552/000110465924090102/tm2421791d1_ex99-1.htm">https://www.sec.gov/Archives/edgar/data/1577552/000110465924090102/tm2421791d1_ex99-1.htm</a></li>
+    <li>阿里巴巴官方业绩新闻稿（Businesswire，2025-05-14/15）：<a href="https://www.businesswire.com/news/home/20250514856295/en/">https://www.businesswire.com/news/home/20250514856295/en/</a></li>
+    <li>阿里巴巴 FY2025 Form 20-F / 年度报告（经审计，财年截至 2025-03-31）：<a href="https://www.sec.gov/Archives/edgar/data/1577552/000095017025090161/baba-20250331.htm">https://www.sec.gov/Archives/edgar/data/1577552/000095017025090161/baba-20250331.htm</a></li>
+  </ul>
+  <h3>② 补充（管理层发言、战略动态、期后事项交叉核对）：</h3>
+  <ul class="bul src">
+    <li>阿里巴巴投资者关系（财报与年报页）：<a href="https://www.alibabagroup.com/en-US/ir-financial-reports-annual-reports">https://www.alibabagroup.com/en-US/ir-financial-reports-annual-reports</a></li>
+    <li>整理者本地资料库《管理层发言_2025.md》《电话会议_2025.md》（用于第九、十、十三节的中文表态与时间线，所引数字均回到上述官方公告复核）。</li>
+  </ul>
+  <div class="disclaimer">
+    免责声明：本文件为第三方独立整理的研究资料，并非阿里巴巴官方文件。「电商事业群」收入与经调整 EBITA 合计数为整理者将 TTG、AIDC 两个官方分部相加所得，阿里并无官方合并口径；利润表、资产负债表、现金流量表为阿里巴巴集团合并口径，无法拆分至事业群。FY2025 财务数据为业绩公告（未经审计）口径，可能与经审计 20-F 年报存在差异。本文件不构成任何投资建议。
+  </div>
+</section>
+
+<!-- ==================== 附录：研读问答记录 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">附录：研读问答记录</h2>
+  <p class="small muted">以下为研读本期财报过程中的关键问答，标注依据层级：财报原文 / 整理者推断。</p>
+  <div class="q">一、为什么这份报告做的是「淘宝天猫 + 国际」，而不是「淘宝」？</div>
+  <p>（依据：财报原文）阿里巴巴在分部披露中能拆到的最小单元就是淘宝天猫集团（TTG），淘宝与天猫合并列报，公司从未单独公布淘宝的收入或利润。本次按用户指定口径以「电商事业群 = TTG + AIDC」代表淘宝所在主体，并把这一限制在封面、口径节与免责声明中反复明示。任何「淘宝单独」的财务数字都将是编造，故不提供。</p>
+  <div class="q">二、「电商事业群合计」是阿里官方披露的吗？</div>
+  <p>（依据：财报原文 + 整理者计算）不是。FY2025 阿里财务上仍把 TTG 与 AIDC 列为两个独立报告分部，没有官方的「事业群合并」数字。本报告中的 582,127（收入）与 181,095（经调整 EBITA）是整理者将两个分部相加所得，已逐处标注「整理者汇总」。四季合计与全年完全勾稽（TTG 收入 449,827、AIDC 132,300 等均对得上）。</p>
+  <div class="q">三、TTG 收入只 +3%，为什么说它表现不弱？</div>
+  <p>（依据：财报原文 + 整理者推断）TTG 总收入被低毛利的「直营及其他」主动收缩（−7%）拖累，但真正赚钱的客户管理收入 CMR +6%、Q4 提速到 +12%。CMR 回升来自 2024 年 9 月开征的软件服务费（约 0.6%）与 AI 工具「全站推」渗透带来的变现率提升。也就是说，TTG 是「砍掉低质收入、做厚高质收入」，质量优于增速本身。</p>
+  <div class="q">四、集团 GAAP 净利 +63%，能说明电商赚钱能力大增吗？</div>
+  <p>（依据：财报原文 + 整理者推断）不能。+63% 主要来自非经营项：FY2024 投资净损失、FY2025 转为约 208 亿元投资净收益（上市股权重估），叠加无形摊销/商誉减值减少。集团经营利润本身 +24%、经调整 EBITA +5%、Non-GAAP 净利仅 +0.4%。看电商真实经营，应以分部经调整 EBITA（TTG +1%、AIDC 亏损扩大）为准。</p>
+  <div class="q">五、自由现金流为什么腰斩？是经营出问题了吗？</div>
+  <p>（依据：财报原文）不是。经营现金流仍有 1,635 亿元，FCF 从 1,562 亿降到 739 亿的唯一主因是资本开支从 276 亿暴增到 843 亿，全部投向云与 AI 算力基础设施（对应三年 3,800 亿计划）。这是主动的战略投入，而非主业造血能力下降。</p>
+</section>
+
+</body>
+</html>
