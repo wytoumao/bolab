@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>拼多多 FY2025 财报整理</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 14mm 16mm 14mm;
+    @bottom-left  { content: "拼多多（PDD Holdings）2025 财年财报整理 · 据公开资料独立整理 · 非官方文件"; font-size: 7pt; color: #9aa3ad; }
+    @bottom-right { content: "第 " counter(page) " 页"; font-size: 7pt; color: #9aa3ad; }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Songti SC", "STHeiti", sans-serif;
+    color: #2b2b2b; font-size: 10.5pt; line-height: 1.6; background: #fff;
+  }
+  :root {
+    --bar:    #8a1c1c;   /* 顶部暗红条 */
+    --red:    #c0392b;   /* 章节标题 / 关键数字 */
+    --redln:  #c0392b;   /* 红色分隔线 */
+    --ink:    #2b2b2b;
+    --muted:  #8a929c;   /* 小灰字说明 */
+    --th:     #3f4348;   /* 深灰表头 */
+    --th2:    #4b5158;
+    --line:   #d9dee5;
+    --zebra:  #f5f6f8;
+    --pos:    #1f8a4c;
+    --neg:    #c0392b;
+  }
+  /* 顶部暗红条：position:fixed 在每一页重复；top:0 相对纸张顶边，避免分页时错位到页脚 */
+  .topbar { position: fixed; top: 0; left: 0; width: 100%; height: 8mm; background: var(--bar); }
+
+  /* ---------- 封面 ---------- */
+  .cover { padding-top: 12mm; }
+  .cover-title { font-size: 26pt; color: var(--ink); font-weight: 700; margin: 8px 0 2px; }
+  .cover-sub   { font-size: 22pt; color: var(--red); font-weight: 800; margin-bottom: 14px; }
+  .cover-meta  { font-size: 10pt; color: var(--muted); }
+  .cover-meta b{ color: #5a6470; font-weight: 600; }
+  .rule-red    { border: none; border-top: 2px solid var(--redln); margin: 16px 0 18px; }
+
+  /* ---------- 章节标题 ---------- */
+  h2.sec {
+    font-size: 14pt; color: var(--red); font-weight: 800; letter-spacing: .5px;
+    padding-bottom: 5px; border-bottom: 2px solid var(--redln); margin: 22px 0 12px;
+  }
+  h3 { font-size: 11pt; color: #5a6470; margin: 14px 0 6px; }
+
+  p { margin: 7px 0; }
+  .lead { margin: 8px 0; }
+  ul.bul { margin: 6px 0 6px 4px; list-style: none; }
+  ul.bul li { position: relative; padding-left: 16px; margin: 5px 0; }
+  ul.bul li::before { content: "•"; color: var(--red); position: absolute; left: 2px; font-weight: 700; }
+  .muted { color: var(--muted); }
+  .small { font-size: 9pt; }
+
+  /* ---------- 表格 ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 9.3pt; margin: 8px 0 6px; }
+  th, td { padding: 6px 9px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--th); color: #fff; font-weight: 600; font-size: 8.8pt; border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--zebra); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pos { color: var(--pos); font-weight: 600; }
+  .neg { color: var(--neg); font-weight: 600; }
+  tr.key td { font-weight: 700; }
+  tr.key td:first-child { color: var(--red); }
+  .desc { display: block; color: var(--muted); font-size: 8pt; font-weight: 400; margin-top: 2px; }
+  table caption { caption-side: top; text-align: left; font-size: 8.3pt; color: var(--muted); padding: 2px 0; }
+
+  /* ---------- 解读 / 要点框 ---------- */
+  .read { background: #fbfafa; border: 1px solid var(--line); border-left: 3px solid var(--red);
+          padding: 9px 13px; margin: 8px 0; font-size: 9.6pt; }
+  .read .rt { color: var(--red); font-weight: 700; }
+  ol.read-list { margin: 4px 0 0 18px; }
+  ol.read-list li { margin: 4px 0; }
+
+  /* ---------- 分季度柱状图（CSS 简版） ---------- */
+  .chart { display: flex; align-items: flex-end; gap: 18px; height: 150px; padding: 10px 8px 0;
+           border: 1px solid var(--line); margin: 8px 0; }
+  .chart .col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .chart .bar { width: 60%; background: var(--red); border-radius: 2px 2px 0 0; }
+  .chart .cap { font-size: 8pt; color: var(--muted); margin-bottom: 4px; text-align: center; }
+  .chart .qx  { font-size: 8.5pt; color: #5a6470; margin-top: 4px; }
+
+  /* ---------- 目录 ---------- */
+  .toc { columns: 1; font-size: 10pt; }
+  .toc div { padding: 3px 0; border-bottom: 1px dotted var(--line); }
+
+  /* ---------- 管理层 / 问答 ---------- */
+  .q { color: var(--red); font-weight: 700; margin: 12px 0 3px; }
+  .quote { color: #3a4753; margin: 3px 0 3px 0; }
+  .quote .who { font-weight: 700; color: #5a6470; }
+
+  .disclaimer { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line);
+                font-size: 8.3pt; color: var(--muted); }
+  .src { font-size: 8.6pt; }
+  .src a { color: #2c4a73; word-break: break-all; }
+  .pagebreak { page-break-before: always; }
+  section { page-break-inside: auto; }
+/* ===== mobile-screen-patch v1 — applied by scripts/patch_report_mobile.py ===== */
+  @media screen and (max-width: 720px) {
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-size: 13px; line-height: 1.65; padding: 0 14px 32px;
+           max-width: 100%; overflow-x: hidden; overflow-wrap: break-word; }
+    .topbar { position: static; height: 6px; }          /* fixed 8mm 顶条 → 细的入流色条 */
+    .cover { padding-top: 16px; }
+    .cover-title { font-size: 21px; }
+    .cover-sub   { font-size: 18px; }
+    .cover-meta  { font-size: 11px; }
+    h2.sec { font-size: 15px; margin: 18px 0 10px; }
+    h3 { font-size: 13px; }
+    /* 宽表格：容器内横向滚动，不撑爆页面（纯 CSS，不改 HTML） */
+    table { display: block; width: 100%; overflow-x: auto;
+            -webkit-overflow-scrolling: touch; font-size: 11px; }
+    table caption { display: block; }
+    th, td { padding: 5px 7px; }
+    .chart { gap: 8px; height: 110px; padding: 8px 4px 0; }
+    .chart .cap, .chart .qx { font-size: 9px; }
+    .read { font-size: 11.5px; padding: 8px 10px; }
+    .toc { font-size: 12px; }
+  }
+/* ===== /mobile-screen-patch ===== */
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<!-- ==================== 封面 ==================== -->
+<div class="cover">
+  <div class="cover-title">拼多多（PDD Holdings Inc.）</div>
+  <div class="cover-sub">2025 财年财报整理</div>
+  <div class="cover-meta">
+    <b>NASDAQ: PDD</b> &nbsp;｜&nbsp; 财年截至 2025 年 12 月 31 日 &nbsp;｜&nbsp; 整理日期：2026 年 6 月 11 日
+  </div>
+  <hr class="rule-red">
+
+  <table>
+    <thead><tr><th style="width:46%">核心指标（人民币）</th><th class="num">2025 财年</th><th class="num">变动</th></tr></thead>
+    <tbody>
+      <tr><td>全年总营收<span class="desc">公司一年内主营业务获得的全部收入，尚未扣除任何成本和费用</span></td><td class="num">4,318.46 亿元</td><td class="num pos">同比 +10%</td></tr>
+      <tr><td>其中：在线营销服务及其他<span class="desc">俗称「广告收入」：商家为获得曝光和流量向平台支付的推广费</span></td><td class="num">2,177.83 亿元</td><td class="num pos">同比 +10%</td></tr>
+      <tr><td>其中：交易服务<span class="desc">俗称「佣金收入」：按成交额向商家收取的手续费，含 Temu 相关服务收入</span></td><td class="num">2,140.63 亿元</td><td class="num pos">同比 +9%</td></tr>
+      <tr><td>营业利润<span class="desc">营收减去营业成本与销售、管理、研发费用后的利润，反映主业本身的赚钱能力</span></td><td class="num">946.24 亿元</td><td class="num neg">同比 -13%</td></tr>
+      <tr><td>归母净利润<span class="desc">扣完所有成本、费用、利息、税之后，最终归属于公司股东的利润</span></td><td class="num">993.64 亿元</td><td class="num neg">同比 -12%</td></tr>
+      <tr><td>Non-GAAP 归母净利润<span class="desc">在净利润基础上加回股权激励等非现金项目，更接近「经营层面」的盈利</span></td><td class="num">1,073.01 亿元</td><td class="num neg">同比 -12%</td></tr>
+      <tr><td>经营活动现金流净额<span class="desc">主营业务实际收到的现金减去付出的现金，衡量利润的「含金量」</span></td><td class="num">1,069.39 亿元</td><td class="num neg">同比 -12%</td></tr>
+      <tr><td>现金+短期投资（年末）<span class="desc">账上可随时动用的资金：现金、存款及短期理财、债券等</span></td><td class="num">4,223 亿元</td><td class="num">上年末 3,316 亿元</td></tr>
+      <tr><td>摊薄每 ADS 收益（GAAP）<span class="desc">每份美国存托凭证（1 ADS = 4 股普通股）分摊到的净利润，按期权等全部行权后的股数计算</span></td><td class="num">67.03 元</td><td class="num">上年 76.01 元</td></tr>
+    </tbody>
+  </table>
+
+  <p class="lead">2025 年是拼多多成立十周年，也是公司主动「换挡」的一年：全年营收首次突破 4,300 亿元，但在「千亿扶持」等大规模生态投入下，营业利润与净利润自上市以来首次出现全年同比下滑，呈现典型的「增收不增利」。公司将其定义为从流量平台向「重仓供应链」的战略转型期，并在发布全年业绩的同时宣布组建「新拼姆」、开启品牌自营业务。</p>
+  <p class="small muted">本报告由 Claude 基于公司官方业绩公告（SEC 6-K 文件及投资者关系网站新闻稿）与公开报道独立整理，全部财务数据未经审计；美元换算采用公司口径（2025 年 12 月 31 日 1 美元 = 6.9931 元人民币）。1 ADS = 4 股普通股。本报告仅供研究参考，不构成投资建议。</p>
+</div>
+
+<!-- ==================== 目录 ==================== -->
+<div class="pagebreak"></div>
+<h2 class="sec">目录</h2>
+<div class="toc">
+  <div>一、公司概况</div>
+  <div>二、2025 财年业绩总览</div>
+  <div>三、分季度经营表现</div>
+  <div>四、合并利润表（全年）</div>
+  <div>五、合并资产负债表</div>
+  <div>六、合并现金流量表</div>
+  <div>七、Non-GAAP 调节与股权激励</div>
+  <div>八、股东回报与资本结构</div>
+  <div>九、业务与战略动态</div>
+  <div>十、管理层评论摘录</div>
+  <div>十一、关键财务比率</div>
+  <div>十二、风险与关注点</div>
+  <div>十三、期后事项</div>
+  <div>十四、资料来源</div>
+  <div>附录：研读问答记录</div>
+</div>
+
+<!-- ==================== 一、公司概况 ==================== -->
+<section>
+  <h2 class="sec">一、公司概况</h2>
+  <p class="lead">PDD Holdings Inc.（拼多多集团）是一家多元化的跨国商业集团，于纳斯达克上市（代码 PDD），注册地为开曼群岛，总部职能分布于都柏林与上海。集团旗下主要业务包括：</p>
+  <ul class="bul">
+    <li><b>拼多多（Pinduoduo）</b>——中国领先的电商平台之一，以高性价比商品、农产品上行和产业带供应链见长；收入主要来自在线营销服务（广告）与交易服务（佣金）。</li>
+    <li><b>Temu</b>——2022 年 9 月上线的跨境电商平台，已覆盖全球数十个市场，2025 年在关税冲击下加速从全托管直邮模式转向本地履约/半托管模式。公司未单独披露 Temu 的收入与利润。</li>
+    <li><b>多多买菜</b>等社区团购与农业相关业务。</li>
+  </ul>
+  <p>公司实行联席 CEO 制：2025 年内由陈磊（董事长兼联席 CEO）与赵佳臻（执行董事兼联席 CEO）共同管理；2026 年 3 月发布全年业绩时，两人头衔均已为联席董事长兼联席 CEO。财务负责人为刘珺（财务副总裁，公司未设 CFO）。据 2024 财年 20-F 年报，截至 2024 年 12 月 31 日集团共有员工 23,465 人，员工人数相对其收入体量极为精简。2025 财年 20-F 年报已于 2026 年 4 月下旬提交。</p>
+</section>
+
+<!-- ==================== 二、业绩总览 ==================== -->
+<section>
+  <h2 class="sec">二、2025 财年业绩总览</h2>
+  <table>
+    <thead><tr><th>指标（百万元，每股数据除外）</th><th class="num">2024 财年</th><th class="num">2025 财年</th><th class="num">同比</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>总营收</td><td class="num">393,836.1</td><td class="num">431,845.7</td><td class="num pos">+10%</td></tr>
+      <tr><td>— 在线营销服务及其他</td><td class="num">197,934.2</td><td class="num">217,783.0</td><td class="num pos">+10%</td></tr>
+      <tr><td>— 交易服务</td><td class="num">195,901.9</td><td class="num">214,062.7</td><td class="num pos">+9%</td></tr>
+      <tr><td>营业成本</td><td class="num">(153,900.4)</td><td class="num">(188,801.8)</td><td class="num pos">+23%</td></tr>
+      <tr><td>销售及营销费用</td><td class="num">(111,300.5)</td><td class="num">(125,287.9)</td><td class="num pos">+13%</td></tr>
+      <tr><td>管理费用</td><td class="num">(7,553.0)</td><td class="num">(6,635.8)</td><td class="num neg">-12%</td></tr>
+      <tr><td>研发费用</td><td class="num">(12,659.4)</td><td class="num">(16,496.2)</td><td class="num pos">+30%</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">108,422.9</td><td class="num">94,624.1</td><td class="num neg">-13%</td></tr>
+      <tr><td>Non-GAAP 营业利润</td><td class="num">118,306.4</td><td class="num">102,561.0</td><td class="num neg">-13%</td></tr>
+      <tr class="key"><td>归母净利润</td><td class="num">112,434.5</td><td class="num">99,364.5</td><td class="num neg">-12%</td></tr>
+      <tr><td>Non-GAAP 归母净利润</td><td class="num">122,343.6</td><td class="num">107,301.4</td><td class="num neg">-12%</td></tr>
+      <tr><td>基本每 ADS 收益（元）</td><td class="num">81.24</td><td class="num">71.09</td><td class="num neg">-12%</td></tr>
+      <tr><td>摊薄每 ADS 收益（元）</td><td class="num">76.01</td><td class="num">67.03</td><td class="num neg">-12%</td></tr>
+      <tr><td>Non-GAAP 摊薄每 ADS 收益（元）</td><td class="num">82.71</td><td class="num">72.38</td><td class="num neg">-12%</td></tr>
+      <tr><td>经营活动现金流净额</td><td class="num">121,929.3</td><td class="num">106,938.7</td><td class="num neg">-12%</td></tr>
+      <tr><td>现金、现金等价物及短期投资（年末）</td><td class="num">约 331,600</td><td class="num">约 422,300</td><td class="num pos">+27%</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <ol class="read-list">
+      <li><b>收入增速降至上市以来低位，但仍录得双位数增长。</b>全年营收 4,318.5 亿元、同比增长 10%，较 2024 年的 59% 大幅放缓；两大收入引擎增长均衡：广告（在线营销服务）+10%，佣金（交易服务）+9%。分季度看，增速呈「前低后高」：Q2 一度降至 7% 的上市后最低水平，Q4 回升至 12%。</li>
+      <li><b>「增收不增利」：利润率显著压缩。</b>营业成本同比 +23%，远快于收入增速，主要来自履约费用、带宽服务器成本及支付手续费上升，毛利率由 60.9% 降至 56.3%；销售费用 +13%、研发费用 +30%（员工成本与算力投入），全年营业利润率由 27.5% 降至 21.9%。</li>
+      <li><b>利息与投资收益成为重要利润缓冲。</b>全年利息及投资收益净额 255.8 亿元，同比 +24%，约占税前利润的 21%，反映公司巨额净现金的「类金融」属性。</li>
+      <li><b>税负上升侵蚀 Q4 利润。</b>全年所得税费用 217.3 亿元，有效税率由约 15.3% 升至约 17.9%；Q4 营业利润同比 +8% 的情况下，归母净利润仍同比 -11%，所得税费用大增（84.5 亿元，上年同期 50.8 亿元）是主因之一。</li>
+      <li><b>现金继续大量积累。</b>年末现金+短期投资约 4,223 亿元（约 604 亿美元），另有约 1,047 亿元以定期存款及债券为主的其他非流动资产；公司至今未进行分红或回购。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 三、分季度经营表现 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">三、分季度经营表现</h2>
+  <table>
+    <thead><tr><th>指标（百万元）</th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">全年</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>总营收</td><td class="num">95,672</td><td class="num">103,985</td><td class="num">108,277</td><td class="num">123,912</td><td class="num">431,846</td></tr>
+      <tr><td>同比增速</td><td class="num pos">+10%</td><td class="num pos">+7%</td><td class="num pos">+9%</td><td class="num pos">+12%</td><td class="num pos">+10%</td></tr>
+      <tr><td>在线营销服务及其他</td><td class="num">48,722</td><td class="num">55,703</td><td class="num">53,348</td><td class="num">60,010</td><td class="num">217,783</td></tr>
+      <tr><td>同比增速</td><td class="num pos">+15%</td><td class="num pos">+13%</td><td class="num pos">+8%</td><td class="num pos">+5%</td><td class="num pos">+10%</td></tr>
+      <tr><td>交易服务</td><td class="num">46,950</td><td class="num">48,282</td><td class="num">54,929</td><td class="num">63,902</td><td class="num">214,063</td></tr>
+      <tr><td>同比增速</td><td class="num pos">+6%</td><td class="num pos">+1%</td><td class="num pos">+10%</td><td class="num pos">+19%</td><td class="num pos">+9%</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">16,086</td><td class="num">25,793</td><td class="num">25,026</td><td class="num">27,720</td><td class="num">94,624</td></tr>
+      <tr><td>同比增速</td><td class="num neg">-38%</td><td class="num neg">-21%</td><td class="num pos">+3%</td><td class="num pos">+8%</td><td class="num neg">-13%</td></tr>
+      <tr class="key"><td>归母净利润</td><td class="num">14,742</td><td class="num">30,753</td><td class="num">29,328</td><td class="num">24,541</td><td class="num">99,364</td></tr>
+      <tr><td>同比增速</td><td class="num neg">-47%</td><td class="num neg">-4%</td><td class="num pos">+17%</td><td class="num neg">-11%</td><td class="num neg">-12%</td></tr>
+      <tr><td>Non-GAAP 归母净利润</td><td class="num">16,916</td><td class="num">32,708</td><td class="num">31,382</td><td class="num">26,295</td><td class="num">107,301</td></tr>
+      <tr><td>经营活动现金流净额</td><td class="num">15,517</td><td class="num">21,642</td><td class="num">45,661</td><td class="num">24,120</td><td class="num">106,939</td></tr>
+    </tbody>
+  </table>
+
+  <p class="small muted" style="margin-bottom:0">季度营收（亿元，柱）与营业利润率（标注）</p>
+  <div class="chart">
+    <div class="col"><div class="cap">957<br>利润率 16.8%</div><div class="bar" style="height:77%"></div><div class="qx">Q1</div></div>
+    <div class="col"><div class="cap">1040<br>利润率 24.8%</div><div class="bar" style="height:84%"></div><div class="qx">Q2</div></div>
+    <div class="col"><div class="cap">1083<br>利润率 23.1%</div><div class="bar" style="height:87%"></div><div class="qx">Q3</div></div>
+    <div class="col"><div class="cap">1239<br>利润率 22.4%</div><div class="bar" style="height:100%"></div><div class="qx">Q4</div></div>
+  </div>
+
+  <div class="read">
+    <span class="rt">季度走势解读</span>
+    <ol class="read-list">
+      <li><b>Q1（投入冲击最大）</b>：4 月「千亿扶持」启动前后叠加外部贸易环境突变，销售费用同比 +43%，营业利润同比 -38%、归母净利润同比 -47%，为全年低点；管理层明确表示「生态投入将持续影响财务表现」。</li>
+      <li><b>Q2（收入增速触底）</b>：营收同比 +7% 为上市以来最低，交易服务收入仅 +1%（Temu 美国业务受关税与小额包裹免税取消冲击最直接的季度）；但当季利息及投资收益高达 104.2 亿元，使净利润降幅收窄至 -4%。</li>
+      <li><b>Q3（利润率企稳）</b>：营业利润同比转正（+3%），归母净利润同比 +17%；经营现金流 456.6 亿元为全年单季最高。管理层借十周年之际强调「承担更大社会责任」。</li>
+      <li><b>Q4（收入提速、税负拖累净利）</b>：营收同比 +12% 为全年最高，交易服务 +19% 显著反弹（Temu 海外调整初见成效、国内佣金稳健）；广告收入增速则放缓至 +5%。营业利润同比 +8%，但因所得税费用大增与汇兑损失，归母净利润同比 -11%。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 四、合并利润表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">四、合并利润表（全年，未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（百万元，每股数据除外）</th><th class="num">2024 财年</th><th class="num">2025 财年</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>营业收入</td><td class="num">393,836.1</td><td class="num">431,845.7</td></tr>
+      <tr><td>营业成本</td><td class="num">(153,900.4)</td><td class="num">(188,801.8)</td></tr>
+      <tr><td>销售及营销费用</td><td class="num">(111,300.5)</td><td class="num">(125,287.9)</td></tr>
+      <tr><td>管理费用</td><td class="num">(7,553.0)</td><td class="num">(6,635.8)</td></tr>
+      <tr><td>研发费用</td><td class="num">(12,659.4)</td><td class="num">(16,496.2)</td></tr>
+      <tr><td>营业费用合计</td><td class="num">(131,512.9)</td><td class="num">(148,419.9)</td></tr>
+      <tr class="key"><td>营业利润</td><td class="num">108,422.9</td><td class="num">94,624.1</td></tr>
+      <tr><td>利息及投资收益净额</td><td class="num">20,553.5</td><td class="num">25,583.8</td></tr>
+      <tr><td>汇兑收益/（损失）净额</td><td class="num">587.9</td><td class="num">(1,966.6)</td></tr>
+      <tr><td>其他收益净额</td><td class="num">3,119.8</td><td class="num">2,726.9</td></tr>
+      <tr><td>税前利润（含联营企业损益前）</td><td class="num">132,684.1</td><td class="num">120,968.2</td></tr>
+      <tr><td>权益法核算的投资损益</td><td class="num">17.2</td><td class="num">129.0</td></tr>
+      <tr><td>所得税费用</td><td class="num">(20,266.8)</td><td class="num">(21,732.8)</td></tr>
+      <tr class="key"><td>净利润（归属于普通股股东）</td><td class="num">112,434.5</td><td class="num">99,364.5</td></tr>
+      <tr><td>基本每股收益（元/股）</td><td class="num">20.31</td><td class="num">17.77</td></tr>
+      <tr><td>摊薄每股收益（元/股）</td><td class="num">19.00</td><td class="num">16.76</td></tr>
+      <tr><td>基本每 ADS 收益（元）</td><td class="num">81.24</td><td class="num">71.09</td></tr>
+      <tr><td>摊薄每 ADS 收益（元）</td><td class="num">76.01</td><td class="num">67.03</td></tr>
+      <tr><td>加权平均普通股——基本（千股）</td><td class="num">5,536,049</td><td class="num">5,590,930</td></tr>
+      <tr><td>加权平均普通股——摊薄（千股）</td><td class="num">5,916,592</td><td class="num">5,929,576</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：2025 年第四季度单季——营收 1,239.12 亿元（+12%）、营业成本 551.56 亿元（+15%）、营业利润 277.20 亿元（+8%）、归母净利润 245.41 亿元（-11%）、基本/摊薄每 ADS 收益 17.50 元 / 16.51 元。</p>
+</section>
+
+<!-- ==================== 五、合并资产负债表 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">五、合并资产负债表（未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（百万元）</th><th class="num">2024-12-31</th><th class="num">2025-12-31</th></tr></thead>
+    <tbody>
+      <tr><td>现金及现金等价物</td><td class="num">57,768.1</td><td class="num">108,900.6</td></tr>
+      <tr><td>受限资金</td><td class="num">68,426.4</td><td class="num">73,830.8</td></tr>
+      <tr><td>应收在线支付平台款项</td><td class="num">3,679.3</td><td class="num">5,109.1</td></tr>
+      <tr><td>短期投资</td><td class="num">273,791.9</td><td class="num">313,407.7</td></tr>
+      <tr><td>应收关联方款项</td><td class="num">7,569.2</td><td class="num">10,205.1</td></tr>
+      <tr><td>预付款及其他流动资产</td><td class="num">4,413.5</td><td class="num">7,526.5</td></tr>
+      <tr class="key"><td>流动资产合计</td><td class="num">415,648.2</td><td class="num">518,979.9</td></tr>
+      <tr><td>物业、设备及软件净额</td><td class="num">879.3</td><td class="num">1,306.0</td></tr>
+      <tr><td>无形资产</td><td class="num">19.2</td><td class="num">15.4</td></tr>
+      <tr><td>使用权资产</td><td class="num">5,064.4</td><td class="num">4,863.3</td></tr>
+      <tr><td>递延所得税资产</td><td class="num">16.0</td><td class="num">172.0</td></tr>
+      <tr><td>其他非流动资产</td><td class="num">83,407.2</td><td class="num">104,707.7</td></tr>
+      <tr class="key"><td>非流动资产合计</td><td class="num">89,386.1</td><td class="num">111,064.4</td></tr>
+      <tr class="key"><td>资产总计</td><td class="num">505,034.3</td><td class="num">630,044.3</td></tr>
+      <tr><td>应付关联方款项</td><td class="num">801.9</td><td class="num">1,086.5</td></tr>
+      <tr><td>客户预付款及递延收入</td><td class="num">2,947.0</td><td class="num">3,378.8</td></tr>
+      <tr><td>应付商家款项</td><td class="num">91,655.9</td><td class="num">107,407.2</td></tr>
+      <tr><td>应计费用及其他负债</td><td class="num">69,141.8</td><td class="num">80,135.9</td></tr>
+      <tr><td>商家保证金</td><td class="num">16,460.6</td><td class="num">17,708.2</td></tr>
+      <tr><td>可转换债券（流动部分）</td><td class="num">5,309.6</td><td class="num">—</td></tr>
+      <tr><td>租赁负债（流动+非流动）</td><td class="num">5,297.5</td><td class="num">5,378.8</td></tr>
+      <tr><td>递延所得税负债</td><td class="num">106.8</td><td class="num">41.9</td></tr>
+      <tr class="key"><td>负债总计</td><td class="num">191,721.2</td><td class="num">215,137.2</td></tr>
+      <tr><td>股本及资本公积等</td><td class="num">118,067.2</td><td class="num">127,106.1</td></tr>
+      <tr><td>累计其他综合收益</td><td class="num">7,824.5</td><td class="num">2,115.7</td></tr>
+      <tr><td>留存收益</td><td class="num">187,421.4</td><td class="num">285,685.3</td></tr>
+      <tr class="key"><td>股东权益总计</td><td class="num">313,313.1</td><td class="num">414,907.1</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>总资产一年内由 5,050 亿元增至 6,300 亿元（+25%）。广义现金储备（现金+受限资金+短期投资+以存款债券为主的其他非流动资产）合计约 6,008 亿元，占总资产约 95%，资产结构高度「现金化」。2024 年末账面 53.1 亿元的可转换债券（2025 年 12 月到期的 0% 可转债）已于年内全部清偿/出表，公司自此基本处于零有息负债状态。负债端主要是应付商家款项（1,074 亿元）等经营性占款。股东权益首次突破 4,000 亿元，全部利润均留存于公司。</p>
+  </div>
+</section>
+
+<!-- ==================== 六、合并现金流量表 ==================== -->
+<section>
+  <h2 class="sec">六、合并现金流量表（全年，未经审计）</h2>
+  <table>
+    <thead><tr><th>项目（百万元）</th><th class="num">2024 财年</th><th class="num">2025 财年</th></tr></thead>
+    <tbody>
+      <tr class="key"><td>经营活动现金流净额</td><td class="num">121,929.3</td><td class="num">106,938.7</td></tr>
+      <tr><td>投资活动现金流净额</td><td class="num">(118,356.0)</td><td class="num">(43,423.2)</td></tr>
+      <tr><td>筹资活动现金流净额</td><td class="num">1.2</td><td class="num">(5,227.4)</td></tr>
+      <tr><td>汇率变动影响</td><td class="num">840.1</td><td class="num">(1,751.1)</td></tr>
+      <tr class="key"><td>现金及受限资金净增加额</td><td class="num">4,414.5</td><td class="num">56,537.0</td></tr>
+      <tr><td>期末现金及受限资金余额</td><td class="num">126,194.4</td><td class="num">182,731.4</td></tr>
+    </tbody>
+  </table>
+  <div class="read">
+    <span class="rt">解读要点</span>
+    <p>经营现金流 1,069.4 亿元，同比下降约 12%，与净利润降幅一致，含金量仍然极高（约为净利润的 1.08 倍）。投资活动净流出大幅收窄，主要是新增短期投资规模下降。筹资活动净流出 52.3 亿元，发生于第四季度，与资产负债表上 2025 年 12 月到期可转换债券（账面约 52.5 亿元）的清零相对应，即用于到期债务兑付，而非股东回报。公司资本开支极小（全年物业设备及软件净额仅增加约 4.3 亿元），自由现金流接近经营现金流全额。</p>
+  </div>
+</section>
+
+<!-- ==================== 七、Non-GAAP 调节 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">七、Non-GAAP 调节与股权激励</h2>
+  <p class="lead">公司 Non-GAAP 口径仅剔除两项非现金项目：股权激励费用（SBC）与若干投资的公允价值变动。2025 年全年调节如下：</p>
+  <table>
+    <thead><tr><th>项目（百万元，每股数据除外）</th><th class="num">2024 财年</th><th class="num">2025 财年</th></tr></thead>
+    <tbody>
+      <tr><td>营业利润（GAAP）</td><td class="num">108,422.9</td><td class="num">94,624.1</td></tr>
+      <tr><td>加：股权激励费用</td><td class="num">9,883.6</td><td class="num">7,937.0</td></tr>
+      <tr class="key"><td>Non-GAAP 营业利润</td><td class="num">118,306.4</td><td class="num">102,561.0</td></tr>
+      <tr><td>归母净利润（GAAP）</td><td class="num">112,434.5</td><td class="num">99,364.5</td></tr>
+      <tr><td>加：股权激励费用</td><td class="num">9,883.6</td><td class="num">7,937.0</td></tr>
+      <tr><td>加：投资公允价值变动损失</td><td class="num">25.5</td><td class="num">—</td></tr>
+      <tr class="key"><td>Non-GAAP 归母净利润</td><td class="num">122,343.6</td><td class="num">107,301.4</td></tr>
+      <tr><td>Non-GAAP 摊薄每 ADS 收益（元）</td><td class="num">82.71</td><td class="num">72.38</td></tr>
+    </tbody>
+  </table>
+  <p class="small">全年股权激励费用 79.4 亿元，同比下降约 20%，按费用科目分布：管理费用 34.3 亿元、研发费用 22.6 亿元、销售费用 20.0 亿元、营业成本 2.5 亿元。SBC 仅占收入的 1.8%，在大型互联网公司中处于很低水平，GAAP 与 Non-GAAP 利润差异不大。</p>
+</section>
+
+<!-- ==================== 八、股东回报 ==================== -->
+<section>
+  <h2 class="sec">八、股东回报与资本结构</h2>
+  <p class="lead"><b>无分红、无回购。</b>截至 2025 财年结束及本报告整理日，公司上市以来从未派发股息，也未开展任何股份回购计划；2025 年全年筹资活动唯一的大额流出是兑付到期可转债。管理层在业绩会上的一贯口径是：公司仍处于投入期，面临多线竞争与外部不确定性，现阶段进行回购或分红「并不合适」，可预见的将来亦无此需要。</p>
+  <p><b>股本仍在缓慢扩张。</b>全年基本加权平均股数同比增加约 1.0%（股权激励行权所致），对每股收益形成轻微稀释。2025 年末归母权益 4,149 亿元中，留存收益达 2,857 亿元。巨额净现金（含类现金投资约 6,008 亿元，约合 859 亿美元）与零派现政策之间的矛盾，是市场对该公司估值分歧的核心之一；2026 年 3 月宣布的「新拼姆」千亿投入计划，意味着公司选择将资金优先投向供应链与自营业务，而非股东回报。</p>
+</section>
+
+<!-- ==================== 九、业务与战略动态 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">九、业务与战略动态</h2>
+  <h3>1. 「千亿扶持」惠商计划（2025 年 4 月启动）</h3>
+  <p>2025 年 4 月，拼多多正式推出「千亿扶持」计划，拟在未来三年投入超过 1,000 亿元的资金与流量资源，通过佣金减免、推广服务费返还、物流补贴、新质供给扶持等方式让利商家，构建「用户—商家—平台」多方共赢生态。这是 2025 年利润率大幅下行的最直接原因，财报中体现为营业成本（履约补贴等）+23% 与销售费用 +13% 的组合。</p>
+  <h3>2. 「电商西进」与「快递进村」</h3>
+  <p>公司持续推进偏远地区物流普惠：在「电商西进」（中转集运包邮覆盖西部地区）基础上，2025 年起在全国 10 余个省市建设县级中转仓、村级代收点等末端寄递网络，并承担送货入村订单的二段中转费，把更多偏远乡村纳入「包邮区」。</p>
+  <h3>3. Temu：关税冲击下的模式重构</h3>
+  <p>2025 年 5 月 2 日，美国正式取消对 800 美元以下小额包裹的免税待遇（de minimis），对 Temu 赖以起家的中国直邮全托管模式构成直接冲击。Temu 随即停止美国市场的中国直邮，全面转向本地仓履约与半托管模式（由本地卖家/海外仓发货），并在美国短期经历销量与活跃用户下滑（据多家第三方监测，5 月前后美国销售额一度同比下降约两成、DAU 大幅下滑）。随后 Temu 通过扩充本地卖家、下调头部商品价格、免除进口费用等方式逐步企稳，并将增长重心加速转向欧洲等非美市场。第三方机构估算 2025 年 Q3 Temu 全球 GMV 约 220–250 亿美元、同比增长 40%–60%，欧洲占比已超过美国（注：公司从未官方披露 Temu 单独数据，上述均为市场估算，仅供参考）。财报层面，交易服务收入增速由 Q2 的 +1% 回升至Q4 的 +19%，与 Temu 模式切换的节奏吻合。</p>
+  <h3>4. 成立十周年与社会责任叙事</h3>
+  <p>2025 年为公司成立十周年。管理层在 Q3 业绩会上提出「随着规模成长，准备承担更大的社会责任」，全年战略口径从「高质量发展」进一步聚焦到「重仓中国供应链」。</p>
+  <h3>5. 「新拼姆」：千亿投入开启品牌自营（随 FY2025 财报宣布）</h3>
+  <p>2026 年 3 月 25 日发布全年业绩的同时，公司宣布组建「新拼姆」：已在上海设立专项公司，一期现金注资 150 亿元，计划三年累计投入 1,000 亿元；整合「拼多多 + Temu」的供应链资源，搭建自营品牌体系，重点面向全球市场。联席董事长兼联席 CEO 赵佳臻提出「力争三年再造一个拼多多」。这是公司历史上首次大规模进入自营/品牌环节，意味着商业模式从纯平台向「平台 + 供应链 + 自有品牌」延伸，也预示未来 2–3 年利润率仍将承压。</p>
+</section>
+
+<!-- ==================== 十、管理层评论摘录 ==================== -->
+<section>
+  <h2 class="sec">十、管理层评论摘录（按季度）</h2>
+  <div class="q">Q1（2025-05-27）</div>
+  <p class="quote"><span class="who">陈磊：</span>一季度我们对平台生态进行了大量投入，支持商家与消费者应对外部环境的快速变化；这些投入影响了短期盈利，但换来了平台长期健康。</p>
+  <p class="quote"><span class="who">刘珺：</span>随着体量扩大与挑战出现，增速放缓是预期之中的，而外部环境变化加速了这一趋势；生态投入将持续反映在财务结果中。</p>
+  <div class="q">Q2（2025-08-25）</div>
+  <p class="quote"><span class="who">赵佳臻：</span>本季度投入大量资源推出了一揽子商家扶持举措，专注于为商家提效降本。</p>
+  <p class="quote"><span class="who">刘珺：</span>激烈竞争下收入增速进一步放缓，持续投入可能继续拖累短期盈利。</p>
+  <div class="q">Q3（2025-11-18）</div>
+  <p class="quote"><span class="who">陈磊：</span>今年是公司成立十周年，未来随着规模增长，我们准备承担更大的社会责任。</p>
+  <p class="quote"><span class="who">刘珺：</span>收入增速继续放缓，反映竞争格局演变与外部不确定性；随着商家扶持与生态投入加码，业绩可能继续逐季波动。</p>
+  <div class="q">Q4（2026-03-25）</div>
+  <p class="quote"><span class="who">陈磊：</span>过去一年我们坚定推进高质量发展战略，将持续把更多资源投向生态各参与方。</p>
+  <p class="quote"><span class="who">赵佳臻：</span>2026 年是下一个十年的开端，供应链投资是我们最有信心的方向，将以 All-in 的心态投入巨量资源。</p>
+  <p class="quote"><span class="who">刘珺：</span>外部环境与竞争格局正在快速变化，这些投入是坚定且长期的，将不可避免地影响财务表现。</p>
+  <p class="small muted">以上为英文原文的中文摘译，措辞以公司官方新闻稿为准。</p>
+</section>
+
+<!-- ==================== 十一、关键财务比率 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">十一、关键财务比率</h2>
+  <table>
+    <thead><tr><th>比率</th><th class="num">2024 财年</th><th class="num">2025 财年</th><th class="num">变动</th></tr></thead>
+    <tbody>
+      <tr><td>毛利率<span class="desc">（营收－营业成本）÷ 营收：商品和服务本身的利润空间</span></td><td class="num">60.9%</td><td class="num">56.3%</td><td class="num neg">-4.6 pct</td></tr>
+      <tr><td>营业利润率<span class="desc">营业利润 ÷ 营收：主业每 100 元收入最终赚到的钱</span></td><td class="num">27.5%</td><td class="num">21.9%</td><td class="num neg">-5.6 pct</td></tr>
+      <tr><td>Non-GAAP 营业利润率<span class="desc">剔除股权激励等非现金项目后的营业利润 ÷ 营收</span></td><td class="num">30.0%</td><td class="num">23.7%</td><td class="num neg">-6.3 pct</td></tr>
+      <tr><td>归母净利率<span class="desc">归母净利润 ÷ 营收：每 100 元收入归股东的利润</span></td><td class="num">28.5%</td><td class="num">23.0%</td><td class="num neg">-5.5 pct</td></tr>
+      <tr><td>销售费用率<span class="desc">销售及营销费用 ÷ 营收：补贴与获客投入的强度</span></td><td class="num">28.3%</td><td class="num">29.0%</td><td class="num pos">+0.7 pct</td></tr>
+      <tr><td>研发费用率<span class="desc">研发费用 ÷ 营收：技术与算力投入的强度</span></td><td class="num">3.2%</td><td class="num">3.8%</td><td class="num pos">+0.6 pct</td></tr>
+      <tr><td>管理费用率<span class="desc">管理费用 ÷ 营收：行政运营开支的占比</span></td><td class="num">1.9%</td><td class="num">1.5%</td><td class="num neg">-0.4 pct</td></tr>
+      <tr><td>有效所得税率<span class="desc">所得税费用 ÷ 税前利润：实际承担的综合税率</span></td><td class="num">15.3%</td><td class="num">17.9%</td><td class="num pos">+2.6 pct</td></tr>
+      <tr><td>ROE（按期末净资产）<span class="desc">净利润 ÷ 股东权益：股东每投入 100 元一年赚多少</span></td><td class="num">35.9%</td><td class="num">23.9%</td><td class="num neg">-12.0 pct</td></tr>
+      <tr><td>经营现金流 / 归母净利润<span class="desc">大于 1 说明账面利润足额变成了真金白银</span></td><td class="num">1.08</td><td class="num">1.08</td><td class="num">持平</td></tr>
+      <tr><td>现金+短期投资 / 总资产<span class="desc">资产中「类现金」的比重，越高说明家底越厚但资产利用越保守</span></td><td class="num">65.7%</td><td class="num">67.0%</td><td class="num pos">+1.3 pct</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">注：以上比率由本报告根据公司披露数据计算；ROE 按期末股东权益口径，若按年均权益计算 2025 年约为 27.3%。分季度毛利率：Q1 57.2%、Q2 55.9%、Q3 56.7%、Q4 55.5%；分季度营业利润率：Q1 16.8%、Q2 24.8%、Q3 23.1%、Q4 22.4%。</p>
+</section>
+
+<!-- ==================== 十二、风险与关注点 ==================== -->
+<section>
+  <h2 class="sec">十二、风险与关注点</h2>
+  <ol class="read-list">
+    <li><b>利润率下行尚未见底。</b>「千亿扶持」执行进入第二年，叠加「新拼姆」三年 1,000 亿元的新增投入，管理层反复强调投入「坚定且长期」「不可避免影响财务表现」，未来数个季度利润仍可能波动或下行。</li>
+    <li><b>国内竞争烈度高企。</b>阿里、京东、抖音电商在低价心智、即时零售与内容电商上持续加压，公司广告收入增速已由 Q1 的 +15% 一路放缓至 Q4 的 +5%，国内货币化率提升空间受竞争制约。</li>
+    <li><b>贸易政策与地缘风险。</b>美国取消小额包裹免税并维持高关税，欧盟亦在推进类似改革；Temu 的本地履约转型增加了合规与履约成本，海外政策的进一步收紧仍是最大外部变量。</li>
+    <li><b>自营新业务的执行风险。</b>「新拼姆」使公司首次承担存货、品牌与制造协同等重资产环节的风险，「三年再造一个拼多多」目标的可验证性低，且可能与平台商家形成竞争关系。</li>
+    <li><b>公司治理与股东回报。</b>零分红、零回购叠加巨额现金，少数股东分享利润的途径有限；财报披露颗粒度低（不披露 GMV、用户数、Temu 分部数据），外部投资者跟踪难度大。</li>
+    <li><b>税负与监管。</b>有效税率上行（部分与预提所得税及优惠税率适用变化有关）；中概股审计监管、数据安全与平台经济监管仍是长期背景风险。</li>
+  </ol>
+</section>
+
+<!-- ==================== 十三、期后事项 ==================== -->
+<section>
+  <h2 class="sec">十三、期后事项（截至 2026 年 6 月 11 日）</h2>
+  <ul class="bul">
+    <li><b>2026 年 4 月下旬</b>：公司向 SEC 提交 2025 财年 20-F 年度报告（含经审计财务报表）。</li>
+    <li><b>2026 年 5 月 28 日</b>：公司发布 2026 年第一季度业绩，陈磊表示将「全力推进品牌自营业务」；因利润降幅超出市场预期，当日股价盘中一度下跌逾 13%，显示市场对新一轮投入周期的消化仍在进行中。</li>
+  </ul>
+</section>
+
+<!-- ==================== 十四、资料来源 ==================== -->
+<section>
+  <h2 class="sec">十四、资料来源</h2>
+  <ul class="bul src">
+    <li>PDD Holdings《2025 年第四季度及全年业绩公告》（2026-03-25，公司投资者关系网站/GlobeNewswire）</li>
+    <li>PDD Holdings 2025 年 Q1/Q2/Q3 业绩公告（SEC Form 6-K，Exhibit 99.1，2025-05-27 / 2025-08-25 / 2025-11-18）</li>
+    <li>PDD Holdings 2025 财年 Form 20-F 年度报告（SEC，2026 年 4 月提交）及 2024 财年 20-F（员工数据）</li>
+    <li>新浪科技/199IT：《拼多多：2025 年全年营收 4318 亿元，同比增长 10%》（2026-03-26，「新拼姆」、千亿扶持、快递进村细节）</li>
+    <li>证券时报（stcn.com）：《拼多多发布 2025 全年财报：「千亿扶持」投入一周年》（2026-03）</li>
+    <li>CNBC：《Temu halts shipping direct from China as de minimis rule ends》（2025-05-02）</li>
+    <li>Supply Chain Dive、TechBuzz China 等关于 Temu 本地履约转型的报道（2025）；Temu GMV 为第三方市场估算</li>
+    <li>新浪财经：拼多多 2026 年 Q1 财报相关报道（2026-05-28）</li>
+    <li>澎湃·新莓财经：《新拼姆有何新进展？》（2026-05-20，专项公司、商家协议与招商细节）</li>
+    <li>人人都是产品经理·新眸：《拼多多的新拼姆，到底在赌什么？》（2026-04-08）；晚点 LatePost 相关报道（经转引）</li>
+    <li>段永平雪球点评（经新莓财经、知乎专栏转引）；新华网、财联社关于新拼姆落地上海的报道（2026-03-26）</li>
+  </ul>
+  <div class="disclaimer">
+    免责声明：本文件为第三方独立整理的研究资料，并非公司官方文件。所有 2025 年度财务数据均为公司公告之未经审计数据，可能与经审计年报存在差异；涉及 Temu 经营情况的部分数据为第三方估算。本文件不构成任何投资建议。
+  </div>
+</section>
+
+<!-- ==================== 附录：研读问答记录 ==================== -->
+<section class="pagebreak">
+  <h2 class="sec">附录：研读问答记录（2026 年 6 月）</h2>
+  <p class="small muted">以下为研读本财报过程中的问答与讨论记录，按发生顺序整理。观点部分注明了依据层级（财报原文 / 三方解读 / 个人推断）。</p>
+  <div class="q">一、为什么营业利润（946 亿）比归母净利润（994 亿）还低？</div>
+  <p>因为营业利润之下还有一大块非经营收益：拼多多账上约 6,000 亿元类现金资产，2025 年利息及投资收益净额达 255.8 亿元。完整链条（亿元）：营业利润 946.2 + 利息及投资收益 255.8 − 汇兑损失 19.7 + 其他收益 27.3 + 联营损益 1.3 = 税前利润 1,209.7，减所得税 217.3 = 归母净利润 993.6。利息收益足以覆盖所得税还有富余，净利润因此反超营业利润约 47 亿。提示：净利润中两成以上由「吃利息」贡献，并非电商主业所赚，估值时常将这块单独剥离。</p>
+  <div class="q">二、Non-GAAP 归母净利润是什么？</div>
+  <p>在 GAAP 净利润基础上加回非现金项目后的口径，拼多多只调两项：股权激励费用（2025 年 79.4 亿）与投资公允价值变动（2025 年为零），即 993.6 + 79.4 = 1,073.0 亿。注意：股权激励虽不付现金，但通过增发稀释老股东，是真实成本，Non-GAAP 普遍会把利润「美化」。拼多多 SBC 仅占收入 1.8%（很多美股科技公司超 10%），两个口径差距仅约 8%，失真度较小。</p>
+  <div class="q">三、股权激励会增发股票吗？比例多大、是否披露、有何限制？</div>
+  <p>会。拼多多上市后从未公开增发融资，稀释唯一来源是激励行权。比例：2025 年加权平均基本股数同比 +1.0%（实际稀释速度）；摊薄股数比基本股数多约 6%（未行权期权/RSU 的潜在稀释上限）。披露：每季财报披露股数与 SBC 费用，20-F 披露计划全貌，但无单独增发公告。限制：2018 年股权激励计划初始池 3.63 亿股，常青条款每年最多自动扩充上年末总股本的 1.0%；授予需分年归属，计划由董事会管理。SBC 费用已从 2024 年 98.8 亿降至 79.4 亿，稀释在放缓。</p>
+  <div class="q">四、经营活动现金流净额有什么意义？和营收、营业利润什么区别？</div>
+  <p>营收是「开了多少单」（权责发生制，钱未必到账）；营业利润是「账面算出赚多少」（含股权激励等非现金费用）；经营现金流是「银行账户实际多收多少现金」。2025 年经营现金流 1,069 亿高于营业利润 946 亿，原因一是加回了非现金费用，二是平台占款模式——消费者先付钱、隔期才结算给商家（年末应付商家款 1,074 亿、年内净增 157 亿）。意义：验证利润真实性（OCF/净利润约 1.08，含金量高）、反映商业模式占款能力、是公司零融资自我造血的来源。</p>
+  <div class="q">五、为什么财报里看不清支出明细？</div>
+  <p>确实粗略，且是有意为之：费用只披露四行（成本/销售/管理/研发），各行内部从不量化；会计上申报为单一经营分部，主站、Temu、多多买菜不拆分任何数字；GMV、用户数也已停止披露。动机一半是竞争考量（不让对手看清 Temu 亏损与主站利润率），一半是公司文化。后果：外部只能信任合并口径的现金流与利润，无法验证各业务质地——这本身应计为一项投资风险。</p>
+  <div class="q">六、Temu 全托管 vs 半托管，优劣与长期走向？</div>
+  <p>全托管：平台包办定价流量物流，控制力与供给动员力极强，但依赖小额免税+空运直邮，时效慢、政策风险高（2025 年 5 月美国取消免税后一夜失灵）。半托管：商家自备海外仓，正规清关抗政策、时效 1–3 天、平台变轻，但门槛抬高稀释价格优势，且正面对撞亚马逊。判断：半托管赢得下半场入场券，但两者都是过渡形态——终局比拼对中国工厂供应链的组织能力，公司用「新拼姆」品牌自营给出了自己的答案。</p>
+  <div class="q">七、半托管会把小商家挤出 Temu 吗？营业成本（+23%）和研发（+30%）为何大增？</div>
+  <p>小商家：方向对但程度有限——全托管在欧洲等市场仍在运行；小工厂退居 toB 给大卖家/贸易商供货而非退出；更准确的说法是商家结构集中化。「新拼姆」正是平台自己下场重新组织被挤出的小供给。成本激增：官方口径为履约费、带宽服务器、支付手续费（营业成本）与人力、算力（研发）；三方解读指向 Temu 履约扩张 + 千亿扶持物流补贴 + AI 算力竞赛；个人推断：拼多多固定资产仅 13 亿，算力靠租，别家的 AI 资本开支在它报表里直接进费用，故涨幅显得更刺眼。</p>
+  <div class="q">八、Temu 在海外还有多大优势？能从亚马逊手里抢多少份额？</div>
+  <p>原始红利（廉价供给+免税）已结束，赛道挤满 SHEIN、TikTok Shop、速卖通，亚马逊还反手开了低价店 Haul。份额（第三方估算）：Temu 占美国跨境电商细分约 24%，但占美国电商总大盘仅约 1.5%–2%，亚马逊约 38%–40%。对亚马逊的真实优势只剩对卖家费率更低与烧钱意愿；Prime、物流网、信任体系一条破不了。现实图景：在美国抢的是一元店和 eBay 的份额而非亚马逊核心盘，低个位数渗透率即天花板；增长重心已转向欧洲（GMV 占比约四成）与拉美中东等亚马逊弱势市场。</p>
+  <div class="q">九、255.8 亿利息及投资收益算进全年总营收了吗？</div>
+  <p>没有。总营收 4,318 亿只含广告与佣金两项主营收入；利息及投资收益在利润表中单列于营业利润之下，直接进税前利润。这是美国准则下非金融企业的标准列报——否则毛利率、净利率全部失真。且这笔钱基本不是炒股：对应资产以定期存款、持有至到期及可供出售债券为主（固收吃息），股票类公允价值变动单独列示且 2025 年几乎为零。本质上，拼多多是「一只 6,000 亿固收组合 + 一家电商公司」。</p>
+  <div class="q">十、计算 PE 用哪个利润——营业利润还是税前利润？</div>
+  <p>都不是，用最末端的归母净利润（税后 993.6 亿）：P 是股东付的价格，E 必须是股东最终能分到的钱，税是真实成本。营业利润、税前利润配的是 EV/EBIT 等「企业价值」倍数，分子分母必须配套。实算（2026 年 6 月，股价 $79.94）：GAAP 摊薄每 ADS 收益 $9.59，静态 PE 约 8.3 倍；Non-GAAP 口径约 7.7 倍。拼多多特有的「剔现金 PE」：市值约 $1,140 亿减自有金融资产约 $750 亿，电商业务隐含估值仅约 $390 亿；再剥离税后利息收益，主业 PE 仅约 3.5 倍。8.3 倍还是 3.5 倍，取决于是否相信账上现金最终属于股东。</p>
+  <div class="q">十一、255.8 亿的收益水平正常吗？是不是在炒股？</div>
+  <p>隐含收益率测算：平均生息资产约 4,710 亿（剔受限资金）至 5,421 亿（含受限），对应收益率约 5.4% / 4.7%，远高于人民币利率、接近并略超美元利率，推断资金以境外美元为主（IPO、可转债募资与 Temu 收入均为外币）。未炒股的三条证据：资产科目明示为定存、持有至到期/可供出售债券（均为债权类）；Non-GAAP 调节表中投资公允价值变动全年为零（持有股票必须逐市值计损益，此行不可能为零）；联营企业损益单列且仅 1.3 亿。</p>
+  <div class="q">十二、追问与修正：就算一半美元，混合票息也撑不起 5% 的收益率？</div>
+  <p>这条质疑成立——五五开的混合票息约 2.7%，对应仅约 127 亿利息；即使全美元也只有约 200 亿，纯利息到不了 255.8 亿。修正后的解释：该科目是「利息及投资收益」净额，包含债券的已实现损益与市值波动。铁证是季度分布 2.2 / 104.2 / 85.7 / 63.7 亿的剧烈跳动——纯吃息组合每季应稳定在 30 亿上下；Q1 几乎归零正值中国债市大跌，Q2 暴增对应回暖。2025 年为全球降息年，债券总回报=票息+价格上涨，约 5% 属正常，故 5% 是「总回报」而非「利率」，资本利得部分未必可重复；组合或含收益更高的信用债（披露过粗无法验证）。不炒股的结论不变，但若利率回升，这块收益会缩水甚至转负（Q1 即是预演）。</p>
+  <div class="q">十三、1,047 亿「其他非流动资产」到底是什么？</div>
+  <p>财报自己解释了：定期存款、持有至到期债券、可供出售债券——与短期投资同类，仅因到期日超过一年而归入非流动科目。其增长（834 → 1,047 亿）反映主动拉长久期、在降息周期锁定收益。更值得注意的是结构：非流动资产 1,110 亿中金融资产占 94%，固定资产仅 13.1 亿——没有仓库、车队、自建机房，服务器与办公楼全靠租（对比：京东物流类固定资产上千亿、亚马逊超 2,500 亿美元）。整张资产负债表本质是「一堆钱 + 极轻的运营壳」：好处是高 ROE、零资本开支；代价是护城河全在报表之外、最难验证。</p>
+  <div class="q">十四、2,151 亿总负债是什么？是商家保证金和应付款吗？</div>
+  <p>基本正确。拆解：应付商家款 1,074 亿（占一半）+ 商家保证金 177 亿，商家相关合计占 58%；应计费用及其他负债 801 亿（欠供应商、应付营销补贴、薪酬、税金）；客户预付款 34 亿、租赁负债 54 亿等。关键在于其中没有一分钱是借的——52 亿可转债 2025 年 12 月到期还清后，有息负债归零。这些负债不付利息、随业务自动滚动，相当于上下游提供的约两千亿免费营运资金；负债率仅 34%（2,151 / 6,300 亿总资产）。</p>
+  <div class="q">十五、商家的钱是算在资产里，还是算在负债里？</div>
+  <p>两边同时记（复式记账）：钱本身在资产端——受限资金 738 亿（按监管隔离存放）加上混在自有现金中的约 513 亿（应付商家款 1,074 亿大于受限资金的差额）；「欠谁」的义务在负债端——应付商家款与保证金。与银行同理：储户的钱在银行资产端是现金和贷款，负债端是存款；钱在它手里，但不是它的。口径提示：公司宣传的「现金+短投 4,223 亿」已剔除受限资金，而现金流量表的「期末现金及受限资金 1,827 亿」含受限资金，两处对不上即此原因。替商家保管资金产生的利息归平台所有，是平台型公司经典的浮存金收益。</p>
+  <div class="q">十六、剔掉欠别人的钱，拼多多实际有多少现金？</div>
+  <p>三个口径（2025 年末）：公司口径 5,270 亿（现金+短投+长期存款债券，仍混有约 513 亿商家资金）；还清商家与消费者后 6,008 − 1,251 − 34 = 4,723 亿；最严苛的清算口径（还清全部 2,151 亿负债）6,008 − 2,151 = 3,857 亿。即真正属于公司自己的钱约 3,900–4,700 亿元（约 550–675 亿美元）。按 2026 年 6 月股价 $79.94、约 14.2 亿份 ADS 计，市值约 $1,140 亿——最保守口径的净现金已占市值近一半，每份 ADS 约 $39–47 是纯现金。与第十问闭环：买一股拼多多，一半价格买的是存款和债券，另一半才是年赚千亿的电商业务；市场只给后者三四倍 PE，原因即投入下行周期与现金回报缺位。</p>
+  <div class="q">十七、「千亿扶持」和「新拼姆」的千亿是一回事吗？还是合计 2,000 亿？</div>
+  <p>是两笔独立承诺，名义合计约 2,000 亿，但性质完全不同。千亿扶持（2025 年 4 月启动，2025–2028）：三年超 1,000 亿的「资金+流量资源」让利给平台商家，相当一部分是费用减免与流量倾斜（少收钱而非花钱），直接打进利润表，是 2025 年毛利率下降 4.6 个百分点的主因。新拼姆（2026 年 3 月宣布，2026–2029）：三年 1,000 亿「真金白银」投入自己的品牌自营新业务，属资产负债表层面的投资，先变成存货、品牌与供应链资产，再随经营逐步进入利润表。两者时间重叠、公司明确为叠加关系。负担能力：年经营现金流 1,000 亿+、自有现金约 4,700 亿，2,000 亿约等于两年现金流摊三年。两个提醒：「千亿」均为市场化整数口径，无外部审计跟踪执行进度；品牌自营意味着公司历史上首次要背存货，「固定资产仅 13 亿」的极致轻资产模式将开始变形。</p>
+  <div class="q">十八、新拼姆深挖：SKU、品类模式与合作细节（跟踪至 2026 年 5 月）</div>
+  <p>主体：2026 年 2 月在上海注册两家公司——新拼姆鸿乔（注册资本 100 亿）与新拼姆朴动（50 亿），法定代表人均为赵佳臻，由其亲自挂帅。SKU：无官方数字；4 月起主站已出现「新拼姆自营」商品，集中于纸巾、清洁工具、家居小件、厨房小家电；段永平雪球点评称「这就是 Costco 的样子……线上品牌只有 4,000 个左右 SKU 的话，10 年后会相当厉害」（Kirkland 式精选逻辑，属愿景类比而非公司目标）。模式：据晚点 LatePost，新拼姆参考市场爆款与自有销售数据自创品牌，向代工厂下达精细产品指引，平台买断包销、自行定价营销、产品不得转售第三方——介入深度超过京东自营（赚进销差价）与网易严选（ODM 贴牌）；但 4 月向 Temu 商家推送的《外贸综合服务协议》又将新拼姆定义为「外贸综合服务商」（出口代理、报关、收汇结算，货款先进其账户按实际销售结算），协议文本与实际动作存在落差，商家普遍「看不清方向」。合作：只接纳有工厂、有资质的供应商，纯贸易型卖家不获邀请；首批协议集中于服饰，其次家居、户外；正接触波司登、雅戈尔、骆驼的代工厂，多家 SHEIN 代工厂获邀；底盘是 Temu 约 2 万家合作工厂。商家端争议：协议 11.4 条允许平台自商家账户直接扣款、争议期间冻结资金，回款账期慢于全托管。时机与风险：欧盟 2026 年 7 月起取消 150 欧元以下包裹免税（每件至少加 3 欧），自营品牌的溢价正是用来消化关税与合规成本；前车之鉴——亚马逊自有品牌十余年占总销售额不足 1% 且自 2022 年收缩，拼多多 2023 年「多多福利社」自营店因商家反弹关停，自营与第三方商家的利益冲突是该项目最大的内生矛盾。</p>
+</section>
+
+</body>
+</html>
