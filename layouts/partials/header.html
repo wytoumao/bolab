@@ -8,7 +8,13 @@
         <a href="{{ $catBase }}{{ if eq .Lang "zh-cn" }}测试{{ else }}testing{{ end }}/">{{ i18n "testing" }}</a>
         <a href="{{ $catBase }}{{ if eq .Lang "zh-cn" }}区块链{{ else }}blockchain{{ end }}/">{{ i18n "blockchain" }}</a>
         <a href="{{ $catBase }}ai/">AI</a>
-        <a href="/investment/">{{ i18n "investment" }}</a>
+        {{ $isInv := eq .Section "investment" }}
+        <div class="nav-group{{ if $isInv }} open{{ end }}">
+            <a href="/investment/" {{ if $isInv }}class="active"{{ end }}>{{ i18n "investment" }}</a>
+            <div class="nav-children">
+                <a href="/investment/" {{ if $isInv }}class="active"{{ end }}>{{ i18n "ecommerce" }}</a>
+            </div>
+        </div>
         <a href="{{ .Site.Home.RelPermalink }}tools/">{{ i18n "tools" }}</a>
         <a href="{{ .Site.Home.RelPermalink }}about/">{{ i18n "about" }}</a>
     </nav>

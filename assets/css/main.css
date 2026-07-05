@@ -114,6 +114,25 @@ a:hover { color: var(--fg-muted); }
     font-weight: 600;
 }
 
+/* 嵌套导航组（投资 → 电商）：所在板块内由模板渲染 .open 展开，无 JS */
+.nav-group .nav-children {
+    display: none;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin: 0.125rem 0 0.25rem 0.875rem;
+    padding-left: 0.625rem;
+    border-left: 1px solid var(--border);
+}
+
+.nav-group.open .nav-children {
+    display: flex;
+}
+
+.sidebar-nav .nav-children a {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.75rem;
+}
+
 .sidebar-footer {
     display: flex;
     align-items: center;
