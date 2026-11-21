@@ -15,7 +15,7 @@ tags:
 
 A QA engineer in the blockchain industry.
 
-Currently a Senior QA Engineer at Bybit, previously at NetEase Games working on Marvel Rivals. Over the past few years, I've been deeply involved in integration testing for 40+ blockchains, covering EVM, UTXO, and various other architectures.
+Currently a Principal Test Engineer at Bybit, previously at NetEase Games working on Marvel Rivals. Over the past few years, I've been deeply involved in integration testing for 40+ blockchains, covering EVM, UTXO, and various other architectures.
 
 ## Why Start a Blog?
 

@@ -8,7 +8,7 @@ slug: about
 
 I'm Bo, a blockchain QA engineer.
 
-Currently working as a Senior QA Engineer at Bybit, focusing on wallet and blockchain integration testing. Over the past few years, I've been involved in integration testing for 40+ blockchains, covering various architectures including EVM and UTXO.
+Currently working as a Principal Test Engineer at Bybit, focusing on wallet and blockchain integration testing. Over the past few years, I've been involved in integration testing for 40+ blockchains, covering various architectures including EVM and UTXO.
 
 ## Tech Stack
 

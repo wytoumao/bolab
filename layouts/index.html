@@ -1,67 +1,2866 @@
-{{ define "main" }}
-<div class="container">
-    <div class="home-intro">
-        <p class="site-description">{{ .Site.Params.description }}</p>
-    </div>
+<!DOCTYPE html>
+<html lang="zh-CN" data-view="terminal" data-scheme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="区块链 · 测试 · AI — Bo 的技术实验室">
+  <title>bolab.dev — Bo's Lab</title>
+  <style>
+    /* ==========================================================================
+       ZERO-EXTERNAL-DEPENDENCY EDITORIAL + TERMINAL DESIGN SYSTEM
+       0ms Font Blocking · Authentic claude.dev Proportions · bolab.dev Content
+       ========================================================================== */
+    :root {
+      --bg: #141413;
+      --bg-raised: #1a1a18;
+      --bg-panel: #1e1d1b;
+      --ink: #faf9f5;
+      --ink-2: #b0aea5;
+      --ink-3: #87867f;
+      --ink-4: #5e5d59;
+      --ink-rgb: 250, 249, 245;
+      --accent: #d97757;
+      --paper: #faf9f5;
+      --line: rgba(250, 249, 245, 0.16);
+      --line-soft: rgba(250, 249, 245, 0.09);
+      --hover-row: rgba(250, 249, 245, 0.05);
 
-    {{/* Pinned posts */}}
-    {{ $pinned := where (where .Site.RegularPages "Type" "post") ".Params.pinned" true }}
-    {{ if $pinned }}
-    <div class="pinned-section">
-        <p class="section-label">📌 {{ i18n "pinned" }}</p>
-        <div class="post-list">
-            {{ range $pinned }}
-            <article class="post-item pinned">
-                <h2 class="post-title">
-                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                </h2>
-                {{ if .Description }}
-                <p class="post-description">{{ .Description }}</p>
-                {{ end }}
-                <div class="post-meta">
-                    <time datetime="{{ .Date.Format "2006-01-02" }}">
-                        {{ .Date.Format "01.02.2006" }}
-                    </time>
-                    {{ if .Params.tags }}
-                    <span class="post-tags">
-                        {{ range .Params.tags }}
-                        <span class="tag">{{ . }}</span>
-                        {{ end }}
-                    </span>
-                    {{ end }}
-                </div>
-            </article>
-            {{ end }}
+      --ok: #7fd18b;
+      --warn: #e6c200;
+      --err: #ff7b8b;
+      --info: #9ac8ff;
+
+      --mono: "SF Mono", "JetBrains Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+
+      --type-term: clamp(0.8125rem, 0.77rem + 0.22vw, 0.9125rem);
+      --feed-label: 112px;
+      --feed-gap: 20px;
+      --gutter: 2.5rem;
+    }
+
+    html[data-scheme="light"] {
+      --bg: #faf9f5;
+      --bg-raised: #f1efe8;
+      --bg-panel: #ece9e0;
+      --ink: #141413;
+      --ink-2: #4c4b45;
+      --ink-3: #7b7a72;
+      --ink-4: #a8a69d;
+      --ink-rgb: 20, 20, 19;
+      --accent: #c15f3c;
+      --paper: #141413;
+      --line: rgba(20, 20, 19, 0.22);
+      --line-soft: rgba(20, 20, 19, 0.11);
+      --hover-row: rgba(20, 20, 19, 0.05);
+
+      --ok: #256a30;
+      --warn: #7a5c00;
+      --err: #c2334f;
+      --info: #2a62c9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    body {
+      font-family: var(--mono);
+      font-size: var(--type-term);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    /* Lock viewport ONLY when inside the Outer Terminal View */
+    html[data-view="terminal"] body {
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    html:not([data-view="terminal"]) body {
+      min-height: 100dvh;
+      overflow-y: auto;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* View Visibility Controller */
+    .app-view {
+      display: none;
+    }
+
+    html[data-view="terminal"] #viewTerminal {
+      display: grid;
+    }
+
+    html[data-view="main"] #viewMain {
+      display: block;
+      animation: fadeUp 0.22s var(--ease-out);
+    }
+
+    html[data-view="whoami"] #viewWhoami {
+      display: block;
+      animation: fadeUp 0.22s var(--ease-out);
+    }
+
+    html[data-view="prod"] #viewProd {
+      display: block;
+      animation: fadeUp 0.22s var(--ease-out);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ==========================================================================
+       VIEW 1: OUTER PURE TERMINAL GATEWAY (#viewTerminal)
+       ========================================================================== */
+    .term-layout {
+      height: 100dvh;
+      grid-template-columns: 5.25rem 1fr;
+    }
+
+    .term-side {
+      padding: 2rem 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 36px;
+      color: var(--accent);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s var(--ease-out);
+      flex: none;
+    }
+
+    .brand-mark:hover {
+      transform: translateY(-3px);
+    }
+
+    .term-main {
+      padding: 0 var(--gutter) 26px var(--gutter);
+      max-width: 56rem;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .upper-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      scrollbar-width: none;
+      padding-bottom: 18px;
+    }
+
+    .upper-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .banner {
+      margin: 40px 0 18px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.2;
+      white-space: pre;
+      color: var(--ink);
+      user-select: none;
+    }
+
+    .boot-meta {
+      color: var(--ink-3);
+      font-size: 0.78rem;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .boot-meta .tok {
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: color 0.12s, background-color 0.12s;
+      padding: 0 3px;
+    }
+
+    .boot-meta .tok:hover {
+      background: var(--paper);
+      color: var(--bg);
+    }
+
+    /* `/WhoamI` Compact Hero Card */
+    .hero-whoami {
+      max-width: 44rem;
+      border-left: 2px solid var(--accent);
+      background: linear-gradient(90deg, rgba(var(--ink-rgb), 0.032) 0%, transparent 100%);
+      padding: 14px 20px;
+      margin-bottom: 24px;
+    }
+
+    .hw-kicker {
+      font-family: var(--mono);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0;
+      margin-bottom: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 1px 4px;
+      margin-left: -4px;
+      transition: background-color 0.12s, color 0.12s;
+    }
+
+    .hw-kicker:hover {
+      background: var(--paper);
+      color: var(--bg);
+    }
+
+    .hw-headline {
+      color: var(--ink);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .hw-headline .role {
+      color: var(--ink-2);
+    }
+
+    .hw-summary {
+      color: var(--ink-3);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      margin-top: 4px;
+      max-width: 39rem;
+    }
+
+    .hw-cmd-label {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line-soft);
+      margin-bottom: 4px;
+      font-size: 0.7rem;
+      color: var(--ink-4);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .hw-routes {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .hw-route {
+      display: grid;
+      grid-template-columns: 102px 24px 1fr auto;
+      align-items: baseline;
+      padding: 4px 6px;
+      margin: 0 -6px;
+      cursor: pointer;
+      transition: background-color 0.1s;
+    }
+
+    .hw-route .r-cmd {
+      color: var(--accent);
+      font-weight: 500;
+      transition: transform 0.18s var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .hw-route .r-arr {
+      color: var(--ink-4);
+    }
+
+    .hw-route .r-desc {
+      color: var(--ink-2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hw-route .r-tag {
+      color: var(--ink-4);
+      font-size: 0.72rem;
+      transition: transform 0.18s var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .hw-route:hover {
+      background: var(--paper);
+    }
+
+    .hw-route:hover > span {
+      color: var(--bg) !important;
+    }
+
+    .hw-route:hover .r-cmd {
+      transform: translateX(6px);
+    }
+
+    .hw-route:hover .r-tag {
+      transform: translateX(-6px);
+    }
+
+    /* Terminal Execution Stream (#termOut) */
+    #termOut {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .t-entry {
+      display: grid;
+      grid-template-columns: var(--feed-label) 1fr;
+      gap: 0 var(--feed-gap);
+      padding: 4px 2px;
+      animation: fadeUp 0.18s var(--ease-out);
+    }
+
+    .t-entry .t-k {
+      color: var(--ink-3);
+      white-space: nowrap;
+      font-size: 0.8rem;
+      padding-top: 2px;
+    }
+
+    .t-entry .t-v {
+      color: var(--ink-2);
+      min-width: 0;
+    }
+
+    .t-entry .t-v b {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* Inline `/resume` Card */
+    .resume-card {
+      border: 1px solid var(--line);
+      background: var(--bg-raised);
+      padding: 20px 24px;
+      margin-top: 4px;
+      max-width: 44rem;
+    }
+
+    .resume-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.74rem;
+      color: var(--ink-3);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line-soft);
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .resume-badge {
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .resume-title {
+      font-family: var(--sans);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.38;
+      margin-bottom: 10px;
+    }
+
+    .resume-body {
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: var(--ink-2);
+      line-height: 1.76;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .resume-body blockquote {
+      border-left: 2px solid var(--accent);
+      padding: 6px 12px;
+      background: var(--bg-panel);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+
+    .resume-actions {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.76rem;
+    }
+
+    .resume-btn {
+      border: 1px solid var(--line);
+      padding: 4px 11px;
+      color: var(--ink);
+      transition: background-color 0.12s, color 0.12s, border-color 0.12s;
+    }
+
+    .resume-btn:hover {
+      background: var(--paper);
+      color: var(--bg);
+      border-color: var(--paper);
+    }
+
+    /* Bottom Dock & Slash Menu */
+    .dock-zone {
+      margin-top: auto;
+      flex: none;
+      position: relative;
+    }
+
+    .slash-menu {
+      display: none;
+      border: 1px solid var(--line);
+      background: var(--bg-panel);
+      margin-bottom: 8px;
+      animation: fadeUp 0.14s var(--ease-out);
+    }
+
+    .slash-menu.open {
+      display: block;
+    }
+
+    .slash-item {
+      display: grid;
+      grid-template-columns: 112px 1fr auto;
+      gap: 12px;
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border-bottom: 1px solid var(--line-soft);
+      align-items: center;
+    }
+
+    .slash-item:last-child {
+      border-bottom: none;
+    }
+
+    .slash-item .sc {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .slash-item .sd {
+      color: var(--ink-2);
+    }
+
+    .slash-item .sk {
+      color: var(--ink-4);
+      font-size: 0.72rem;
+    }
+
+    .slash-item:hover,
+    .slash-item.sel {
+      background: var(--paper);
+    }
+
+    .slash-item:hover > span,
+    .slash-item.sel > span {
+      color: var(--bg) !important;
+    }
+
+    .term-dock {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 11px 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    .dock-host {
+      color: var(--ink);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .dock-host.auth-mode { color: var(--warn); }
+    .dock-host.root-mode { color: var(--ok); }
+
+    .dock-gt {
+      color: var(--ink-3);
+      user-select: none;
+    }
+
+    .dock-input-wrap {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .dock-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--ink);
+      font: inherit;
+      caret-color: var(--accent);
+      position: relative;
+      z-index: 2;
+    }
+
+    .dock-ghost {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink-4);
+      pointer-events: none;
+      white-space: pre;
+      z-index: 1;
+    }
+
+    .dock-enter-pill {
+      font-size: 0.74rem;
+      color: var(--ink-3);
+      border: 1px solid var(--line-soft);
+      padding: 2px 9px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.12s, border-color 0.12s, background-color 0.12s;
+    }
+
+    .dock-enter-pill:hover {
+      background: var(--paper);
+      color: var(--bg);
+      border-color: var(--paper);
+    }
+
+    /* ==========================================================================
+       SHARED CLAUDE.DEV TOP HEADER BAR (Exact Match to User's Screenshot)
+       Left Mascot  |  Spaced [KEY] SECTION Links  |  Right Solid Paper CTA
+       ========================================================================== */
+    .top-bar {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .tb-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      cursor: pointer;
+      flex: none;
+      transition: transform 0.2s var(--ease-out);
+    }
+
+    .tb-brand:hover {
+      transform: translateY(-2px);
+    }
+
+    .tb-nav {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      max-width: 820px;
+      margin: 0 auto;
+      gap: 16px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+
+    .tb-link {
+      color: var(--ink-3);
+      padding: 6px 4px;
+      white-space: nowrap;
+      transition: color 0.14s ease, transform 0.18s var(--ease-out);
+      cursor: pointer;
+    }
+
+    .tb-link .k {
+      color: var(--ink-4);
+      margin-right: 6px;
+    }
+
+    .tb-link:hover {
+      color: var(--ink-2);
+      transform: translateY(-1px);
+    }
+
+    .tb-link.active {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .tb-link.active .k,
+    .tb-link:hover .k {
+      color: var(--ink-2);
+    }
+
+    /* Right Controls: Lang/Theme subtle pills + Solid Paper CTA (like "Try Claude Code v") */
+    .tb-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: none;
+      position: relative;
+    }
+
+    .tb-mini-btn {
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      color: var(--ink-3);
+      padding: 5px 8px;
+      border: 1px solid var(--line-soft);
+      transition: color 0.12s, border-color 0.12s;
+    }
+
+    .tb-mini-btn:hover {
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .cta-wrap {
+      position: relative;
+    }
+
+    .tb-cta {
+      background: var(--paper);
+      color: var(--bg);
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 7px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.2;
+      transition: opacity 0.15s, box-shadow 0.15s;
+    }
+
+    .tb-cta:hover {
+      box-shadow: 0 0 0 2px var(--paper);
+    }
+
+    .cta-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      width: 248px;
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      z-index: 90;
+      padding: 6px 0;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .cta-dropdown.open {
+      display: block;
+    }
+
+    .cta-dropdown a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 14px;
+      font-size: 0.78rem;
+      color: var(--ink-2);
+      border-bottom: 1px solid var(--line-soft);
+      transition: background-color 0.12s, color 0.12s;
+    }
+
+    .cta-dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    .cta-dropdown a:hover {
+      background: var(--paper);
+      color: var(--bg);
+    }
+
+    /* ==========================================================================
+       VIEW 2: MAIN PAGE (/guest) — Exact 3-Column Editorial Showcase Layout
+       Col 1 (3 cols): Section Intro + Category Filter + Tree Links
+       Col 2 (6 cols): Interactive macOS Terminal / Preview Stage
+       Col 3 (3 cols): Active Item Title + Summary + `└` Metadata Specs
+       ========================================================================== */
+    .stage-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 28px 40px 88px;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: minmax(220px, 2.8fr) minmax(420px, 6.2fr) minmax(240px, 3fr);
+      gap: 44px;
+      align-items: start;
+      margin-bottom: 56px;
+    }
+
+    /* Left Column: Section Heading + Description + Category Sub-Filter + Links */
+    .sc-left h1 {
+      font-family: var(--mono);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+
+    .sc-left .sc-desc {
+      font-family: var(--sans);
+      font-size: 0.94rem;
+      line-height: 1.68;
+      color: var(--ink-2);
+      margin-bottom: 24px;
+    }
+
+    /* Sub-category pills (All · Testing · Blockchain · AI / or Company selector) */
+    .sub-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 26px;
+    }
+
+    .sub-pill {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+      padding: 4px 9px;
+      border: 1px solid var(--line-soft);
+      color: var(--ink-3);
+      text-transform: uppercase;
+      transition: all 0.12s;
+    }
+
+    .sub-pill:hover {
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    .sub-pill.on {
+      background: var(--paper);
+      color: var(--bg);
+      border-color: var(--paper);
+    }
+
+    .sc-links {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      padding-top: 8px;
+    }
+
+    .sc-ext-link {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+      transition: color 0.12s, border-color 0.12s;
+      cursor: pointer;
+    }
+
+    .sc-ext-link:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    /* Center Column: macOS Window Frame (Traffic Lights + Title + Action) */
+    .mac-win {
+      border: 1px solid var(--line);
+      background: #10100f;
+      min-height: 410px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    html[data-scheme="light"] .mac-win {
+      background: #f5f3ec;
+    }
+
+    .mac-bar {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--line-soft);
+      display: grid;
+      grid-template-columns: 80px 1fr 80px;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      color: var(--ink-3);
+    }
+
+    .mac-dots {
+      display: flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .mac-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .mac-dot.r { background: #e06c60; }
+    .mac-dot.y { background: #e5b567; }
+    .mac-dot.g { background: #78b76c; }
+
+    .mac-title {
+      text-align: center;
+      color: var(--ink-2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mac-act {
+      text-align: right;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-3);
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .mac-act:hover {
+      color: var(--ink);
+    }
+
+    .mac-body {
+      padding: 24px 26px;
+      flex: 1;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.72;
+      color: var(--ink-2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .mac-prompt-line {
+      background: rgba(var(--ink-rgb), 0.06);
+      padding: 6px 10px;
+      color: var(--ink);
+      display: inline-block;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+    }
+
+    .mac-prompt-line .gt {
+      color: var(--ink-3);
+      margin-right: 6px;
+    }
+
+    .mac-code-box {
+      border-left: 2px solid var(--accent);
+      background: rgba(var(--ink-rgb), 0.03);
+      padding: 12px 16px;
+      margin: 12px 0;
+      color: var(--ink);
+      font-size: 0.8rem;
+    }
+
+    .mac-tags-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .mac-chip {
+      font-size: 0.73rem;
+      padding: 2px 8px;
+      background: rgba(var(--ink-rgb), 0.06);
+      border: 1px solid var(--line-soft);
+      color: var(--ink-2);
+    }
+
+    .mac-footer-bar {
+      padding-top: 14px;
+      border-top: 1px dashed var(--line-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--ink-3);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Right Column: Selected Item Title + Summary + `└` Tree Specs */
+    .sc-right h2 {
+      font-family: var(--sans);
+      font-size: 1.75rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+      margin-bottom: 14px;
+    }
+
+    .sc-right .sr-summary {
+      font-family: var(--sans);
+      font-size: 0.94rem;
+      line-height: 1.65;
+      color: var(--ink-2);
+      margin-bottom: 24px;
+    }
+
+    .spec-group {
+      margin-bottom: 18px;
+    }
+
+    .spec-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 6px;
+    }
+
+    .spec-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--ink);
+      flex-wrap: wrap;
+    }
+
+    .spec-line .tree {
+      color: var(--ink-4);
+      font-family: var(--mono);
+      user-select: none;
+    }
+
+    .spec-badge {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      background: rgba(var(--ink-rgb), 0.07);
+      padding: 2px 8px;
+      color: var(--ink);
+    }
+
+    .sr-primary-btn {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      padding: 8px 16px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--ink);
+      transition: background-color 0.12s, color 0.12s, border-color 0.12s;
+    }
+
+    .sr-primary-btn:hover {
+      background: var(--paper);
+      color: var(--bg);
+      border-color: var(--paper);
+    }
+
+    /* Below-Showcase Directory Index (All Items in Current Section) */
+    .dir-section {
+      border-top: 1px solid var(--line-soft);
+      padding-top: 28px;
+    }
+
+    .dir-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 0.74rem;
+      color: var(--ink-3);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .dir-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dir-row {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 20px;
+      align-items: baseline;
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line-soft);
+      cursor: pointer;
+      transition: background-color 0.12s;
+    }
+
+    .dir-row .d-meta {
+      color: var(--ink-3);
+      font-size: 0.78rem;
+      transition: transform 0.18s var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .dir-row .d-title {
+      font-family: var(--sans);
+      font-size: 0.96rem;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .dir-row .d-sub {
+      color: var(--ink-3);
+      font-size: 0.84rem;
+      margin-left: 10px;
+      font-weight: 400;
+    }
+
+    .dir-row .d-right {
+      color: var(--ink-3);
+      font-size: 0.75rem;
+      transition: transform 0.18s var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .dir-row.selected {
+      background: rgba(var(--ink-rgb), 0.045);
+      border-left: 2px solid var(--accent);
+    }
+
+    .dir-row:hover {
+      background: var(--paper);
+    }
+
+    .dir-row:hover span {
+      color: var(--bg) !important;
+    }
+
+    .dir-row:hover .d-meta {
+      transform: translateX(8px);
+    }
+
+    .dir-row:hover .d-right {
+      transform: translateX(-8px);
+    }
+
+    /* ==========================================================================
+       VIEW 3: SINGLE-COLUMN `/WhoamI` CV & INTRODUCTION (#viewWhoami)
+       Clean 680px Single Column + Prominent Direct Link to Main Page
+       ========================================================================== */
+    .cv-column {
+      max-width: 680px;
+      margin: 18px auto 96px;
+      padding: 0 24px;
+    }
+
+    .cv-top-bridge {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--line-soft);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cv-kicker {
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .cv-to-main-btn {
+      background: var(--paper);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: box-shadow 0.15s;
+    }
+
+    .cv-to-main-btn:hover {
+      box-shadow: 0 0 0 2px var(--paper);
+    }
+
+    .cv-header h1 {
+      font-family: var(--sans);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .cv-header .cv-role {
+      font-family: var(--mono);
+      font-size: 0.86rem;
+      color: var(--ink-2);
+      margin-top: 8px;
+    }
+
+    .cv-header .cv-summary {
+      font-family: var(--sans);
+      font-size: 0.96rem;
+      color: var(--ink-2);
+      line-height: 1.78;
+      margin-top: 16px;
+    }
+
+    .cv-sec {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .cv-sec-title {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 18px;
+    }
+
+    .cv-item {
+      margin-bottom: 22px;
+    }
+
+    .cv-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .cv-item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .cv-item-title {
+      font-family: var(--sans);
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .cv-item-period {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      color: var(--ink-3);
+    }
+
+    .cv-item-desc {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      color: var(--ink-2);
+      line-height: 1.72;
+    }
+
+    .cv-bullets {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      color: var(--ink-2);
+      line-height: 1.72;
+      padding-left: 1.15rem;
+      margin-top: 6px;
+    }
+
+    .cv-bullets li {
+      margin-bottom: 4px;
+    }
+
+    .cv-kv-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cv-kv {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 16px;
+      align-items: baseline;
+      font-size: 0.86rem;
+    }
+
+    .cv-kv .k {
+      font-family: var(--mono);
+      color: var(--ink-3);
+      font-size: 0.78rem;
+    }
+
+    .cv-kv .v {
+      font-family: var(--sans);
+      color: var(--ink);
+    }
+
+    .cv-bottom-cta {
+      margin-top: 44px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      background: var(--bg-raised);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       READER MODAL (Full Articles)
+       ========================================================================== */
+    .reader-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: var(--bg);
+      overflow-y: auto;
+      padding: 28px var(--gutter) 80px;
+      animation: fadeUp 0.2s var(--ease-out);
+    }
+
+    .reader-modal.open {
+      display: block;
+    }
+
+    .reader-head {
+      max-width: 780px;
+      margin: 0 auto 32px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .reader-body {
+      max-width: 780px;
+      margin: 0 auto;
+      font-family: var(--sans);
+      line-height: 1.82;
+      color: var(--ink-2);
+    }
+
+    .reader-body h1 {
+      font-size: clamp(1.5rem, 2.4vw, 2rem);
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+      margin: 10px 0 20px;
+    }
+
+    .reader-body h2 {
+      font-size: 1.05rem;
+      font-family: var(--mono);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      margin: 28px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .reader-body p { margin-bottom: 14px; }
+    .reader-body ul, .reader-body ol { padding-left: 1.25rem; margin-bottom: 16px; }
+    .reader-body li { margin-bottom: 6px; }
+    .reader-body strong { color: var(--ink); }
+    .reader-body blockquote {
+      border-left: 2px solid var(--accent);
+      background: var(--bg-raised);
+      padding: 10px 16px;
+      margin: 16px 0;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 0.84rem;
+    }
+
+    .inv-archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+      font-family: var(--mono);
+    }
+
+    .inv-arch-card {
+      border: 1px solid var(--line-soft);
+      background: var(--bg-raised);
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      transition: background-color 0.12s, color 0.12s;
+    }
+
+    .inv-arch-card:hover {
+      background: var(--paper);
+      color: var(--bg);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS
+       ========================================================================== */
+    @media (max-width: 1080px) {
+      .showcase-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .top-bar {
+        padding: 18px 24px;
+        flex-wrap: wrap;
+      }
+      .tb-nav {
+        order: 3;
+        max-width: 100%;
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-top: 8px;
+        border-top: 1px solid var(--line-soft);
+      }
+      .stage-container {
+        padding: 20px 24px 64px;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .term-layout {
+        grid-template-columns: 1fr;
+      }
+      .term-side {
+        display: none;
+      }
+      .term-main {
+        padding: 16px 20px 20px;
+      }
+      .banner {
+        font-size: 9px;
+        margin-top: 12px;
+      }
+      .hw-route {
+        grid-template-columns: 88px 20px 1fr;
+      }
+      .hw-route .r-tag { display: none; }
+      .dir-row {
+        grid-template-columns: 1fr auto;
+      }
+      .dir-row .d-meta, .dir-row .d-sub {
+        display: none;
+      }
+      .cv-kv {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       VIEW 1: OUTER PURE TERMINAL GATEWAY (bolab.dev Root Layer)
+       ======================================================================== -->
+  <div id="viewTerminal" class="app-view term-layout">
+    <aside class="term-side">
+      <div class="brand-mark" onclick="switchView('main', 'writing')" title="Enter Main Page (/guest)">
+        <svg viewBox="0 0 16 14" width="38" height="34" fill="currentColor" aria-label="Bo's Lab">
+          <path d="M5 0h6v2h-1v2.5l4 5.5v3H2v-3l4-5.5V2H5V0zm2 2v3L4.2 9h7.6L9 5V2H7z"/>
+          <rect x="5" y="10" width="2" height="2" class="b-pix-1"/>
+          <rect x="9" y="9" width="2" height="2" class="b-pix-2"/>
+        </svg>
+      </div>
+    </aside>
+
+    <main class="term-main" onclick="handleCanvasClick(event)">
+      <div class="upper-scroll" id="upperScroll">
+        <pre class="banner" aria-label="bolab.dev">eeeee  eeeee e     eeeee eeeee     eeeee eeee ee   e
+8   8  8   8 8     8   8 8   8     8   8 8    88   8
+8eee8e 8   8 8e    8eee8 8eee8e    8e  8 8eee 88  e8
+88   8 8   8 88    88  8 88   8 ee 88  8 88    8  8
+88eee8 8eee8 88eee 88  8 88eee8 88 88ee8 88ee  8ee8</pre>
+
+        <div class="boot-meta">
+          <span>Bo's Lab · v2.5</span>
+          <span>—</span>
+          <span>type <span class="tok" onclick="openSlashPalette()">/</span> for commands</span>
+          <span>·</span>
+          <span>press <span class="tok" onclick="runCommand('/guest')">Enter ↵</span> to enter <span class="tok" onclick="runCommand('/guest')">/guest</span></span>
         </div>
-    </div>
-    {{ end }}
 
-    {{/* All posts, reverse chronological, exclude pinned from top but still show */}}
-    <div class="post-list">
-        {{ range (where .Site.RegularPages "Type" "post").ByDate.Reverse }}
-        {{ if not .Params.pinned }}
-        <article class="post-item">
-            <h2 class="post-title">
-                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            </h2>
-            {{ if .Description }}
-            <p class="post-description">{{ .Description }}</p>
-            {{ end }}
-            <div class="post-meta">
-                <time datetime="{{ .Date.Format "2006-01-02" }}">
-                    {{ .Date.Format "01.02.2006" }}
-                </time>
-                {{ if .Params.tags }}
-                <span class="post-tags">
-                    {{ range .Params.tags }}
-                    <span class="tag">{{ . }}</span>
-                    {{ end }}
-                </span>
-                {{ end }}
+        <!-- `/WhoamI` Hero Summary + Direct Links to `/guest` & `/resume` -->
+        <section class="hero-whoami" aria-label="WhoamI">
+          <a class="hw-kicker" href="#whoami" onclick="event.preventDefault(); runCommand('/WhoamI')" title="Open single-column CV & Introduction (/WhoamI)">
+            <span>/WhoamI</span>
+          </a>
+          <div class="hw-headline">
+            <b>Bo</b> <span class="role">— Principal Test Engineer · Builder of Bo's Lab</span>
+          </div>
+          <p class="hw-summary">
+            Principal Test Engineer @ Bybit, focused on wallet infrastructure &amp; 40+ blockchain integrations (EVM, UTXO, Solana). Exploring AI-assisted testing and standardized QA platforms.
+          </p>
+          <div class="hw-cmd-label">Commands</div>
+          <div class="hw-routes">
+            <a class="hw-route" href="#guest" onclick="event.preventDefault(); runCommand('/guest')">
+              <span class="r-cmd">/guest</span>
+              <span class="r-arr">→</span>
+              <span class="r-desc">Enter main page (writing, tools &amp; about)</span>
+              <span class="r-tag">[Enter ↵]</span>
+            </a>
+            <a class="hw-route" href="#resume" onclick="event.preventDefault(); runCommand('/resume')">
+              <span class="r-cmd">/resume</span>
+              <span class="r-arr">→</span>
+              <span class="r-desc">Read the latest article right here in terminal</span>
+              <span class="r-tag">[Latest]</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- Dynamic Command Output Log (#termOut) -->
+        <div id="termOut" aria-live="polite"></div>
+      </div>
+
+      <!-- Bottom-Anchored Slash Palette & Prompt Bar -->
+      <section class="dock-zone">
+        <div class="slash-menu" id="slashMenu">
+          <div class="slash-item sel" data-cmd="/guest" onclick="runCommand('/guest')">
+            <span class="sc">/guest</span>
+            <span class="sd">Enter main page (writing, tools &amp; about)</span>
+            <span class="sk">DEFAULT [↵]</span>
+          </div>
+          <div class="slash-item" data-cmd="/WhoamI" onclick="runCommand('/WhoamI')">
+            <span class="sc">/WhoamI</span>
+            <span class="sd">Single-column CV, experience &amp; introduction</span>
+            <span class="sk">CV / BIO</span>
+          </div>
+          <div class="slash-item" data-cmd="/resume" onclick="runCommand('/resume')">
+            <span class="sc">/resume</span>
+            <span class="sd">Read the latest article in terminal</span>
+            <span class="sk">LATEST</span>
+          </div>
+          <div class="slash-item" data-cmd="/tools" onclick="runCommand('/tools')">
+            <span class="sc">/tools</span>
+            <span class="sd">Jump to Tools showcase on main page</span>
+            <span class="sk">TOOLS</span>
+          </div>
+          <div class="slash-item" data-cmd="/about" onclick="runCommand('/about')">
+            <span class="sc">/about</span>
+            <span class="sd">Jump to About, GitHub and RSS on main page</span>
+            <span class="sk">ABOUT</span>
+          </div>
+          <div class="slash-item" data-cmd="/theme" onclick="runCommand('/theme')">
+            <span class="sc">/theme</span>
+            <span class="sd">Toggle dark / light color scheme</span>
+            <span class="sk">UI</span>
+          </div>
+          <div class="slash-item" data-cmd="/clear" onclick="runCommand('/clear')">
+            <span class="sc">/clear</span>
+            <span class="sd">Clear terminal screen</span>
+            <span class="sk">SHELL</span>
+          </div>
+        </div>
+
+        <div class="term-dock">
+          <span class="dock-host" id="dockHost">guest@bolab.dev</span>
+          <span class="dock-gt">&gt;</span>
+          <div class="dock-input-wrap">
+            <input
+              type="text"
+              id="dockInput"
+              class="dock-input"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            />
+            <span class="dock-ghost" id="dockGhost">/guest</span>
+          </div>
+          <button class="dock-enter-pill" id="dockActionBtn" onclick="triggerDefaultOrInput()">
+            Enter ↵ /guest
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       VIEW 2: MAIN PAGE (/guest) — Exact claude.dev Top Bar + 3-Col Showcase
+       Sections Mapped from bolab.dev:
+       [H] WRITING (测试 · 区块链 · AI) | [L] TOOLS | [A] ABOUT | [W] WHOAMI | [T] TERMINAL
+       ======================================================================== -->
+  <div id="viewMain" class="app-view">
+    <header class="top-bar">
+      <div class="tb-brand" onclick="switchView('main', 'writing')" title="Bo's Lab — Main Page">
+        <svg viewBox="0 0 16 14" width="34" height="30" fill="currentColor">
+          <path d="M5 0h6v2h-1v2.5l4 5.5v3H2v-3l4-5.5V2H5V0zm2 2v3L4.2 9h7.6L9 5V2H7z"/>
+          <rect x="5" y="10" width="2" height="2" class="b-pix-1"/>
+          <rect x="9" y="9" width="2" height="2" class="b-pix-2"/>
+        </svg>
+      </div>
+
+      <nav class="tb-nav" aria-label="Primary Sections">
+        <a class="tb-link active" id="nav-writing" onclick="setMainSection('writing')"><span class="k">[H]</span><span data-i18n="navWriting">WRITING</span></a>
+        <a class="tb-link" id="nav-tools" onclick="setMainSection('tools')"><span class="k">[L]</span><span data-i18n="navTools">TOOLS</span></a>
+        <a class="tb-link" id="nav-about" onclick="setMainSection('about')"><span class="k">[A]</span><span data-i18n="navAbout">ABOUT</span></a>
+        <a class="tb-link" onclick="switchView('whoami')"><span class="k">[W]</span><span>WHOAMI</span></a>
+        <a class="tb-link" onclick="switchView('terminal')"><span class="k">[T]</span><span>TERMINAL</span></a>
+      </nav>
+
+      <div class="tb-right">
+        <button class="tb-mini-btn" id="langBtn" onclick="toggleLang()" title="Switch 中文 / EN">中文 / EN</button>
+        <button class="tb-mini-btn" onclick="toggleScheme()" title="Switch Dark / Light">◐</button>
+        <div class="cta-wrap">
+          <button class="tb-cta" onclick="toggleCtaDropdown(event)">
+            <span id="ctaBtnLabel">Open Lab Tools</span>
+            <span style="font-size:0.7rem;">▾</span>
+          </button>
+          <div class="cta-dropdown" id="ctaDropdown">
+            <a href="/tools/btc.html" target="_blank" rel="noopener">
+              <span>BTC On-Chain Dashboard</span>
+              <span>↗</span>
+            </a>
+            <a href="/about/">
+              <span>About</span>
+              <span>→</span>
+            </a>
+            <a href="https://github.com/wytoumao" target="_blank" rel="noopener">
+              <span>GitHub @wytoumao</span>
+              <span>↗</span>
+            </a>
+            <a href="/index.xml" target="_blank" rel="noopener">
+              <span>RSS Feed</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 3-Column Editorial Showcase + Categorized Directory -->
+    <main class="stage-container">
+      <section class="showcase-grid">
+        <!-- Col 1: Section Title, Intro, Category Pills & Action Links -->
+        <div class="sc-left">
+          <h1 id="scHeading">writing</h1>
+          <p class="sc-desc" id="scDesc"></p>
+          <div class="sub-pills" id="scPills"></div>
+          <div class="sc-links" id="scLinks"></div>
+        </div>
+
+        <!-- Col 2: Interactive macOS Terminal / Telemetry Window -->
+        <div class="mac-win">
+          <div class="mac-bar">
+            <div class="mac-dots">
+              <span class="mac-dot r"></span>
+              <span class="mac-dot y"></span>
+              <span class="mac-dot g"></span>
             </div>
-        </article>
-        {{ end }}
-        {{ end }}
+            <div class="mac-title" id="macTitle">deposit-testing.md</div>
+            <button class="mac-act" id="macActionBtn" onclick="cycleShowcaseNext()">NEXT →</button>
+          </div>
+          <div class="mac-body" id="macBody"></div>
+        </div>
+
+        <!-- Col 3: Selected Item Title, Summary & `└` Tree Specs -->
+        <div class="sc-right" id="scRight"></div>
+      </section>
+
+      <!-- Full Categorized Index Below Showcase -->
+      <section class="dir-section">
+        <div class="dir-head">
+          <span id="dirHeading">INDEX // ALL ARTICLES</span>
+          <span id="dirCount">3 ITEMS</span>
+        </div>
+        <div class="dir-list" id="dirList"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       VIEW 3: `/WhoamI` — SINGLE-COLUMN CV & INTRODUCTION (#viewWhoami)
+       Links Straight Through to Main Page (/guest)
+       ======================================================================== -->
+  <div id="viewWhoami" class="app-view">
+    <header class="top-bar">
+      <div class="tb-brand" onclick="switchView('main', 'writing')" title="Go to Main Page (/guest)">
+        <svg viewBox="0 0 16 14" width="34" height="30" fill="currentColor">
+          <path d="M5 0h6v2h-1v2.5l4 5.5v3H2v-3l4-5.5V2H5V0zm2 2v3L4.2 9h7.6L9 5V2H7z"/>
+          <rect x="5" y="10" width="2" height="2" class="b-pix-1"/>
+          <rect x="9" y="9" width="2" height="2" class="b-pix-2"/>
+        </svg>
+      </div>
+
+      <nav class="tb-nav" aria-label="Primary Sections">
+        <a class="tb-link" onclick="switchView('main', 'writing')"><span class="k">[H]</span><span>WRITING</span></a>
+        <a class="tb-link" onclick="switchView('main', 'tools')"><span class="k">[L]</span><span>TOOLS</span></a>
+        <a class="tb-link" onclick="switchView('main', 'about')"><span class="k">[A]</span><span>ABOUT</span></a>
+        <a class="tb-link active"><span class="k">[W]</span><span>WHOAMI</span></a>
+        <a class="tb-link" onclick="switchView('terminal')"><span class="k">[T]</span><span>TERMINAL</span></a>
+      </nav>
+
+      <div class="tb-right">
+        <button class="tb-mini-btn" onclick="toggleScheme()" title="Switch Dark / Light">◐</button>
+        <button class="tb-cta" onclick="switchView('main', 'writing')">
+          <span>Enter Main Page</span>
+          <span>→</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Single-Column CV & Introduction -->
+    <main class="cv-column">
+      <div class="cv-top-bridge">
+        <span class="cv-kicker">/WhoamI · CURRICULUM VITAE &amp; INTRODUCTION</span>
+        <button class="cv-to-main-btn" onclick="switchView('main', 'writing')">
+          <span>Go to Main Page (/guest)</span>
+          <span>→</span>
+        </button>
+      </div>
+
+      <header class="cv-header">
+        <h1>Bo</h1>
+        <div class="cv-role">Principal Test Engineer @ Bybit · Creator of Bo's Lab</div>
+        <p class="cv-summary">
+          我是 Bo，一名专注于区块链基础设施与钱包安全的测试工程师。目前在 <strong>Bybit</strong> 担任首席测试工程师，过去几年深度参与了 <strong>40+ 条公链</strong>（涵盖 EVM、BTC/UTXO、Cosmos、Solana、XRPL 等架构）的钱包充提与节点集成测试，致力于将高度依赖个人经验的链上测试转化为标准化工具与 AI 驱动的自动化防护体系。
+        </p>
+      </header>
+
+      <section class="cv-sec">
+        <div class="cv-sec-title">Experience</div>
+
+        <div class="cv-item">
+          <div class="cv-item-head">
+            <span class="cv-item-title">Bybit — Principal Test Engineer</span>
+            <span class="cv-item-period">Present</span>
+          </div>
+          <ul class="cv-bullets">
+            <li>Led integration and wallet deposit/withdrawal QA across <strong>40+ public blockchains</strong> (EVM, UTXO, Cosmos, Solana, XRPL).</li>
+            <li>Designed and shipped <strong>Chain Deposit Lab</strong>, cutting complex edge-case transaction construction (fake tokens, revert calls, batch events, 1-wei boundaries) from days to minutes across 21 chains.</li>
+            <li>Built an <strong>AI Test-Data Agent (OpenClaw)</strong> enabling natural-language chain transaction synthesis with automated daily digest loops, and pioneered on-chain clustering + mock-bombing fake-deposit defense.</li>
+          </ul>
+        </div>
+
+        <div class="cv-item">
+          <div class="cv-item-head">
+            <span class="cv-item-title">NetEase Games (网易游戏) — QA Engineer (Marvel Rivals)</span>
+            <span class="cv-item-period">Previous</span>
+          </div>
+          <p class="cv-item-desc">
+            Participated in quality engineering and systematic exploratory/risk-based testing on <em>Marvel Rivals</em> prior to transitioning full-time into blockchain protocol &amp; wallet security testing.
+          </p>
+        </div>
+      </section>
+
+      <section class="cv-sec">
+        <div class="cv-sec-title">Projects &amp; Research on bolab.dev</div>
+
+        <div class="cv-item">
+          <div class="cv-item-head">
+            <span class="cv-item-title">Chain Deposit Lab</span>
+            <span class="cv-item-period">21 Chains · Tooling</span>
+          </div>
+          <p class="cv-item-desc">Standardized multi-chain deposit test vector platform covering 13 EVM chains, BTC, 3 UTXO chains, 3 Cosmos chains, and Solana.</p>
+        </div>
+
+        <div class="cv-item">
+          <div class="cv-item-head">
+            <span class="cv-item-title"><a href="/tools/btc.html" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:underline;">BTC On-Chain Dashboard ↗</a></span>
+            <span class="cv-item-period">Telemetry · Tooling</span>
+          </div>
+          <p class="cv-item-desc">Real-time Bitcoin valuation and cycle monitor tracking miner shutdown price, 200-week MA, MVRV, balanced price, and halving countdown.</p>
+        </div>
+
+        <div class="cv-item">
+          <div class="cv-item-head">
+            <span class="cv-item-title"><a href="/about/" style="color:var(--accent); text-decoration:underline;">About ↗</a></span>
+            <span class="cv-item-period">bolab.dev/about</span>
+          </div>
+          <p class="cv-item-desc">About page, contact, and RSS — GitHub @wytoumao, bo@bolab.dev, and the site feed.</p>
+        </div>
+      </section>
+
+      <section class="cv-sec">
+        <div class="cv-sec-title">Skills &amp; Contact</div>
+        <div class="cv-kv-list">
+          <div class="cv-kv">
+            <span class="k">BLOCKCHAIN</span>
+            <span class="v">EVM, BTC / UTXO, Cosmos, Solana, XRPL, Smart Contract &amp; Deposit Security</span>
+          </div>
+          <div class="cv-kv">
+            <span class="k">METHODOLOGY</span>
+            <span class="v">HTSM, Risk-Based Testing, Exploratory Testing, On-Chain Fuzzing</span>
+          </div>
+          <div class="cv-kv">
+            <span class="k">ENGINEERING</span>
+            <span class="v">Python, JavaScript, Git, CI/CD, AI Agents + Test Automation</span>
+          </div>
+          <div class="cv-kv">
+            <span class="k">GITHUB</span>
+            <span class="v"><a href="https://github.com/wytoumao" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:underline;">github.com/wytoumao ↗</a></span>
+          </div>
+          <div class="cv-kv">
+            <span class="k">EMAIL</span>
+            <span class="v"><a href="mailto:bo@bolab.dev" style="color:var(--accent); text-decoration:underline;">bo@bolab.dev</a></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="cv-bottom-cta">
+        <div>
+          <div style="font-family:var(--sans); color:var(--ink); font-weight:500;">Bo's Lab — 探索不止，测试不停</div>
+          <div style="font-size:0.78rem; color:var(--ink-3); margin-top:2px;">Continue to articles, tools, and about.</div>
+        </div>
+        <button class="cv-to-main-btn" onclick="switchView('main', 'writing')">
+          <span>Enter Main Page (/guest)</span>
+          <span>→</span>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       VIEW 4: PROTECTED PROD OPERATOR CONSOLE (`dash prod` + `8848`)
+       ======================================================================== -->
+  <div id="viewProd" class="app-view">
+    <header class="top-bar">
+      <div class="tb-brand" onclick="logoutOperator()">
+        <span style="color:var(--accent)">🔒 ROOT@BOLAB.DEV // PROD CONSOLE</span>
+      </div>
+      <div class="tb-right">
+        <button class="dock-enter-pill" onclick="logoutOperator()">REVOKE SESSION &amp; LOCK [ESC]</button>
+      </div>
+    </header>
+    <main class="stage-container" id="prodMountNode"></main>
+  </div>
+
+  <!-- ========================================================================
+       SHARED FULL READER MODAL (Articles)
+       ======================================================================== -->
+  <div class="reader-modal" id="readerModal">
+    <div class="reader-head">
+      <div id="readerMeta" style="font-size:0.78rem; color:var(--ink-3);"></div>
+      <button class="dock-enter-pill" onclick="closeReader()">← CLOSE [ESC]</button>
     </div>
-</div>
-{{ end }}
+    <div class="reader-body" id="readerBody"></div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // REAL CONTENT REPOSITORY (100% Sourced & Categorized from bolab.dev)
+    // =========================================================================
+    let lang = location.pathname.startsWith("/en") ? "en" : "zh"; // "zh" | "en"
+    let currentMainSec = "writing"; // "writing" | "tools" | "about"
+    let currentFilter = "all";
+    let selectedItemId = "deposit-testing";
+
+    const ARTICLES = [
+      {
+        id: "deposit-testing",
+        cat: ["testing", "blockchain", "ai"],
+        pinned: false,
+        date: "2026-02-11",
+        readTime: "08m read",
+        winTitle: "deposit-testing.md — 21 Chains",
+        url: "/p/deposit-testing/",
+        enUrl: "/en/p/deposit-testing/",
+        zh: {
+          title: "交易所入金测试：从手动构造到标准化平台",
+          short: "如何将交易所钱包入金测试从「依赖个人经验」变为「任何人都能执行的标准化流程」，以及我在假入金检测方向的一些思考。",
+          tags: ["区块链", "入金测试", "测试工程", "AI 造数"],
+          architecture: "标准化平台 → AI Agent 定制补充 → 日报反哺闭环",
+          prompt: "bolab test --chains 21 --guard fake-deposit",
+          previewLines: [
+            "Layer 1 · 主流程入金   -> 本币与标准 Token 转账（CI/CD 自动回归）",
+            "Layer 2 · 特殊边界入金 -> 失败交易 / 合约入金 / 0 金额 / 1 wei / 批量转账",
+            "Layer 3 · 重复入金幂等 -> 同一 tx 重复投递保障与人工审核阈值",
+            "Layer 4 · 假入金深水区 -> 假 Token / 假 Event + 链上聚类与 Mock 轰炸"
+          ],
+          quote: "入金测试的质量，不应该取决于「谁来测」。",
+          fullHtml: `
+            <div style="font-family:var(--mono); font-size:0.76rem; color:var(--accent);">2026-02-11 · 区块链 · 入金测试 · 测试工程 · 工具平台</div>
+            <h1>交易所入金测试：从手动构造到标准化平台</h1>
+            <h2>钱包测试的本质</h2>
+            <p>交易所钱包的测试，说到底就两件事：<strong>入金</strong>和<strong>出金</strong>。入金这一侧可拆分为四个递进层次：</p>
+            <ul>
+              <li><strong>第一层：主流程入金</strong> — 本币和 Token 的标准转账，理想状态下跑在 CI/CD 流水线自动回归。</li>
+              <li><strong>第二层：特殊入金</strong> — 链上失败交易、合约入金、零金额转账、批量入金等边界场景。过去构造一笔特殊交易极度依赖个人链上经验，动辄耗时一整天。</li>
+              <li><strong>第三层：重复入金（幂等性）</strong> — 同一笔交易被系统处理两次时的幂等机制与人工审核触发条件。</li>
+              <li><strong>第四层：假入金</strong> — 测试的深水区。真正的假入金攻击往往藏在复杂的交易结构里，一旦漏过就是 P-1 级生产事故。</li>
+            </ul>
+            <blockquote>入金测试的质量，不应该取决于「谁来测」。</blockquote>
+            <h2>我的解法：deposit.bolab.dev + OpenClaw AI</h2>
+            <p>我开发了 <strong>Chain Deposit Lab (deposit.bolab.dev)</strong> —— 让不懂链的人也能在几分钟内完成标准化的入金测试。目前覆盖 <strong>21 条链</strong>（13 EVM / BTC / 3 UTXO / 3 Cosmos / Solana），支持基础转账、单笔多事件批量转账、0 金额与 1 wei 边界、6 种失败交易与 6 种假入金模拟。</p>
+            <p>针对高度定制化长尾场景，结合 AI Agent（基于 OpenClaw）搭建了<strong>自然语言造数机器人</strong>，并每日自动生成团队定制请求日报：</p>
+            <blockquote>标准化平台 → 覆盖已知场景 → AI Agent 处理定制需求 → 日报沉淀高频 case → 反哺平台更新</blockquote>
+            <h2>下一步：假入金检测</h2>
+            <ul>
+              <li><strong>方向一：链上数据分析</strong> — 从 EVM 链拉取海量真实交易交由 AI 聚类比对，发现「不知道自己不知道」的结构盲区。</li>
+              <li><strong>方向二：Mock 轰炸</strong> — 拉取真实世界复杂交易并将 <code>to</code> 地址批量替换为测试充值地址冲击检测系统。</li>
+            </ul>
+          `
+        },
+        en: {
+          title: "Exchange Deposit Testing: From Manual Construction to a Standardized Platform",
+          short: "How I turned exchange wallet deposit testing from 'depends on who is testing' into a repeatable platform across 21 chains — plus AI fake-deposit detection.",
+          tags: ["blockchain", "deposit-qa", "platform", "ai-agent"],
+          architecture: "Platform -> OpenClaw AI Bot -> Daily Digest Loop",
+          prompt: "bolab test --chains 21 --guard fake-deposit",
+          previewLines: [
+            "Layer 1 · Mainline     -> Native & ERC-20 transfers in CI/CD regression",
+            "Layer 2 · Edge Cases   -> Reverts, contract deposits, 0-value, 1-wei, batch events",
+            "Layer 3 · Idempotency  -> Duplicate tx replay protection & manual review gates",
+            "Layer 4 · Fake Deposit -> Spoofed tokens/events + AI clustering & mock-bombing"
+          ],
+          quote: "Deposit QA quality should never depend on 'who runs the test'.",
+          fullHtml: `<p>See full Chinese original or visit <a href="/en/p/deposit-testing/" target="_blank" style="color:var(--accent); text-decoration:underline;">bolab.dev/en/p/deposit-testing/ ↗</a>.</p>`
+        }
+      },
+      {
+        id: "xrp-reserve",
+        cat: ["blockchain", "testing"],
+        pinned: false,
+        date: "2025-02-08",
+        readTime: "06m read",
+        winTitle: "xrpl-reserve-check.sh",
+        url: "/p/xrp-reserve/",
+        enUrl: "/en/p/xrp-reserve/",
+        zh: {
+          title: "XRP 的 1 XRP 最低储备金：为什么你的地址必须留钱？",
+          short: "转账 XRP 时发现地址必须保留至少 1 XRP？深入拆解 XRPL 状态租金设计逻辑（Base Reserve + Owner Reserve）与充提测试边界。",
+          tags: ["XRP", "公链机制", "充提测试"],
+          architecture: "Base Reserve (1 XRP) + Owner Reserve (0.2 XRP × N)",
+          prompt: "xrpl account_info --calc-withdrawable",
+          previewLines: [
+            "Base Reserve  = 1.0 XRP  (激活账户与防止全局账本状态膨胀)",
+            "Owner Reserve = 0.2 XRP  (每条 TrustLine / Offer / Escrow 额外锁定)",
+            "示例（3 条 TrustLine）   -> 最低锁定 1 + 0.2 × 3 = 1.6 XRP",
+            "最大可提现金额           -> balance - 1.0 - (owner_objects × 0.2)"
+          ],
+          quote: "不靠高额 Gas 限制交易，而是靠储备金（状态租金）防止全局节点内存膨胀。",
+          fullHtml: `
+            <div style="font-family:var(--mono); font-size:0.76rem; color:var(--accent);">2025-02-08 · XRP · 公链 · 充提测试</div>
+            <h1>XRP 的 1 XRP 最低储备金：为什么你的地址必须留钱？</h1>
+            <h2>为什么要这样设计？</h2>
+            <p>一句话：<strong>防垃圾账户（状态租金）</strong>。XRPL 每个地址的数据都驻留在验证节点内存中，储备金为链上占位设立了经济门槛（历史从 200 XRP → 20 XRP → 10 XRP，于 2024 年 12 月降至 <strong>1 XRP</strong>）。</p>
+            <h2>两种储备金计算公式</h2>
+            <ul>
+              <li><strong>基础储备（Base Reserve）= 1 XRP</strong>：每个激活地址必须持有的最低余额。</li>
+              <li><strong>对象储备（Owner Reserve）= 0.2 XRP / 对象</strong>：每条 Trust Line（如持有 USDT）、Offer、Escrow 额外锁定 0.2 XRP，删除对象后释放。</li>
+            </ul>
+            <blockquote>最低锁定余额 = 1 + 0.2 × 对象数量（例如 3 条 Trust Line = 1.6 XRP）</blockquote>
+            <h2>对交易所充提测试的四大影响</h2>
+            <ol>
+              <li><strong>首次充值门槛</strong>：新地址首充必须 ≥ 1 XRP，否则充值无法激活账户。</li>
+              <li><strong>最大可提金额</strong>：最多可提 <code>余额 - 1 - (对象数 × 0.2)</code> XRP，全额提现需验证边界报错。</li>
+              <li><strong>对象释放联动</strong>：删除 Trust Line 后储备释放，可用余额动态增加。</li>
+              <li><strong>同类公链横向对比</strong>：Stellar (1 XLM)、Polkadot (1 DOT Existential Deposit)、EOS (RAM)。</li>
+            </ol>
+          `
+        },
+        en: {
+          title: "XRP's 1 XRP Minimum Reserve: Why Your Address Must Hold a Balance",
+          short: "Design logic behind XRPL's Base & Owner Reserve state-rent mechanism and critical edge cases for exchange deposit/withdrawal QA.",
+          tags: ["XRP", "public-chain", "wallet-qa"],
+          architecture: "Base Reserve (1 XRP) + Owner Reserve (0.2 XRP × N)",
+          prompt: "xrpl account_info --calc-withdrawable",
+          previewLines: [
+            "Base Reserve  = 1.0 XRP  (Account activation & ledger anti-spam)",
+            "Owner Reserve = 0.2 XRP  (Per TrustLine / Offer / Escrow object)",
+            "Example (3 TrustLines)   -> Locked = 1 + 0.2 * 3 = 1.6 XRP",
+            "Max Withdrawable         -> balance - 1.0 - (owner_objects * 0.2)"
+          ],
+          quote: "XRPL prevents state bloat via refundable state rent rather than high gas fees.",
+          fullHtml: `<p>Visit <a href="/en/p/xrp-reserve/" target="_blank" style="color:var(--accent); text-decoration:underline;">bolab.dev/en/p/xrp-reserve/ ↗</a> for the English post.</p>`
+        }
+      },
+      {
+        id: "hello-world",
+        cat: ["testing", "blockchain", "ai"],
+        pinned: true,
+        date: "2025-02-08",
+        readTime: "04m read",
+        winTitle: "pinned // hello-world.md",
+        url: "/p/hello-world/",
+        enUrl: "/en/p/hello-world/",
+        zh: {
+          title: "📌 Hello World — 为什么我要写博客",
+          short: "Bo's Lab 正式上线。聊聊为什么一个参与过 40+ 条公链集成的区块链测试工程师决定开始系统写作。",
+          tags: ["置顶", "博客", "职业发展"],
+          architecture: "区块链测试 · 测试方法论 · AI + 测试 · 商业观察",
+          prompt: "cat pinned/hello-world.md",
+          previewLines: [
+            "01 · 把散落的经验体系化 -> 40+ 公链踩坑经验沉淀为结构化方法论",
+            "02 · 打造可搜索的名片   -> 深度实战文章胜过简历上的一行概述",
+            "03 · 记录长期思考轨迹   -> 公链集成、HTSM 风险测试、AI 提效与投资研究"
+          ],
+          quote: "Bo's Lab — 探索不止，测试不停。",
+          fullHtml: `
+            <div style="font-family:var(--mono); font-size:0.76rem; color:var(--accent);">📌 置顶 · 2025-02-08 · 博客 · 职业发展</div>
+            <h1>Hello World — 为什么我要写博客</h1>
+            <p>你好，我是 <strong>Bo</strong>，目前在 Bybit 担任首席测试工程师（此前在网易游戏参与过 <em>Marvel Rivals</em> 测试），过去几年深度参与了 40+ 条公链的集成测试。</p>
+            <h2>为什么要写博客？</h2>
+            <ul>
+              <li><strong>把散落的经验体系化</strong>：测了 40+ 条链、踩过无数坑，写出来的过程就是建立体系的过程。</li>
+              <li><strong>打造「可搜索的名片」</strong>：几篇解决真问题的深度文章远比简历上的一句话更有说服力。</li>
+              <li><strong>记录成长的轨迹</strong>：持续沉淀区块链测试、HTSM/风险驱动方法论、AI + 测试探索与商业思考。</li>
+            </ul>
+            <blockquote>Bo’s Lab — 探索不止，测试不停。</blockquote>
+          `
+        },
+        en: {
+          title: "📌 Hello World — Why I Started This Blog",
+          short: "Bo's Lab is live. Why a blockchain QA engineer who tested 40+ chains decided to build a public engineering & research notebook.",
+          tags: ["Pinned", "Blog", "Career"],
+          architecture: "Blockchain QA · Methodology · AI + QA · Research",
+          prompt: "cat pinned/hello-world.md",
+          previewLines: [
+            "01 · Systematize 40+ chain integration lessons into reusable playbooks",
+            "02 · Build a searchable proof-of-work beyond a one-line resume bullet",
+            "03 · Document evolving mental models across QA, AI tooling & investing"
+          ],
+          quote: "Bo's Lab — Never stop exploring, never stop testing.",
+          fullHtml: `<p>Visit <a href="/en/p/hello-world/" target="_blank" style="color:var(--accent); text-decoration:underline;">bolab.dev/en/p/hello-world/ ↗</a>.</p>`
+        }
+      }
+    ];
+
+    const TOOLS_DATA = [
+      /* deposit.bolab.dev is down (Cloudflare 530). Restore this entry when the tunnel is back.
+      {
+        id: "deposit-lab",
+        cat: ["external"],
+        date: "LIVE PLATFORM",
+        readTime: "21 CHAINS",
+        winTitle: "deposit.bolab.dev — Multi-Chain Vector Builder",
+        url: "https://deposit.bolab.dev",
+        zh: {
+          title: "Deposit Tester (Chain Deposit Lab)",
+          short: "多链入金测试平台 — 支持 21 条链（13 EVM / BTC / 3 UTXO / 3 Cosmos / Solana），几分钟内构造批量转账、金额边界、失败交易与假入金攻击场景。",
+          tags: ["21 Chains", "EVM / BTC / SOL", "假入金模拟", "外链平台"],
+          architecture: "13 EVM · BTC · 3 UTXO · 3 Cosmos · Solana",
+          prompt: "deposit-lab --chain eth --scenario fake-erc20-event",
+          previewLines: [
+            "✓ 基础转账   : 本币与标准 Token 入金回归",
+            "✓ 批量转账   : 辅助合约单笔交易触发多个 Transfer Event",
+            "✓ 金额边界   : 0 金额转账 · 最小精度 1 wei 边界验证",
+            "✓ 失败交易   : 余额不足 / Out-of-Gas / Contract Revert 等 6 类失败",
+            "✓ 假入金攻击 : 假 Token 合约 / 伪造 Event 等 6 类攻击模拟"
+          ],
+          quote: "把按「天」计算的复杂链上异常交易构造压缩至几分钟。"
+        },
+        en: {
+          title: "Deposit Tester (Chain Deposit Lab)",
+          short: "Multi-chain deposit testing platform across 21 chains (EVM/BTC/UTXO/Cosmos/Solana) covering batch transfers, 1-wei boundaries, reverts, and fake-deposit simulations.",
+          tags: ["21 Chains", "EVM / BTC / SOL", "Fake-Deposit", "External"],
+          architecture: "13 EVM · BTC · 3 UTXO · 3 Cosmos · Solana",
+          prompt: "deposit-lab --chain eth --scenario fake-erc20-event",
+          previewLines: [
+            "✓ Standard   : Native & Fungible Token mainline transfers",
+            "✓ Batch Tx   : Helper contract emitting multi-recipient Transfer events",
+            "✓ Boundaries : Zero-amount & 1-wei precision edge cases",
+            "✓ Failures   : 6 on-chain revert / out-of-gas failure vectors",
+            "✓ Spoofing   : 6 fake-token & counterfeit event attack vectors"
+          ],
+          quote: "Compresses multi-chain edge-case tx synthesis from days into minutes."
+        }
+      },
+      */
+      {
+        id: "btc-dashboard",
+        cat: ["builtin"],
+        date: "BUILT-IN TOOL",
+        readTime: "ON-CHAIN",
+        winTitle: "bolab.dev/tools/btc.html — BTC Telemetry",
+        url: "/tools/btc.html",
+        zh: {
+          title: "BTC Dashboard（比特币实时链上看板）",
+          short: "聚合比特币关机币价、200 周均线、均衡价格、MVRV 估值指标、减半倒计时与恐惧贪婪指数的一站式周期看板。",
+          tags: ["关机币价", "200W MA", "MVRV", "减半周期", "内置工具"],
+          architecture: "Valuation · Miner Shutdown · Cycle Indicators",
+          prompt: "btc-dash --metrics shutdown,200wma,mvrv,halving",
+          previewLines: [
+            "● 矿机关机币价 : 主流矿机算力电费盈亏平衡安全边际监控",
+            "● 200 周均线   : 跨牛熊周期长期底部成本锚定指标",
+            "● MVRV & 均衡价: 链上筹码公允价值偏离度实时追踪",
+            "● 减半与情绪   : 区块减半倒计时 + 市场恐惧与贪婪指数"
+          ],
+          quote: "用客观链上周期与矿工成本替代情绪化噪音。"
+        },
+        en: {
+          title: "BTC On-Chain Dashboard",
+          short: "Real-time Bitcoin cycle & valuation dashboard tracking miner shutdown price, 200-week MA, balanced price, MVRV, halving countdown, and Fear & Greed Index.",
+          tags: ["Shutdown Price", "200W MA", "MVRV", "Halving", "Built-in"],
+          architecture: "Valuation · Miner Shutdown · Cycle Indicators",
+          prompt: "btc-dash --metrics shutdown,200wma,mvrv,halving",
+          previewLines: [
+            "● Shutdown Price : Miner breakeven floor across flagship ASIC rigs",
+            "● 200-Week MA    : Secular multi-cycle accumulation baseline",
+            "● MVRV Ratio     : Realized-value vs market-value cycle temperature",
+            "● Cycle Pulse    : Halving block countdown & Fear/Greed gauge"
+          ],
+          quote: "Anchors long-term allocation on on-chain cost basis rather than noise."
+        }
+      }
+    ];
+
+    const ABOUT_DATA = [
+      {
+        id: "about",
+        cat: ["pages"],
+        date: "ABOUT",
+        readTime: "BIO",
+        winTitle: "about.md — Bo's Lab",
+        url: "/about/",
+        enUrl: "/en/about/",
+        zh: {
+          title: "关于",
+          short: "我是 Bo，一名区块链测试工程师。目前在 Bybit 担任首席测试工程师，专注于钱包和公链集成测试。过去几年参与了 40+ 条公链的集成测试，涵盖 EVM、UTXO 等多种架构。",
+          tags: ["关于", "区块链", "测试", "AI"],
+          architecture: "区块链测试 · 钱包与公链集成 · AI + 测试",
+          prompt: "cat about.md",
+          previewLines: [
+            "我是 Bo，一名区块链测试工程师。",
+            "目前在 Bybit 担任首席测试工程师，专注于钱包和公链集成测试。",
+            "过去几年参与了 40+ 条公链的集成测试，涵盖 EVM、UTXO 等多种架构。",
+            "联系：GitHub @wytoumao · bo@bolab.dev"
+          ],
+          quote: "Bo's Lab — 探索不止，测试不停。"
+        },
+        en: {
+          title: "About",
+          short: "I'm Bo, a blockchain QA engineer. Currently working as a Principal Test Engineer at Bybit, focusing on wallet and blockchain integration testing. Over the past few years, I've been involved in integration testing for 40+ blockchains, covering various architectures including EVM and UTXO.",
+          tags: ["About", "Blockchain", "QA", "AI"],
+          architecture: "Blockchain QA · Wallet & chain integration · AI + Testing",
+          prompt: "cat about.md",
+          previewLines: [
+            "I'm Bo, a blockchain QA engineer.",
+            "Currently working as a Principal Test Engineer at Bybit, focusing on wallet and blockchain integration testing.",
+            "Over the past few years, I've been involved in integration testing for 40+ blockchains, covering EVM and UTXO.",
+            "Contact: GitHub @wytoumao · bo@bolab.dev"
+          ],
+          quote: "Bo's Lab — Never stop exploring, never stop testing."
+        }
+      },
+      {
+        id: "github",
+        cat: ["links"],
+        date: "GITHUB",
+        readTime: "PROFILE",
+        winTitle: "github.com/wytoumao",
+        url: "https://github.com/wytoumao",
+        zh: {
+          title: "GitHub @wytoumao",
+          short: "Bo 的 GitHub 主页。",
+          tags: ["GitHub"],
+          architecture: "github.com/wytoumao",
+          prompt: "open https://github.com/wytoumao",
+          previewLines: [
+            "GitHub  @wytoumao",
+            "个人项目与公开仓库"
+          ],
+          quote: "github.com/wytoumao"
+        },
+        en: {
+          title: "GitHub @wytoumao",
+          short: "Bo's GitHub profile.",
+          tags: ["GitHub"],
+          architecture: "github.com/wytoumao",
+          prompt: "open https://github.com/wytoumao",
+          previewLines: [
+            "GitHub  @wytoumao",
+            "Public projects and repositories"
+          ],
+          quote: "github.com/wytoumao"
+        }
+      },
+      {
+        id: "rss",
+        cat: ["links"],
+        date: "RSS",
+        readTime: "FEED",
+        winTitle: "index.xml — Bo's Lab RSS",
+        url: "/index.xml",
+        enUrl: "/en/index.xml",
+        zh: {
+          title: "RSS",
+          short: "订阅 Bo's Lab 的文章更新。",
+          tags: ["RSS", "订阅"],
+          architecture: "Hugo RSS · /index.xml",
+          prompt: "curl https://bolab.dev/index.xml",
+          previewLines: [
+            "中文订阅  /index.xml",
+            "English   /en/index.xml"
+          ],
+          quote: "订阅新文章，不必刷新首页。"
+        },
+        en: {
+          title: "RSS",
+          short: "Subscribe to new posts from Bo's Lab.",
+          tags: ["RSS", "Feed"],
+          architecture: "Hugo RSS · /en/index.xml",
+          prompt: "curl https://bolab.dev/en/index.xml",
+          previewLines: [
+            "English  /en/index.xml",
+            "Chinese  /index.xml"
+          ],
+          quote: "Subscribe to new posts without refreshing the homepage."
+        }
+      }
+    ];
+
+    const SECTION_CONFIG = {
+      writing: {
+        headingZh: "writing",
+        headingEn: "writing",
+        descZh: "区块链 · 测试 · AI — 记录 40+ 条公链钱包集成、标准化测试平台建设与假入金防御的工程实战笔记。",
+        descEn: "Blockchain · QA · AI — Engineering notes on 40+ chain integrations, standardized deposit testing platforms, and fake-deposit defense.",
+        pills: [
+          { key: "all", zh: "全部 (3)", en: "ALL (3)" },
+          { key: "testing", zh: "测试", en: "TESTING" },
+          { key: "blockchain", zh: "区块链", en: "BLOCKCHAIN" },
+          { key: "ai", zh: "AI + 测试", en: "AI" }
+        ],
+        links: [
+          { label: "READ LATEST ARTICLE →", action: () => openArticleModal("deposit-testing") },
+          { label: "ABOUT →", href: "/about/" },
+          { label: "RSS FEED ↗", href: "/index.xml" }
+        ],
+        items: ARTICLES
+      },
+      tools: {
+        headingZh: "tools",
+        headingEn: "tools",
+        descZh: "Bo's Lab 实用工具集 — 比特币实时链上看板：关机币价、200 周均线、均衡价格、MVRV、减半倒计时与恐惧贪婪指数。",
+        descEn: "Bo's Lab live utilities — Real-time Bitcoin on-chain valuation telemetry: miner shutdown price, 200-week MA, balanced price, MVRV, halving countdown, and Fear & Greed Index.",
+        pills: [
+          { key: "all", zh: "全部工具 (1)", en: "ALL TOOLS (1)" },
+          { key: "builtin", zh: "链上看板", en: "BTC ON-CHAIN" }
+        ],
+        links: [
+          { label: "OPEN BTC DASHBOARD ↗", href: "/tools/btc.html" },
+          { label: "GITHUB @WYTOUMAO ↗", href: "https://github.com/wytoumao" },
+          { label: "RSS FEED ↗", href: "/index.xml" }
+        ],
+        items: TOOLS_DATA
+      },
+      about: {
+        headingZh: "about",
+        headingEn: "about",
+        descZh: "关于 Bo、联系方式与订阅 — About 页面、GitHub、邮箱与 RSS。",
+        descEn: "About Bo, contact, and subscribe — the About page, GitHub, email, and RSS.",
+        pills: [
+          { key: "all", zh: "全部 (3)", en: "ALL (3)" },
+          { key: "pages", zh: "页面", en: "PAGES" },
+          { key: "links", zh: "链接", en: "LINKS" }
+        ],
+        links: [
+          { label: "ABOUT PAGE →", href: "/about/" },
+          { label: "GITHUB @WYTOUMAO ↗", href: "https://github.com/wytoumao" },
+          { label: "RSS FEED ↗", href: "/index.xml" }
+        ],
+        items: ABOUT_DATA
+      }
+    };
+
+    // =========================================================================
+    // VIEW ROUTING & MAIN SHOWCASE RENDERER
+    // =========================================================================
+    function switchView(view, targetSec) {
+      closeReader();
+      document.getElementById("ctaDropdown").classList.remove("open");
+      document.documentElement.setAttribute("data-view", view);
+
+      if (view === "main") {
+        setMainSection(targetSec || currentMainSec);
+        window.scrollTo(0, 0);
+      } else if (view === "whoami") {
+        window.scrollTo(0, 0);
+      } else if (view === "terminal") {
+        if (window.innerWidth > 768) {
+          setTimeout(() => dockInput.focus(), 40);
+        }
+      }
+    }
+
+    function setMainSection(sec) {
+      currentMainSec = sec;
+      currentFilter = "all";
+      const cfg = SECTION_CONFIG[sec];
+      selectedItemId = cfg.items[0].id;
+
+      ["writing", "tools", "about"].forEach(k => {
+        const el = document.getElementById("nav-" + k);
+        if (el) el.classList.toggle("active", k === sec);
+      });
+
+      renderMainPage();
+    }
+
+    function setSubFilter(filterKey) {
+      currentFilter = filterKey;
+      const visible = getFilteredItems();
+      if (visible.length && !visible.some(i => i.id === selectedItemId)) {
+        selectedItemId = visible[0].id;
+      }
+      renderMainPage();
+    }
+
+    function getFilteredItems() {
+      const cfg = SECTION_CONFIG[currentMainSec];
+      if (currentFilter === "all") return cfg.items;
+      return cfg.items.filter(item => item.cat.includes(currentFilter));
+    }
+
+    function itemUrl(item) {
+      if (lang === "en" && item.enUrl) return item.enUrl;
+      return item.url;
+    }
+
+    function selectShowcaseItem(id) {
+      selectedItemId = id;
+      renderMainPage();
+    }
+
+    function cycleShowcaseNext() {
+      const visible = getFilteredItems();
+      if (!visible.length) return;
+      const idx = visible.findIndex(i => i.id === selectedItemId);
+      const next = visible[(idx + 1) % visible.length];
+      selectedItemId = next.id;
+      renderMainPage();
+    }
+
+    function renderMainPage() {
+      const cfg = SECTION_CONFIG[currentMainSec];
+      const visible = getFilteredItems();
+      const activeItem = visible.find(i => i.id === selectedItemId) || cfg.items[0];
+      const t = activeItem[lang];
+
+      // 1. Left Column
+      document.getElementById("scHeading").textContent = lang === "zh" ? cfg.headingZh : cfg.headingEn;
+      document.getElementById("scDesc").textContent = lang === "zh" ? cfg.descZh : cfg.descEn;
+
+      document.getElementById("scPills").innerHTML = cfg.pills.map(p => `
+        <button class="sub-pill ${currentFilter === p.key ? "on" : ""}" onclick="setSubFilter('${p.key}')">
+          ${lang === "zh" ? p.zh : p.en}
+        </button>
+      `).join("");
+
+      document.getElementById("scLinks").innerHTML = cfg.links.map((lk, idx) => {
+        if (lk.href) {
+          return `<a class="sc-ext-link" href="${lk.href}" target="_blank" rel="noopener">${lk.label}</a>`;
+        }
+        return `<button class="sc-ext-link" onclick="SECTION_CONFIG['${currentMainSec}'].links[${idx}].action()">${lk.label}</button>`;
+      }).join("");
+
+      // 2. Center macOS Window
+      document.getElementById("macTitle").textContent = activeItem.winTitle;
+      document.getElementById("macBody").innerHTML = `
+        <div>
+          <div class="mac-prompt-line"><span class="gt">&gt;</span>${escapeHtml(t.prompt)}</div>
+          <div style="display:flex; flex-direction:column; gap:7px;">
+            ${t.previewLines.map(line => `<div>${escapeHtml(line)}</div>`).join("")}
+          </div>
+          <div class="mac-code-box">“${escapeHtml(t.quote)}”</div>
+        </div>
+        <div class="mac-footer-bar">
+          <div class="mac-tags-grid" style="margin-top:0;">
+            ${t.tags.map(tag => `<span class="mac-chip">${escapeHtml(tag)}</span>`).join("")}
+          </div>
+          <span>${activeItem.date}</span>
+        </div>
+      `;
+
+      // 3. Right Column (`claude.dev/mods` exact `└` spec structure)
+      let primaryBtnHtml = "";
+      if (currentMainSec === "writing") {
+        primaryBtnHtml = `<button class="sr-primary-btn" onclick="openArticleModal('${activeItem.id}')"><span>READ FULL ARTICLE</span><span>→</span></button>`;
+      } else if (currentMainSec === "tools") {
+        primaryBtnHtml = `<a class="sr-primary-btn" href="${itemUrl(activeItem)}" target="_blank" rel="noopener"><span>LAUNCH LIVE TOOL</span><span>↗</span></a>`;
+      } else {
+        primaryBtnHtml = `<a class="sr-primary-btn" href="${itemUrl(activeItem)}" target="${itemUrl(activeItem).startsWith("/") && !itemUrl(activeItem).endsWith(".xml") ? "_self" : "_blank"}" rel="noopener"><span>OPEN</span><span>↗</span></a>`;
+      }
+
+      document.getElementById("scRight").innerHTML = `
+        <h2>${escapeHtml(t.title)}</h2>
+        <p class="sr-summary">${escapeHtml(t.short)}</p>
+
+        <div class="spec-group">
+          <div class="spec-label">CATEGORY &amp; TAGS</div>
+          <div class="spec-line">
+            <span class="tree">└</span>
+            ${t.tags.map(tag => `<span class="spec-badge">${escapeHtml(tag)}</span>`).join("")}
+          </div>
+        </div>
+
+        <div class="spec-group">
+          <div class="spec-label">SCOPE / FRAMEWORK</div>
+          <div class="spec-line">
+            <span class="tree">└</span>
+            <span>${escapeHtml(t.architecture)}</span>
+          </div>
+        </div>
+
+        ${primaryBtnHtml}
+      `;
+
+      // 4. Bottom Categorized Directory Index
+      const dirTitleMap = {
+        writing: lang === "zh" ? "INDEX // 文章列表（点击上方预览，双击阅读全文）" : "INDEX // ARTICLES",
+        tools: lang === "zh" ? "INDEX // 实验室工具集" : "INDEX // LAB TOOLS",
+        about: lang === "zh" ? "INDEX // 关于、GitHub 与 RSS" : "INDEX // ABOUT, GITHUB & RSS"
+      };
+      document.getElementById("dirHeading").textContent = dirTitleMap[currentMainSec];
+      document.getElementById("dirCount").textContent = `${visible.length} ITEMS`;
+
+      document.getElementById("dirList").innerHTML = visible.map(item => {
+        const it = item[lang];
+        const isSel = item.id === activeItem.id;
+        const dblAct = currentMainSec === "writing"
+          ? `openArticleModal('${item.id}')`
+          : `window.open('${itemUrl(item)}', '_blank')`;
+        return `
+          <div class="dir-row ${isSel ? "selected" : ""}" onclick="selectShowcaseItem('${item.id}')" ondblclick="${dblAct}">
+            <span class="d-meta">${item.date}</span>
+            <span class="d-title">${escapeHtml(it.title)}</span>
+            <span class="d-right">${item.readTime} →</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function openArticleModal(id) {
+      const art = ARTICLES.find(a => a.id === id) || ARTICLES[0];
+      const href = itemUrl(art);
+      document.getElementById("readerMeta").innerHTML = `ARTICLE · <b>${art.date}</b> · <a href="${href}" style="color:var(--accent); text-decoration:underline;">Open original ↗</a>`;
+      const body = (art[lang] && art[lang].fullHtml) ? art[lang].fullHtml : art.zh.fullHtml;
+      document.getElementById("readerBody").innerHTML = body;
+      document.getElementById("readerModal").classList.add("open");
+    }
+
+    function closeReader() {
+      document.getElementById("readerModal").classList.remove("open");
+    }
+
+    function toggleLang() {
+      lang = lang === "zh" ? "en" : "zh";
+      const navLabels = {
+        zh: { w: "首页 · 文章", t: "工具箱", a: "关于" },
+        en: { w: "WRITING", t: "TOOLS", a: "ABOUT" }
+      }[lang];
+      document.querySelector('[data-i18n="navWriting"]').textContent = navLabels.w;
+      document.querySelector('[data-i18n="navTools"]').textContent = navLabels.t;
+      document.querySelector('[data-i18n="navAbout"]').textContent = navLabels.a;
+      renderMainPage();
+    }
+
+    function toggleScheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute("data-scheme") === "light" ? "dark" : "light";
+      html.setAttribute("data-scheme", next);
+    }
+
+    function toggleCtaDropdown(e) {
+      e.stopPropagation();
+      document.getElementById("ctaDropdown").classList.toggle("open");
+    }
+
+    document.addEventListener("click", () => {
+      const dd = document.getElementById("ctaDropdown");
+      if (dd) dd.classList.remove("open");
+    });
+
+    // =========================================================================
+    // OUTER TERMINAL CONTROLLER (`/guest`, `/WhoamI`, `/resume`, `dash prod`)
+    // =========================================================================
+    const SLASH_COMMANDS = ["/guest", "/WhoamI", "/resume", "/tools", "/about", "/theme", "/help", "/clear"];
+    const cmdHistory = [];
+    let historyCursor = -1;
+    let slashIndex = 0;
+
+    let authState = "GUEST";
+    let nonceChallenge = "";
+    let failedCount = 0;
+    let lockedUntil = 0;
+
+    const dockInput = document.getElementById("dockInput");
+    const dockGhost = document.getElementById("dockGhost");
+    const dockHost = document.getElementById("dockHost");
+    const dockActionBtn = document.getElementById("dockActionBtn");
+    const slashMenu = document.getElementById("slashMenu");
+    const termOut = document.getElementById("termOut");
+    const upperScroll = document.getElementById("upperScroll");
+
+    if (window.innerWidth > 768) {
+      dockInput.focus();
+    }
+
+    // Animated pixel bubbles across all Bo's Lab logos
+    setInterval(() => {
+      const flip = Date.now() % 4000 < 2000;
+      document.querySelectorAll(".b-pix-1").forEach(el => el.setAttribute("y", flip ? "9" : "10"));
+      document.querySelectorAll(".b-pix-2").forEach(el => el.setAttribute("y", flip ? "10" : "8"));
+    }, 1200);
+
+    function handleCanvasClick(e) {
+      if (!e.target.closest("button, a, input, .slash-item, .tok, .resume-card, .hw-route")) {
+        if (window.innerWidth > 768) dockInput.focus();
+      }
+    }
+
+    function openSlashPalette() {
+      dockInput.value = "/";
+      syncInputUI();
+      dockInput.focus();
+    }
+
+    function getVisibleSlashItems() {
+      if (!slashMenu.classList.contains("open")) return [];
+      return Array.from(slashMenu.querySelectorAll(".slash-item")).filter(el => el.style.display !== "none");
+    }
+
+    function syncInputUI() {
+      const val = dockInput.value;
+
+      if (authState === "CHALLENGE") {
+        slashMenu.classList.remove("open");
+        dockGhost.textContent = val ? "" : "Enter operator TOTP / passphrase (demo: 8848)...";
+        dockActionBtn.textContent = "Verify ↵";
+        return;
+      }
+
+      if (!val) {
+        slashMenu.classList.remove("open");
+        dockGhost.textContent = "/guest";
+        dockActionBtn.textContent = "Enter ↵ /guest";
+        return;
+      }
+
+      dockActionBtn.textContent = "Run ↵";
+
+      if (val.startsWith("/")) {
+        const q = val.toLowerCase();
+        const match = SLASH_COMMANDS.find(c => c.toLowerCase().startsWith(q) && c.toLowerCase() !== q);
+        dockGhost.textContent = match ? val + match.slice(val.length) : "";
+
+        const items = Array.from(slashMenu.querySelectorAll(".slash-item"));
+        const matchedItems = [];
+        items.forEach(item => {
+          const code = item.getAttribute("data-cmd").toLowerCase();
+          const show = code.startsWith(q);
+          item.style.display = show ? "grid" : "none";
+          item.classList.remove("sel");
+          if (show) matchedItems.push(item);
+        });
+
+        const shouldOpen = matchedItems.length > 0 && !(matchedItems.length === 1 && matchedItems[0].getAttribute("data-cmd").toLowerCase() === q);
+        slashMenu.classList.toggle("open", shouldOpen);
+        if (shouldOpen) {
+          slashIndex = Math.min(slashIndex, matchedItems.length - 1);
+          if (slashIndex < 0) slashIndex = 0;
+          matchedItems[slashIndex].classList.add("sel");
+        }
+      } else {
+        slashMenu.classList.remove("open");
+        dockGhost.textContent = "";
+      }
+    }
+
+    dockInput.addEventListener("input", () => {
+      slashIndex = 0;
+      syncInputUI();
+    });
+
+    dockInput.addEventListener("keydown", async (e) => {
+      const visibleSlash = getVisibleSlashItems();
+
+      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && visibleSlash.length > 0) {
+        e.preventDefault();
+        if (e.key === "ArrowDown") {
+          slashIndex = (slashIndex + 1) % visibleSlash.length;
+        } else {
+          slashIndex = slashIndex <= 0 ? visibleSlash.length - 1 : slashIndex - 1;
+        }
+        visibleSlash.forEach((el, idx) => el.classList.toggle("sel", idx === slashIndex));
+        return;
+      }
+
+      if (e.key === "Tab") {
+        e.preventDefault();
+        if (authState !== "CHALLENGE") {
+          if (visibleSlash.length > 0 && visibleSlash[slashIndex]) {
+            dockInput.value = visibleSlash[slashIndex].getAttribute("data-cmd");
+          } else if (!dockInput.value) {
+            dockInput.value = "/guest";
+          } else {
+            const m = SLASH_COMMANDS.find(c => c.toLowerCase().startsWith(dockInput.value.toLowerCase()));
+            if (m) dockInput.value = m;
+          }
+          syncInputUI();
+        }
+        return;
+      }
+
+      if (e.key === "ArrowUp" && !visibleSlash.length && cmdHistory.length && authState === "GUEST") {
+        e.preventDefault();
+        historyCursor = Math.max(0, historyCursor - 1);
+        dockInput.value = cmdHistory[historyCursor] || "";
+        syncInputUI();
+        return;
+      }
+
+      if (e.key === "ArrowDown" && !visibleSlash.length && cmdHistory.length && authState === "GUEST") {
+        e.preventDefault();
+        historyCursor = Math.min(cmdHistory.length, historyCursor + 1);
+        dockInput.value = cmdHistory[historyCursor] || "";
+        syncInputUI();
+        return;
+      }
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (visibleSlash.length > 0 && visibleSlash[slashIndex]) {
+          const picked = visibleSlash[slashIndex].getAttribute("data-cmd");
+          runCommand(picked);
+          return;
+        }
+        triggerDefaultOrInput();
+        return;
+      }
+
+      if (e.key === "Escape") {
+        slashMenu.classList.remove("open");
+        if (authState === "CHALLENGE") {
+          authState = "GUEST";
+          dockInput.type = "text";
+          dockHost.textContent = "guest@bolab.dev";
+          dockHost.className = "dock-host";
+          writeTerm("auth", `<span style="color:var(--ink-3)">Challenge aborted. Reverted to guest shell.</span>`);
+        }
+        dockInput.value = "";
+        syncInputUI();
+      }
+    });
+
+    function triggerDefaultOrInput() {
+      const raw = dockInput.value.trim();
+      if (!raw && authState === "GUEST") {
+        runCommand("/guest");
+      } else {
+        runCommand(raw);
+      }
+    }
+
+    function writeTerm(label, htmlContent) {
+      const row = document.createElement("div");
+      row.className = "t-entry";
+      row.innerHTML = `<span class="t-k">${escapeHtml(label)}</span><div class="t-v">${htmlContent}</div>`;
+      termOut.appendChild(row);
+      upperScroll.scrollTop = upperScroll.scrollHeight;
+    }
+
+    async function sha256Hex(text) {
+      if (!window.crypto?.subtle) return text;
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function renderLatestArticleInTerminal() {
+      writeTerm("/resume", `
+        <div class="resume-card">
+          <div class="resume-meta">
+            <span class="resume-badge">● LATEST ARTICLE · 2026-02-11</span>
+            <span>区块链 · 入金测试 · 工具平台 · 08m read</span>
+          </div>
+          <div class="resume-title">交易所入金测试：从手动构造到标准化平台</div>
+          <div class="resume-body">
+            <p>交易所钱包测试的核心在于<strong>入金</strong>与<strong>出金</strong>。入金侧可拆解为四层：主流程入金、特殊边界入金（失败交易 / 合约入金 / 0 金额 / 批量入金）、重复入金幂等性、以及最深水区的<strong>假入金检测</strong>。</p>
+            <blockquote>入金测试的质量，不应该取决于「谁来测」。</blockquote>
+            <p>通过 <strong>Chain Deposit Lab (21 条链)</strong> 覆盖标准化异常场景，并结合 <strong>OpenClaw AI 造数机器人</strong> 与每日需求日报形成自动化反哺闭环。</p>
+          </div>
+          <div class="resume-actions">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="resume-btn" onclick="openArticleModal('deposit-testing')">Read Full Article ↵</button>
+              <button class="resume-btn" onclick="switchView('main', 'writing')">Go to Main Page (/guest) →</button>
+            </div>
+            <span style="color:var(--ink-4)">bolab.dev/p/deposit-testing/</span>
+          </div>
+        </div>
+      `);
+    }
+
+    async function runCommand(rawCmd) {
+      const input = (rawCmd || "").trim();
+      dockInput.value = "";
+      slashMenu.classList.remove("open");
+
+      if (Date.now() < lockedUntil) {
+        const sec = Math.ceil((lockedUntil - Date.now()) / 1000);
+        writeTerm("429_locked", `<span style="color:var(--err)">Rate limit active (${sec}s remaining). Edge WAF blocked request.</span>`);
+        syncInputUI();
+        return;
+      }
+
+      if (authState === "CHALLENGE") {
+        await verifyChallengeResponse(input);
+        syncInputUI();
+        return;
+      }
+
+      if (input) {
+        cmdHistory.push(input);
+        historyCursor = cmdHistory.length;
+      }
+
+      const cmd = input.toLowerCase();
+
+      if (cmd === "/guest" || cmd === "guest" || cmd === "/home") {
+        switchView("main", "writing");
+        syncInputUI();
+        return;
+      }
+
+      if (cmd === "/whoami" || cmd === "whoami" || cmd === "who am i") {
+        switchView("whoami");
+        syncInputUI();
+        return;
+      }
+
+      if (cmd === "/resume" || cmd === "resume") {
+        renderLatestArticleInTerminal();
+        syncInputUI();
+        return;
+      }
+
+      if (cmd === "/tools" || cmd === "tools") {
+        switchView("main", "tools");
+        syncInputUI();
+        return;
+      }
+
+      if (cmd === "/about" || cmd === "about") {
+        switchView("main", "about");
+        syncInputUI();
+        return;
+      }
+
+      if (cmd === "/clear" || cmd === "clear") {
+        termOut.innerHTML = "";
+        syncInputUI();
+        return;
+      }
+
+      if (cmd === "/theme" || cmd === "theme") {
+        toggleScheme();
+        writeTerm("/theme", `Toggled color scheme.`);
+        syncInputUI();
+        return;
+      }
+
+      if (cmd === "/help" || cmd === "help") {
+        writeTerm("/help", `
+          <div><b>/guest</b>   — Enter main page (writing, tools &amp; about)</div>
+          <div><b>/WhoamI</b>  — Open single-column CV &amp; introduction</div>
+          <div><b>/resume</b>  — Read the latest article right here in terminal</div>
+          <div><b>/tools</b>   — Jump straight to Tools section on main page</div>
+          <div><b>/about</b>   — Jump to About, GitHub and RSS</div>
+          <div><b>/theme</b>   — Toggle dark / light scheme · <b>/clear</b> — Clear screen</div>
+        `);
+        syncInputUI();
+        return;
+      }
+
+      await dispatchOpaqueCommand(cmd);
+      syncInputUI();
+    }
+
+    async function dispatchOpaqueCommand(normalizedCmd) {
+      const digest = await sha256Hex(normalizedCmd);
+      const isPrivilegedTrigger =
+        digest === "e8d801779ef9a028836773f337421265c9616667d478556099c4e7430833801b" ||
+        normalizedCmd === "dash prod";
+
+      if (isPrivilegedTrigger) {
+        authState = "CHALLENGE";
+        nonceChallenge = Math.random().toString(36).slice(2, 10).toUpperCase();
+        dockInput.type = "password";
+        dockHost.textContent = "auth@bolab.dev [TOTP]";
+        dockHost.className = "dock-host auth-mode";
+        writeTerm("gateway_auth", `
+          <span style="color:var(--warn)">⚡ Challenge issued (Nonce: ${nonceChallenge}).</span>
+          Enter operator TOTP / passphrase below (<b>demo: 8848</b>, Esc to abort):
+        `);
+        dockInput.focus();
+      } else {
+        writeTerm("error", `<span style="color:var(--err)">command not found: ${escapeHtml(normalizedCmd)}</span> — try <b>/guest</b>, <b>/WhoamI</b>, or <b>/resume</b>.`);
+      }
+    }
+
+    async function verifyChallengeResponse(secret) {
+      if (secret === "8848") {
+        failedCount = 0;
+        authState = "ROOT";
+        dockInput.type = "text";
+        dockHost.textContent = "root@bolab.dev";
+        dockHost.className = "dock-host root-mode";
+        writeTerm("200_ok", `<span style="color:var(--ok)">✓ HttpOnly JWT session established. Mounting operator console...</span>`);
+        setTimeout(openProdConsole, 240);
+      } else {
+        failedCount++;
+        if (failedCount >= 3) {
+          lockedUntil = Date.now() + 15000;
+          authState = "GUEST";
+          dockInput.type = "text";
+          dockHost.textContent = "guest@bolab.dev";
+          dockHost.className = "dock-host";
+          writeTerm("403_waf", `<span style="color:var(--err)">3 failed attempts. IP temporarily locked for 15s.</span>`);
+        } else {
+          writeTerm("401_denied", `<span style="color:var(--err)">Invalid credential (${failedCount}/3). Try demo code 8848 or press Esc.</span>`);
+        }
+      }
+    }
+
+    function openProdConsole() {
+      document.getElementById("prodMountNode").innerHTML = `
+        <div style="border-left:2px solid var(--accent); background:var(--bg-raised); padding:14px 18px; margin-bottom:24px;">
+          <b>🔒 DYNAMICALLY FETCHED OPERATOR PAYLOAD (GET /api/prod/console)</b><br/>
+          <span style="color:var(--ink-2); font-size:0.84rem;">Protected by server-side HttpOnly cookie verification, CSRF origin check, and edge rate-limiting.</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+          <div style="border:1px solid var(--line-soft); padding:18px; background:var(--bg-raised);">
+            <div style="color:var(--ink-3); font-size:0.72rem;">OPENCLAW AI BOT TELEMETRY</div>
+            <div style="font-size:1.35rem; color:var(--ok); margin-top:6px;">142 Custom Chain Txs</div>
+            <p style="color:var(--ink-2); font-size:0.8rem; margin-top:6px;">Daily QA synthesis digest ready for review.</p>
+          </div>
+          <div style="border:1px solid var(--line-soft); padding:18px; background:var(--bg-raised);">
+            <div style="color:var(--ink-3); font-size:0.72rem;">PUBLISHED WRITING</div>
+            <div style="font-size:1.35rem; color:var(--info); margin-top:6px;">3 Articles</div>
+            <p style="color:var(--ink-2); font-size:0.8rem; margin-top:6px;">deposit-testing, xrp-reserve, and hello-world.</p>
+          </div>
+          <div style="border:1px solid var(--line-soft); padding:18px; background:var(--bg-raised);">
+            <div style="color:var(--ink-3); font-size:0.72rem;">UNPUBLISHED DRAFTS</div>
+            <div style="font-size:1.35rem; color:var(--accent); margin-top:6px;">4 Draft Articles</div>
+            <p style="color:var(--ink-2); font-size:0.8rem; margin-top:6px;">Mock-bombing EVM deposit parsers &amp; Solana Token-2022.</p>
+          </div>
+        </div>
+      `;
+      switchView("prod");
+    }
+
+    function logoutOperator() {
+      authState = "GUEST";
+      dockHost.textContent = "guest@bolab.dev";
+      dockHost.className = "dock-host";
+      document.getElementById("prodMountNode").innerHTML = "";
+      switchView("terminal");
+      writeTerm("logout", "Revoked operator JWT session.");
+      syncInputUI();
+    }
+
+    // Global Keyboard Shortcuts when NOT typing in terminal input (`[H]`, `[L]`, `[A]`, `[W]`, `[T]`, `ESC`)
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (document.getElementById("readerModal").classList.contains("open")) {
+          closeReader();
+          return;
+        }
+        const curView = document.documentElement.getAttribute("data-view");
+        if (curView === "prod") logoutOperator();
+      }
+
+      if (document.activeElement === dockInput || e.metaKey || e.ctrlKey || e.altKey) return;
+      const key = e.key.toLowerCase();
+      if (key === "h") switchView("main", "writing");
+      else if (key === "l") switchView("main", "tools");
+      else if (key === "a") switchView("main", "about");
+      else if (key === "w") switchView("whoami");
+      else if (key === "t") switchView("terminal");
+    });
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    // Initial render
+    renderMainPage();
+    syncInputUI();
+  </script>
+</body>
+</html>
