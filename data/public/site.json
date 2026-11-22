@@ -95,7 +95,7 @@
     {
       "name": "BTC Dashboard",
       "description": "比特币实时看板 — 关机币价、200周均线、均衡价格、MVRV、减半倒计时、恐惧贪婪指数等核心链上指标",
-      "link": "/tools/btc.html"
+      "link": "/tools/btc/"
     }
   ],
   "about": {
