@@ -21,3 +21,4 @@ hasCJKLanguage = true
 
 [outputs]
   home = ['HTML', 'RSS']
+

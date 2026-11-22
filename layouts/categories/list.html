@@ -6,7 +6,7 @@
     </div>
 
     <div class="post-list">
-        {{ range .Pages }}
+        {{ range where (where .Pages "Params.unlisted" "!=" true) "Params.private" "!=" true }}
         <article class="post-item">
             <h2 class="post-title">
                 <a href="{{ .RelPermalink }}">{{ .Title }}</a>
