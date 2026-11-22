@@ -1030,6 +1030,19 @@
     }
 
     /* Below-Showcase Directory Index (All Items in Current Section) */
+    .status-strip {
+      margin: 0 0 28px;
+      border: 1px solid var(--line);
+      background: var(--bg-panel);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .status-strip span, .status-strip small { color: var(--ink-3); letter-spacing: 0.06em; }
+    .status-strip b { color: var(--ink); font-size: 1rem; }
+    .status-strip b.up { color: var(--ok); }
+    .status-strip b.down { color: var(--err); }
     .dir-section {
       border-top: 1px solid var(--line-soft);
       padding-top: 28px;
@@ -1643,6 +1656,12 @@
       </section>
 
       <!-- Full Categorized Index Below Showcase -->
+      <section class="status-strip" aria-label="Published service status">
+        <span>SERVICE STATUS</span>
+        <b id="publicStatus">CHECKING</b>
+        <small>Static snapshot · no live admin connection</small>
+      </section>
+
       <section class="dir-section">
         <div class="dir-head">
           <span id="dirHeading">INDEX // ALL ARTICLES</span>
@@ -1829,6 +1848,20 @@
     let currentMainSec = "writing"; // "writing" | "tools" | "about"
     let currentFilter = "all";
     let selectedItemId = "deposit-testing";
+
+    async function renderPublicStatus() {
+      const el = document.getElementById("publicStatus");
+      if (!el) return;
+      try {
+        const data = await fetch("/data/public/site.json", { cache: "no-store" }).then((r) => r.json());
+        const state = data.server_status && data.server_status.state === "up" ? "up" : "down";
+        el.className = state;
+        el.textContent = state.toUpperCase();
+      } catch (_) {
+        el.className = "down";
+        el.textContent = "UNKNOWN";
+      }
+    }
 
     const ARTICLES = [
       {
@@ -2859,6 +2892,7 @@
     }
 
     // Initial render
+    renderPublicStatus();
     renderMainPage();
     syncInputUI();
   </script>
