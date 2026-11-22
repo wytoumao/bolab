@@ -2,6 +2,8 @@
 title: "Hello World — 为什么我要写博客"
 date: 2025-02-08
 slug: hello-world
+aliases:
+  - /p/hello-world/
 description: "Bo's Lab 正式上线。聊聊为什么一个区块链测试工程师要开始写博客。"
 pinned: true
 categories:

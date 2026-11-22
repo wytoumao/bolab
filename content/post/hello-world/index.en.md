@@ -2,6 +2,8 @@
 title: "Hello World — Why I Started This Blog"
 date: 2025-02-08
 slug: hello-world
+aliases:
+  - /en/p/hello-world/
 description: "Bo's Lab is live. Why a blockchain QA engineer decided to start writing."
 pinned: true
 categories:

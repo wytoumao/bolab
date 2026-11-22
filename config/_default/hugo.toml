@@ -8,7 +8,7 @@ hasCJKLanguage = true
   pagerSize = 20
 
 [permalinks]
-  post = '/p/:slug/'
+  post = '/:slug/'
   page = '/:slug/'
 
 [markup]

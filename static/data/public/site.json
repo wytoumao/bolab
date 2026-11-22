@@ -5,7 +5,7 @@
       "date": "2026-02-11",
       "language": "en",
       "summary": "How I turned exchange wallet deposit testing from 'depends on who's testing' into a repeatable, standardized process — and my thoughts on fake deposit detection.",
-      "link": "/p/deposit-testing/",
+      "link": "/deposit-testing/",
       "categories": [
         "testing"
       ],
@@ -21,7 +21,7 @@
       "date": "2026-02-11",
       "language": "zh-cn",
       "summary": "如何将交易所钱包入金测试从「依赖个人经验」变为「任何人都能执行的标准化流程」，以及我在假入金检测方向的一些思考。",
-      "link": "/p/deposit-testing/",
+      "link": "/deposit-testing/",
       "categories": [
         "测试"
       ],
@@ -37,7 +37,7 @@
       "date": "2025-02-08",
       "language": "en",
       "summary": "Bo's Lab is live. Why a blockchain QA engineer decided to start writing.",
-      "link": "/p/hello-world/",
+      "link": "/hello-world/",
       "categories": [
         "Thoughts"
       ],
@@ -51,7 +51,7 @@
       "date": "2025-02-08",
       "language": "zh-cn",
       "summary": "Bo's Lab 正式上线。聊聊为什么一个区块链测试工程师要开始写博客。",
-      "link": "/p/hello-world/",
+      "link": "/hello-world/",
       "categories": [
         "随想"
       ],
@@ -65,7 +65,7 @@
       "date": "2025-02-08",
       "language": "en",
       "summary": "Discovered that XRP addresses must hold at least 1 XRP to transact? Here's the design logic behind XRPL's reserve mechanism.",
-      "link": "/p/xrp-reserve/",
+      "link": "/xrp-reserve/",
       "categories": [
         "Blockchain"
       ],
@@ -80,7 +80,7 @@
       "date": "2025-02-08",
       "language": "zh-cn",
       "summary": "转账 XRP 时发现地址必须保留至少 1 XRP？这篇文章带你搞懂 XRPL 的储备金机制背后的设计逻辑。",
-      "link": "/p/xrp-reserve/",
+      "link": "/xrp-reserve/",
       "categories": [
         "区块链"
       ],

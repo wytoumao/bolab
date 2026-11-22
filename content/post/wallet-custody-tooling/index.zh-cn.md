@@ -2,6 +2,8 @@
 title: "钱包工具开发分享 - 托管"
 date: 2026-11-22T20:22:00+08:00
 slug: wallet-custody-tooling
+aliases:
+  - /p/wallet-custody-tooling/
 description: "Admin-only sharing note."
 draft: false
 unlisted: true

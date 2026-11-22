@@ -2,6 +2,8 @@
 title: "XRP's 1 XRP Minimum Reserve: Why Your Address Must Hold a Balance"
 date: 2025-02-08
 slug: xrp-reserve
+aliases:
+  - /en/p/xrp-reserve/
 description: "Discovered that XRP addresses must hold at least 1 XRP to transact? Here's the design logic behind XRPL's reserve mechanism."
 categories:
   - Blockchain

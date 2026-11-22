@@ -2,6 +2,8 @@
 title: "XRP 的 1 XRP 最低储备金：为什么你的地址必须留钱？"
 date: 2025-02-08
 slug: xrp-reserve
+aliases:
+  - /p/xrp-reserve/
 description: "转账 XRP 时发现地址必须保留至少 1 XRP？这篇文章带你搞懂 XRPL 的储备金机制背后的设计逻辑。"
 categories:
   - 区块链
