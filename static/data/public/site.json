@@ -1,0 +1,108 @@
+{
+  "posts": [
+    {
+      "title": "Exchange Deposit Testing: From Manual Construction to a Standardized Platform",
+      "date": "2026-02-11",
+      "language": "en",
+      "summary": "How I turned exchange wallet deposit testing from 'depends on who's testing' into a repeatable, standardized process — and my thoughts on fake deposit detection.",
+      "link": "/p/deposit-testing/",
+      "categories": [
+        "testing"
+      ],
+      "tags": [
+        "blockchain",
+        "deposit testing",
+        "test engineering",
+        "tooling"
+      ]
+    },
+    {
+      "title": "交易所入金测试：从手动构造到标准化平台",
+      "date": "2026-02-11",
+      "language": "zh-cn",
+      "summary": "如何将交易所钱包入金测试从「依赖个人经验」变为「任何人都能执行的标准化流程」，以及我在假入金检测方向的一些思考。",
+      "link": "/p/deposit-testing/",
+      "categories": [
+        "测试"
+      ],
+      "tags": [
+        "区块链",
+        "入金测试",
+        "测试工程",
+        "工具平台"
+      ]
+    },
+    {
+      "title": "Hello World — Why I Started This Blog",
+      "date": "2025-02-08",
+      "language": "en",
+      "summary": "Bo's Lab is live. Why a blockchain QA engineer decided to start writing.",
+      "link": "/p/hello-world/",
+      "categories": [
+        "Thoughts"
+      ],
+      "tags": [
+        "Blog",
+        "Career"
+      ]
+    },
+    {
+      "title": "Hello World — 为什么我要写博客",
+      "date": "2025-02-08",
+      "language": "zh-cn",
+      "summary": "Bo's Lab 正式上线。聊聊为什么一个区块链测试工程师要开始写博客。",
+      "link": "/p/hello-world/",
+      "categories": [
+        "随想"
+      ],
+      "tags": [
+        "博客",
+        "职业发展"
+      ]
+    },
+    {
+      "title": "XRP's 1 XRP Minimum Reserve: Why Your Address Must Hold a Balance",
+      "date": "2025-02-08",
+      "language": "en",
+      "summary": "Discovered that XRP addresses must hold at least 1 XRP to transact? Here's the design logic behind XRPL's reserve mechanism.",
+      "link": "/p/xrp-reserve/",
+      "categories": [
+        "Blockchain"
+      ],
+      "tags": [
+        "XRP",
+        "Public Chain",
+        "Deposit Testing"
+      ]
+    },
+    {
+      "title": "XRP 的 1 XRP 最低储备金：为什么你的地址必须留钱？",
+      "date": "2025-02-08",
+      "language": "zh-cn",
+      "summary": "转账 XRP 时发现地址必须保留至少 1 XRP？这篇文章带你搞懂 XRPL 的储备金机制背后的设计逻辑。",
+      "link": "/p/xrp-reserve/",
+      "categories": [
+        "区块链"
+      ],
+      "tags": [
+        "XRP",
+        "公链",
+        "充提测试"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "name": "BTC Dashboard",
+      "description": "比特币实时看板 — 关机币价、200周均线、均衡价格、MVRV、减半倒计时、恐惧贪婪指数等核心链上指标",
+      "link": "/tools/btc/"
+    }
+  ],
+  "about": {
+    "text": "我是 Bo，一名区块链测试工程师。 目前在 Bybit 担任首席测试工程师，专注于钱包和公链集成测试。过去几年参与了 40+ 条公链的集成测试，涵盖 EVM、UTXO 等多种架构。",
+    "github": "https://github.com/wytoumao"
+  },
+  "server_status": {
+    "state": "up"
+  }
+}
