@@ -1,42 +1,55 @@
 <!DOCTYPE html>
-<html lang="{{ .Lang }}">
+<html lang="{{ if eq .Lang "en" }}en{{ else }}zh-CN{{ end }}" data-view="article" data-scheme="dark">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
-    <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-    {{ if or .Params.unlisted .Params.private }}
-    <meta name="robots" content="noindex, nofollow, noarchive">
-    {{ end }}
-    {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $css.RelPermalink }}">
-    {{ with .OutputFormats.Get "rss" }}
-    <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
-    {{ end }}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  {{ if or .Params.unlisted .Params.private }}
+  <meta name="robots" content="{{ with .Params.robots }}{{ . }}{{ else }}noindex, nofollow, noarchive{{ end }}">
+  {{ end }}
+  <link rel="stylesheet" href="{{ "css/bolab.css" | relURL }}">
+  {{ with .OutputFormats.Get "rss" }}
+  <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
+  {{ end }}
 </head>
 <body>
-    <div class="layout">
-        {{ partial "header.html" . }}
-        <main>
-            {{ block "main" . }}{{ end }}
-        </main>
-    </div>
-    {{ partial "footer.html" . }}
-    <script>
-        // Dark mode
-        const toggle = document.getElementById('dark-toggle');
-        const body = document.body;
-        if (localStorage.getItem('darkMode') === 'true') body.classList.add('dark');
-        toggle && toggle.addEventListener('click', () => {
-            body.classList.toggle('dark');
-            localStorage.setItem('darkMode', body.classList.contains('dark'));
-        });
-        // Mobile menu
-        const menuBtn = document.getElementById('menu-toggle');
-        const sidebar = document.querySelector('.sidebar');
-        menuBtn && menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
-    </script>
+  <div class="app-view" style="display:block;">
+    <header class="top-bar">
+      <a class="tb-brand" href="{{ .Site.Home.RelPermalink }}" title="Bo's Lab">
+        <svg viewBox="0 0 16 14" width="34" height="30" fill="currentColor" aria-hidden="true">
+          <path d="M5 0h6v2h-1v2.5l4 5.5v3H2v-3l4-5.5V2H5V0zm2 2v3L4.2 9h7.6L9 5V2H7z"/>
+          <rect x="5" y="10" width="2" height="2" class="b-pix-1"/>
+          <rect x="9" y="9" width="2" height="2" class="b-pix-2"/>
+        </svg>
+      </a>
+      <nav class="tb-nav" aria-label="Primary">
+        <a class="tb-link" href="{{ .Site.Home.RelPermalink }}"><span class="k">[H]</span><span>HOME</span></a>
+        <a class="tb-link" href="{{ .Site.Home.RelPermalink }}#tools"><span class="k">[L]</span><span>TOOLS</span></a>
+        <a class="tb-link" href="{{ .Site.Home.RelPermalink }}about/"><span class="k">[A]</span><span>ABOUT</span></a>
+      </nav>
+      <div class="tb-right">
+        {{ if eq .Lang "zh-cn" }}
+          {{ with .Translations }}<a class="tb-mini-btn" href="{{ (index . 0).RelPermalink }}">EN</a>{{ end }}
+        {{ else }}
+          {{ with .Translations }}<a class="tb-mini-btn" href="{{ (index . 0).RelPermalink }}">中文</a>{{ else }}<a class="tb-mini-btn" href="/">中文</a>{{ end }}
+        {{ end }}
+        <button class="tb-mini-btn" type="button" onclick="toggleScheme()" title="Switch Dark / Light">◐</button>
+      </div>
+    </header>
+    <main class="stage-container">
+      {{ block "main" . }}{{ end }}
+    </main>
+  </div>
+  <script>
+    const saved = localStorage.getItem("bolab-scheme");
+    if (saved) document.documentElement.setAttribute("data-scheme", saved);
+    function toggleScheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute("data-scheme") === "light" ? "dark" : "light";
+      html.setAttribute("data-scheme", next);
+      localStorage.setItem("bolab-scheme", next);
+    }
+  </script>
 </body>
 </html>

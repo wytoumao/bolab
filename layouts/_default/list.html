@@ -1,35 +1,21 @@
 {{ define "main" }}
-<div class="container">
-    <div class="page-header">
-        <h1>{{ .Title }}</h1>
-        {{ if .Description }}
-        <p class="page-description">{{ .Description }}</p>
-        {{ end }}
+<section class="article-sheet">
+  <header class="article-kicker">
+    <a href="{{ .Site.Home.RelPermalink }}">← bolab.dev</a>
+    <span>{{ .Title }}</span>
+  </header>
+  <div class="dir-section">
+    <div class="dir-head">
+      <span>INDEX // {{ .Title }}</span>
+      <span>{{ len (where (where .Pages "Params.unlisted" "!=" true) "Params.private" "!=" true) }} ITEMS</span>
     </div>
-
-    <div class="post-list">
-        {{ range where (where .Pages "Params.unlisted" "!=" true) "Params.private" "!=" true }}
-        <article class="post-item">
-            <h2 class="post-title">
-                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            </h2>
-            {{ if .Description }}
-            <p class="post-description">{{ .Description }}</p>
-            {{ end }}
-            <div class="post-meta">
-                <time datetime="{{ .Date.Format "2006-01-02" }}">
-                    {{ .Date.Format "2006-01-02" }}
-                </time>
-                {{ if .Params.tags }}
-                <span class="post-tags">
-                    {{ range .Params.tags }}
-                    <span class="tag">{{ . }}</span>
-                    {{ end }}
-                </span>
-                {{ end }}
-            </div>
-        </article>
-        {{ end }}
-    </div>
-</div>
+    {{ range where (where .Pages "Params.unlisted" "!=" true) "Params.private" "!=" true }}
+    <a class="dir-row" href="{{ .RelPermalink }}">
+      <span class="d-date">{{ .Date.Format "2006-01-02" }}</span>
+      <span class="d-title">{{ .Title }}</span>
+      <span class="d-sub">{{ .Description }}</span>
+    </a>
+    {{ end }}
+  </div>
+</section>
 {{ end }}

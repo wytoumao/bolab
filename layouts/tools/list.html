@@ -1,30 +1,21 @@
 {{ define "main" }}
-<div class="container">
-    <div class="page-header">
-        <h1>{{ .Title }}</h1>
-        <p class="page-description">{{ .Description }}</p>
-    </div>
-
-    <div class="tools-grid">
-        <a href="/tools/btc/" class="tool-card">
-            <div class="tool-icon">₿</div>
-            <div class="tool-info">
-                <h3>BTC Dashboard</h3>
-                <p>{{ if eq .Lang "zh-cn" }}比特币实时看板 — 关机币价、200周均线、均衡价格、MVRV、减半倒计时、恐惧贪婪指数等核心链上指标{{ else }}Real-time Bitcoin dashboard — shutdown price, 200WMA, balanced price, MVRV, halving countdown, fear & greed index{{ end }}</p>
-            </div>
-            <span class="tool-badge">{{ if eq .Lang "zh-cn" }}内置{{ else }}Built-in{{ end }}</span>
-        </a>
-
-        {{/* deposit.bolab.dev is down (Cloudflare 530). Restore this card when the tunnel is back.
-        <a href="https://deposit.bolab.dev" target="_blank" rel="noopener" class="tool-card">
-            <div class="tool-icon">🔗</div>
-            <div class="tool-info">
-                <h3>Deposit Tester</h3>
-                <p>{{ if eq .Lang "zh-cn" }}多链入金测试平台 — 支持 21 条链（EVM/BTC/UTXO/Cosmos/Solana），覆盖正常转账、批量转账、金额边界、失败交易、假入金等测试场景{{ else }}Multi-chain deposit testing — 21 chains (EVM/BTC/UTXO/Cosmos/Solana), covering normal transfers, batch transfers, boundary amounts, failed txns, fake deposits{{ end }}</p>
-            </div>
-            <span class="tool-badge external">{{ if eq .Lang "zh-cn" }}外链{{ else }}External{{ end }}</span>
-        </a>
-        */}}
-    </div>
-</div>
+<section class="article-sheet">
+  <header class="article-kicker">
+    <a href="{{ .Site.Home.RelPermalink }}">← bolab.dev</a>
+    <span>TOOLS</span>
+  </header>
+  <div class="reader-body">
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Description }}</p>
+  </div>
+  <div class="tool-board">
+    <a class="inv-arch-card" href="/tools/btc/">
+      <span>
+        <b>BTC Dashboard</b><br>
+        <small>{{ if eq .Lang "zh-cn" }}比特币实时看板{{ else }}Bitcoin telemetry{{ end }}</small>
+      </span>
+      <span>↗</span>
+    </a>
+  </div>
+</section>
 {{ end }}

@@ -1,23 +1,13 @@
 {{ define "main" }}
-<article class="container single">
-    <header class="article-header">
-        <h1>{{ .Title }}</h1>
-        <div class="article-meta">
-            <time datetime="{{ .Date.Format "2006-01-02" }}">
-                {{ .Date.Format "2006-01-02" }}
-            </time>
-            {{ if .Params.tags }}
-            <span class="article-tags">
-                {{ range .Params.tags }}
-                <span class="tag">{{ . }}</span>
-                {{ end }}
-            </span>
-            {{ end }}
-        </div>
-    </header>
-
-    <div class="article-content">
-        {{ .Content }}
-    </div>
+<article class="article-sheet">
+  <header class="article-kicker">
+    <a href="{{ .Site.Home.RelPermalink }}">← bolab.dev</a>
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+    {{ with .Params.categories }}<span>{{ delimit . " · " }}</span>{{ end }}
+  </header>
+  <div class="reader-body">
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+  </div>
 </article>
 {{ end }}
